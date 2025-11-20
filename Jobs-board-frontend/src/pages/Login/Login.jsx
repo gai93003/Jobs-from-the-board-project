@@ -1,0 +1,77 @@
+import React, { useState } from "react";
+import './Login.css';
+
+
+function Login() {
+ const [email, setEmail] = useState("");
+ const [password, setPassword] = useState("");
+ const [isLoading, setIsLoading] = useState(false);
+ const [error, setError] = useState("");
+
+
+ const isEmailValid = email !== "" && email.includes("@");
+ const isPasswordValid = password !== "" && password.length >= 6;
+ const isFormValid = isEmailValid && isPasswordValid;
+
+
+ const handleLogin = () => {
+   setError("");
+   setIsLoading(true);
+
+
+   setTimeout(() => {
+     if (email === "test@email.com" && password === "password123") {
+       console.log("Login successful!");
+       setIsLoading(false);
+     } else {
+       setError("Invalid email or password");
+       setIsLoading(false);
+     }
+   }, 1000);
+ };
+
+
+ return (
+   <main>
+     <div className="login-form-container">
+       <h1>Login</h1>
+      
+       <input
+         type="email"
+         placeholder="Email"
+         value={email}
+         onChange={(e) => setEmail(e.target.value)}
+       />
+      
+       <input
+         type="password"
+         placeholder="Password"
+         value={password}
+         onChange={(e) => setPassword(e.target.value)}
+       />
+      
+       {error && <div style={{ color: "red" }}>{error}</div>}
+      
+       <button
+         onClick={handleLogin}
+         disabled={!isFormValid || isLoading}
+       >
+         {isLoading ? "Loading..." : "Log in"}
+       </button>
+
+
+       <div className="forgot-password-container">
+         <p>
+           Forgot your password?{" "}
+           <a href="/reset-password">
+             Reset it here
+           </a>
+         </p>
+       </div>
+     </div>
+   </main>
+ );
+}
+
+
+export default Login;
