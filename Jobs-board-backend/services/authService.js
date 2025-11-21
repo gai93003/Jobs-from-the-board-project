@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { pool } from "../db.js";
+import { pool } from "../DB/db.js";
 
 //Create a new user in DB
 async function signup(full_name,email,password,user_role,description,account_status,mentor_id){

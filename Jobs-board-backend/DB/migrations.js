@@ -1,23 +1,19 @@
-import pkg from "pg";
 import dotenv from "dotenv";
+dotenv.config({ path: "../.env" });
+import pkg from "pg";
 import fs from "fs";
 
-dotenv.config();
 const { Client } = pkg;
-
-const DB_NAME = "jobsdb";
-const DB_USER = "postgres";
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_HOST = "localhost";
-const DB_PORT = 5432;
+const DB_NAME = process.env.DB_NAME
+  
 
 async function ensureDatabase() {
   const client = new Client({
-    user: DB_USER,
-    host: DB_HOST,
-    password: DB_PASSWORD,
-    port: DB_PORT,
-    database: "postgres",
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    database:process.env.DB_NAME,
   });
 
   await client.connect();
@@ -39,16 +35,15 @@ async function ensureDatabase() {
 
 async function ensureTables() {
   const client = new Client({
-    user: DB_USER,
-    host: DB_HOST,
-    password: DB_PASSWORD,
-    port: DB_PORT,
-    database: DB_NAME,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    database:process.env.DB_NAME,
   });
-
   await client.connect();
 
-  const sql = fs.readFileSync("./db_setup.sql", "utf8");
+  const sql = fs.readFileSync("./DB/db_setup.sql", "utf8");
   await client.query(sql);
 
   console.log("Tables & enums ensured.");
