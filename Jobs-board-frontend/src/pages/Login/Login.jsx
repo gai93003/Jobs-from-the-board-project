@@ -8,10 +8,12 @@ function Login() {
  const [isLoading, setIsLoading] = useState(false);
  const [error, setError] = useState("");
 
-
- const isEmailValid = email !== "" && email.includes("@");
- const isPasswordValid = password !== "" && password.length >= 6;
- const isFormValid = isEmailValid && isPasswordValid;
+  const emailStrong = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isEmailValid = emailStrong.test(email);
+  const passwordStrong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  const isPasswordValid = passwordStrong.test(password);
+  const isFormValid = isEmailValid && isPasswordValid;
+ 
 
 
  const handleLogin = () => {
@@ -19,15 +21,14 @@ function Login() {
    setIsLoading(true);
 
 
-   setTimeout(() => {
-     if (email === "test@email.com" && password === "password123") {
+  
+  if (email === "test@email.com" && password === "password123") {
        console.log("Login successful!");
        setIsLoading(false);
      } else {
        setError("Invalid email or password");
        setIsLoading(false);
      }
-   }, 1000);
  };
 
 
