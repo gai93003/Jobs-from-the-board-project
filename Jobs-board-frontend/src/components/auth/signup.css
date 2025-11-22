@@ -9,7 +9,7 @@
 
 *, html {
   margin: 0;
-  padding: 0;
+  padding: 0; 
   box-sizing: border-box;
 }
 
@@ -58,7 +58,7 @@ fieldset {
 }
 
 fieldset label {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   width: 100%;
   padding: 0.5rem;
   padding-left: 0;
@@ -68,18 +68,32 @@ fieldset label {
   margin-left: 0;
 }
 
-fieldset input, select {
+fieldset input,  select {
   border: none;
   outline: none;
-  padding: 0.8rem;
+  padding: 0.9rem;
   margin: 0.7rem;
   margin-top: 0;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
+  font-weight: 100;
+  color: rgb(49, 53, 49);
   width: 100%;
-  border: 1px solid grey;
+  /* border: 1px solid grey; */
   background: rgba(228, 228, 228, 0.877);
   border-radius: 8px;
 
+}
+
+.not-matching-password {
+  border: 1px solid red;
+}
+
+#matching-password {
+  border: 2px solid green;
+}
+
+.password-validator {
+  color: red;
 }
 
 select {

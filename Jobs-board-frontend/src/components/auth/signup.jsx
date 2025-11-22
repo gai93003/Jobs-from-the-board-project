@@ -1,0 +1,115 @@
+import { useState } from "react";
+
+function SignUp() {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+
+  async function submitFormData(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    const full_name = formData.get("name");
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirm-password");
+    const role = formData.get("role");
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match!");
+      setPasswordError(true);
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ full_name, email, password, role }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("You have successfully signed up...");
+        console.log(data);
+        setErrorMessage(""); // clear error
+        setPasswordError(false);
+      } else {
+        setErrorMessage(data.message || "Failed to signup, please try again...");
+      }
+    } catch (error) {
+      console.error("Signup error.", error);
+      setErrorMessage("Something went wrong. Please try again later.");
+    }
+  }
+
+  return (
+    <main>
+      <h1>CYF Job Board</h1>
+      <section className="login-container">
+        <article className="header">
+          <h1>Create Your Account</h1>
+          <p>Join the CYF Job Board Community</p>
+        </article>
+
+        <form onSubmit={submitFormData} id="signup-form">
+          <fieldset>
+            <label htmlFor="name">Full Name</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              placeholder="Enter your full name"
+              required
+            />
+
+            <label htmlFor="email">Email Address</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="Enter your email address" 
+              required
+            />
+
+            <label htmlFor="password">Password</label>
+            <input 
+              type="password" 
+              name="password" 
+              id="password" 
+              placeholder="Create a password"
+              required 
+            />
+            <p className="password-char-count">8+ characters, one number</p>
+
+            <label htmlFor="confirm-password">Confirm password</label>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm-password"
+              placeholder="Confirm your password"
+              required
+              className={passwordError ? "not-matching-password" : ""}
+            />
+            {errorMessage && <p id="password-validator" className="password-validator">{errorMessage}</p>}
+
+            <label htmlFor="role">Select Your Role</label>
+            <select name="role" id="role">
+              <option value="Trainee">Trainee</option>
+              <option value="Mentor">Mentor</option>
+              <option value="Admin">Staff</option>
+            </select>
+          </fieldset>
+
+          <button id="register-btn">Register</button>
+        </form>
+      </section>
+      <section className="go-to-login">
+        <p>Already have an account? <a href="" className="login-link">Log in</a></p>
+      </section>
+    </main>
+  );
+}
+
+
+export default SignUp

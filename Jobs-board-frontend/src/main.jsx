@@ -1,8 +1,8 @@
 // import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './components/signup.jsx';
+import './components/auth/signup.css';
+import SignUp from './components/auth/signup.jsx';
 
 createRoot(document.getElementById('root')).render(
-    <App />
+    <SignUp />
 );
