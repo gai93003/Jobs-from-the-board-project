@@ -1,6 +1,8 @@
 import express from 'express';
 import { getAllJobs, getJobById, createJob } from 
 '../services/jobsService.js';
+import { isValidUrl } from '../Utils/Check.js';
+
 
 const router = express.Router();
 
@@ -9,25 +11,35 @@ router.get('/test', (req, res) => { res.send('Test route works'); });
 // Lists all jobs
 router.get('/', async (req, res) => {
   try {
+    const approved =
+      req.query.approved === undefined
+        ? undefined
+        : req.query.approved === 'true';
+
     const jobs = await getAllJobs({
       location: req.query.location,
       employment_type: req.query.employment_type,
       company: req.query.company,
-      approved: req.query.approved // true or false will give
+      approved
     });
-    res.json({ jobs });  // Array wrapped in object
-  } catch(err) {
+
+    res.status(200).json({
+      message: "Jobs fetched successfully",
+      jobs
+    });
+  } catch (err) {
     res.status(500).json({ error: "ServerError", message: err.message });
   }
 });
 
 
+
 // Views one job by ID
 router.get('/:id', async (req, res) => {
   try {
-    const job = await getJobById(parseInt(req.params.id));
+    const job = await getJobById(parseInt(req.params.id, 10));
     if (job) {
-      res.json({ job }); // Object wrapped
+      return res.status(200).json({ message: "Job fetched successfuly", job }); // Object wrapped
     } else {
       res.status(404).json({
         error: "JobNotFound",
@@ -46,16 +58,6 @@ const ALLOWED_EMPLOYMENT_TYPES = [
   "Internship",
   "Freelance"
 ];
-
-// Helper to check valid URL
-function isValidUrl(url) {
-  try {
-    const u = new URL(url);
-    return u.protocol === "http:" || u.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
 
 router.post('/', async (req, res) => {
   const { title, company, apply_url, employment_type } = req.body;

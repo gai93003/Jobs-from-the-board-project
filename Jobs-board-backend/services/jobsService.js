@@ -22,9 +22,9 @@ export async function getAllJobs({ location, employment_type, company, approved 
   }
 
   if (approved !== undefined) {
-    if (approved === true || approved === 'true') {
+    if (approved === true) {
       conditions.push(`approved_at IS NOT NULL`);
-    } else if (approved === false || approved === 'false') {
+    } else if (approved === false) {
       conditions.push(`approved_at IS NULL`);
     }
   }
