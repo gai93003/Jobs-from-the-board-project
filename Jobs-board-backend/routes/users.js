@@ -46,4 +46,4 @@ const users = await usersList();
 
 
 
-export {router}
+export default router;

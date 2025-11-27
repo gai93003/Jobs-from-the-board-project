@@ -1,22 +1,24 @@
-import express from "express"
-import { router } from "./routes/users.js";
+import express from "express";
+import jobsRouter from "./routes/jobs.js";
+import userRouter from "./routes/users.js";
 import cors from "cors";
 import { runSetup } from "./DB/migrations.js";
 
-const app = express()
-const userRouter = router
-const port = 5501
+const app = express();
+const port = 5501;
 
 app.use(cors());
-app.use(express.json())
-await runSetup();
-app.use("/api" , userRouter)
+app.use(express.json());
 
+// await runSetup();
 
+app.use('/api/jobs', jobsRouter);
+app.use("/api", userRouter);
 
 app.get("/", (req, res) => {
-    res.send("Backend is running")
-})
-app.listen(port)
+  res.send("Backend is running");
+});
 
-
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
