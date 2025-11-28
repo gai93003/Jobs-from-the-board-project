@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS jobs (
     company VARCHAR(100) NOT NULL,
     location VARCHAR(255),
     employment_type employment_type_enum NOT NULL,
+    exp_level VARCHAR(500),
+    partner_name VARCHAR(500),
     tech_stack VARCHAR(255) NOT NULL,
     source VARCHAR(255),
     apply_url VARCHAR(255) NOT NULL,

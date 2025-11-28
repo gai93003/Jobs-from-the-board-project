@@ -1,5 +1,12 @@
 import { pool } from '../DB/db.js'; // required for database version
 
+export async function findJobByApplyUrl(apply_url) {
+  const result = await pool.query(
+    'SELECT job_id FROM jobs WHERE apply_url = $1',
+    [apply_url]
+  );
+  return result.rows[0] || null;
+}
 // list all jobs from the database, with optional filters
 export async function getAllJobs({ location, employment_type, company, approved } = {}) {
   const conditions = [];
@@ -44,11 +51,11 @@ export async function getJobById(id) {
 
 // created a new job in the database
 export async function createJob(data) {
-  const { title, company, location, employment_type, tech_stack, source, apply_url, approved_at } = data;
+  const { title, company, location, employment_type, tech_stack, exp_level,partner_name, source, apply_url, approved_at } = data;
   const result = await pool.query(
-    `INSERT INTO jobs (title, company, location, employment_type, tech_stack, source, apply_url, approved_at)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-    [title, company, location, employment_type, tech_stack, source, apply_url, approved_at]
+    `INSERT INTO jobs (title, company, location, employment_type,exp_level, partner_name, tech_stack, source, apply_url, approved_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+    [title, company, location, employment_type, tech_stack, exp_level, partner_name, source, apply_url, approved_at]
   );
   return result.rows[0];
 }
@@ -56,5 +63,6 @@ export async function createJob(data) {
 export default {
   getAllJobs,
   getJobById,
-  createJob
+  createJob,
+  findJobByApplyUrl
 };
