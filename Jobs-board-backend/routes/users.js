@@ -28,7 +28,7 @@ router.post("/signup",async (req, res) => {
       return res.status(409).json({ error: "Email already registered" });
     }
 
-const newUser = await signup(full_name,email,password,user_role,description,account_status,mentor_id)
+const newUser = await signup(full_name,email,password,user_role,description,account_status || 'Pending',mentor_id)
  
 res.status(201).json({
     message: "User created successfully",
