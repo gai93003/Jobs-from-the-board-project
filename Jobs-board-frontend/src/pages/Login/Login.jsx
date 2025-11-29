@@ -19,8 +19,6 @@ function Login() {
  const handleLogin = () => {
    setError("");
    setIsLoading(true);
-
-
   
   if (email === "test@email.com" && password === "password123") {
        console.log("Login successful!");

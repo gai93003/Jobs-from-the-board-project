@@ -1,12 +1,19 @@
-// src/App.jsx
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from './pages/Login/Login.jsx';
+import {TraineePage} from './pages/TraineePage/TraineePage.jsx';
+import SignUp from "./pages/SignUp/signup.jsx";
 
 function App() {
   return (
-    <div>
-      <Login />
-      {/* rest of your app */}
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" />} />
+
+      <Route path="/login" element={<Login />} />
+
+      <Route path="/signup" element={<SignUp />} />
+
+      <Route path="/trainee" element={<TraineePage />} />
+    </Routes>
   );
 }
 

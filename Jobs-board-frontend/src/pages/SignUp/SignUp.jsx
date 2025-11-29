@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './signup.css';
 
 function SignUp() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -44,7 +45,7 @@ function SignUp() {
   }
 
   return (
-    <main>
+    <main className="signup-container">
       <h1>CYF Job Board</h1>
       <section className="login-container">
         <article className="header">

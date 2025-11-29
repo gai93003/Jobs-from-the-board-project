@@ -1,19 +1,20 @@
-:root {
+.signup-container{
+/* :root { */
   --button-color: #0eac94;
   --bg-color: #f0f1f5;
   --text-color: #d0d4da;
   --btn-border-color: #838383;
   --inner-bg: #fff;
   --text-dark-color: #202022;
-}
+/* } */
 
-*, html {
+/* *, html { */
   margin: 0;
   padding: 0; 
   box-sizing: border-box;
-}
+/* } */
 
-main {
+ /* main { */
   background-color: var(--bg-color);
   margin: 0 auto;
   width: 100%;

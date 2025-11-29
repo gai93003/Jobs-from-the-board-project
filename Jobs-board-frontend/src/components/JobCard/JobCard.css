@@ -1,0 +1,35 @@
+.job-card {
+  background: var(--cyf-white);
+  border: 1px solid #d6d3d4;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  color: var(--cyf-font);
+}
+
+.job-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--cyf-primary-dark);
+}
+
+.company {
+  margin: 5px 0 10px;
+  color: var(--cyf-font);
+}
+
+.apply-link {
+  display: inline-block;
+  padding: 8px 14px;
+  margin-top: 10px;
+  background: var(--cyf-primary-red);
+  color: var(--cyf-white);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.apply-link:hover {
+  background: #c83031;
+}

@@ -60,7 +60,7 @@ const ALLOWED_EMPLOYMENT_TYPES = [
 ];
 
 router.post('/', async (req, res) => {
-  const { title, company, apply_url, employment_type } = req.body;
+  const { title, company, apply_url, employment_type, tech_stack, expLevel } = req.body;
 
   // Required fields
   if (!title) {
