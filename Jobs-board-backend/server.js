@@ -10,7 +10,7 @@ const port = 5501;
 app.use(cors());
 app.use(express.json());
 
-// await runSetup();
+await runSetup();
 
 app.use('/api/jobs', jobsRouter);
 app.use("/api", userRouter);
