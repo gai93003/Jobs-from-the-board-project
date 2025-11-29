@@ -1,8 +1,11 @@
-import { createJob } from './jobsService.js';
-import { createJob, findJobByApplyUrl } from './jobsService.js';
+import { createJob, findJobByExternalId } from './jobsService.js';
 
-// Replaced with the actual URL of the external jobs API
+// External API configuration
 const EXTERNAL_API_URL = 'https://devitjobs.uk/api/jobsLight';
+const DEVITJOBS_BASE_URL = 'https://devitjobs.uk/job/';
+
+// Allowed experience levels for import
+const ALLOWED_EXP_LEVELS = ['junior', 'entry level', 'entry-level', 'graduate', 'regular'];
 
 function mapEmploymentType(externalType) {
   switch (externalType) {
@@ -21,31 +24,43 @@ function mapEmploymentType(externalType) {
     case 'Freelance':
       return 'Freelance';
     default:
-      // safe fallback that exists in your ENUM
       return 'Full-time';
   }
 }
-export async function importJobsFromExternal() {
-  const response = await fetch(EXTERNAL_API_URL);
+
+export async function importJobsFromExternal(apiUrl = EXTERNAL_API_URL, baseJobUrl = DEVITJOBS_BASE_URL) {
+  const response = await fetch(apiUrl);
   if (!response.ok) throw new Error('Failed to fetch jobs');
   const externalJobs = await response.json();
 
   for (const externalJob of externalJobs) {
+    // Filter: only import junior/entry-level jobs
+    const expLevel = (externalJob.expLevel || '').toLowerCase();
+    const isJuniorLevel = ALLOWED_EXP_LEVELS.some(level => expLevel.includes(level));
+    if (!isJuniorLevel) {
+      continue; // skip non-junior jobs
+    }
+
+    // Gets unique external job ID
+    const externalId = externalJob.id || externalJob.jobId || externalJob.jobUrl;
+
+    // Skips if job already exists (using external ID, not URL)
+    const existing = await findJobByExternalId(externalId, 'DevITJobs');
+    if (existing) {
+      continue;
+    }
+
+    // Builds apply URL with fallback
     const applyUrl =
       externalJob.redirectJobUrl && externalJob.redirectJobUrl.trim() !== ''
         ? externalJob.redirectJobUrl
-        : `https://devitjobs.uk/job/${externalJob.jobUrl}`;
+        : `${baseJobUrl}${externalJob.jobUrl}`;
 
     const techStack = (externalJob.technologies?.join(', ') || 'Unknown').slice(0, 255);
     const source = 'DevITJobs'.slice(0, 255);
     const safeApplyUrl = applyUrl.slice(0, 255);
 
-    // 1) skips the job if already in DB
-    const existing = await findJobByApplyUrl(safeApplyUrl);
-    if (existing) {
-    continue; // goesto next externalJob
-    }
-//   inserts new job
+    // Insertsa  new job
     await createJob({
       title: externalJob.name,
       company: externalJob.company,
@@ -53,6 +68,7 @@ export async function importJobsFromExternal() {
       employment_type: mapEmploymentType(externalJob.jobType),
       tech_stack: techStack,
       source,
+      external_job_id: externalId, // stores external ID
       apply_url: safeApplyUrl,
       approved_at: null,
       exp_level: externalJob.expLevel,
@@ -60,5 +76,6 @@ export async function importJobsFromExternal() {
     });
   }
 }
+
 
 

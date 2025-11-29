@@ -1,12 +1,13 @@
 import { pool } from '../DB/db.js'; // required for database version
 
-export async function findJobByApplyUrl(apply_url) {
+export async function findJobByExternalId(external_job_id, source) {
   const result = await pool.query(
-    'SELECT job_id FROM jobs WHERE apply_url = $1',
-    [apply_url]
+    'SELECT job_id FROM jobs WHERE external_job_id = $1 AND source = $2',
+    [external_job_id, source]
   );
   return result.rows[0] || null;
 }
+
 // list all jobs from the database, with optional filters
 export async function getAllJobs({ location, employment_type, company, approved } = {}) {
   const conditions = [];
@@ -50,19 +51,28 @@ export async function getJobById(id) {
 }
 
 // created a new job in the database
-export async function createJob(data) {
-  const { title, company, location, employment_type, tech_stack, exp_level,partner_name, source, apply_url, approved_at } = data;
+export async function createJob(jobData) {
+  const {
+    title, company, location, employment_type, tech_stack,
+    source, external_job_id, apply_url, approved_at, exp_level, partner_name
+  } = jobData;
+
   const result = await pool.query(
-    `INSERT INTO jobs (title, company, location, employment_type,exp_level, partner_name, tech_stack, source, apply_url, approved_at)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
-    [title, company, location, employment_type, tech_stack, exp_level, partner_name, source, apply_url, approved_at]
+    `INSERT INTO jobs (
+      title, company, location, employment_type, tech_stack,
+      source, external_job_id, apply_url, approved_at, exp_level, partner_name
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+    RETURNING *`,
+    [title, company, location, employment_type, tech_stack,
+     source, external_job_id, apply_url, approved_at, exp_level, partner_name]
   );
   return result.rows[0];
 }
+
 
 export default {
   getAllJobs,
   getJobById,
   createJob,
-  findJobByApplyUrl
+  findJobByExternalId 
 };
