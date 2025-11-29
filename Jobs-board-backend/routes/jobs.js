@@ -20,7 +20,8 @@ router.get('/', async (req, res) => {
       location: req.query.location,
       employment_type: req.query.employment_type,
       company: req.query.company,
-      approved
+      approved,
+      userId: req.query.userId || req.query.user_id // This is to forward userId query param to the service
     });
 
     res.status(200).json({
