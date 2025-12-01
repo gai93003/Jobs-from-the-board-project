@@ -20,7 +20,7 @@ export function TraineePage() {
 
         <main className="trainee-content">
           {activePage === "dashboard" && <Dashboard />}
-          
+          {activePage === "applications" && <MyApplications />}
         </main>
       </div>
 
