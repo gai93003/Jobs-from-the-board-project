@@ -1,5 +1,6 @@
 import JobListView from "../JobListView/JobListView";
-import { getUsers, getJobsByUser } from "../Dashboard/MockData";
+import { getUsers, getJobsByUser } from "./MockData";
+
 
 export default function MyApplications() {
   return (
