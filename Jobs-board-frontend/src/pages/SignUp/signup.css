@@ -1,0 +1,155 @@
+.signup-container{
+/* :root { */
+  --button-color: #0eac94;
+  --bg-color: #f0f1f5;
+  --text-color: #d0d4da;
+  --btn-border-color: #838383;
+  --inner-bg: #fff;
+  --text-dark-color: #202022;
+/* } */
+
+/* *, html { */
+  margin: 0;
+  padding: 0; 
+  box-sizing: border-box;
+/* } */
+
+ /* main { */
+  background-color: var(--bg-color);
+  margin: 0 auto;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+section.login-container {
+  width: 33rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--inner-bg);
+  padding: 1.8rem;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px rgb(128, 128, 128);
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+fieldset {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  /* padding: 1.7rem; */
+  border: none;
+  padding-top: 0;
+}
+
+fieldset label {
+  font-size: 1.3rem;
+  width: 100%;
+  padding: 0.5rem;
+  padding-left: 0;
+  padding-top: 0;
+  margin-top: 1rem;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+
+fieldset input,  select {
+  border: none;
+  outline: none;
+  padding: 0.9rem;
+  margin: 0.7rem;
+  margin-top: 0;
+  font-size: 1.3rem;
+  font-weight: 100;
+  color: rgb(49, 53, 49);
+  width: 100%;
+  /* border: 1px solid grey; */
+  background: rgba(228, 228, 228, 0.877);
+  border-radius: 8px;
+
+}
+
+.not-matching-password {
+  border: 1px solid red;
+}
+
+#matching-password {
+  border: 2px solid green;
+}
+
+.password-validator {
+  color: red;
+}
+
+select {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#register-btn {
+  background-color: var(--button-color);
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  color: var(--inner-bg);
+  border-radius: 5px;
+}
+
+.header {
+  text-align: center;
+}
+
+.header h1 {
+  color: var(--text-dark-color);
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+}
+
+.header p {
+  font-size: 1.2rem;
+  color: var(--btn-border-color);
+}
+
+.password-char-count {
+  text-align: left;
+  justify-self: right;
+  margin-top: 5px;
+  color: rgb(77, 76, 76);
+  font-size: 1rem;
+  align-self: flex-start;
+}
+
+#password {
+  margin-bottom: 0;
+}
+
+.go-to-login {
+  font-size: 1.4rem;
+  color: rgb(116, 116, 116);
+}
+
+.go-to-login p a{
+  text-decoration: none;
+  color: var(--button-color);
+  font-weight: 550;
+}
