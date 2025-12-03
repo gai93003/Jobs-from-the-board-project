@@ -3,12 +3,14 @@ import jobsRouter from "./routes/jobs.js";
 import userRouter from "./routes/users.js";
 import cors from "cors";
 import { runSetup } from "./DB/migrations.js";
+import applicationsRouter from "./routes/applications.js"
 
 const app = express();
 const port = 5501;
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/applications', applicationsRouter)
 
 await runSetup();
 
