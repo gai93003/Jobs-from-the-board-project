@@ -2,7 +2,7 @@ import express from 'express';
 import { getAllJobs, getJobById, createJob } from 
 '../services/jobsService.js';
 import { isValidUrl } from '../Utils/Check.js';
-
+import { importJobsFromExternal } from '../services/externalJobsService.js';
 
 const router = express.Router();
 
@@ -61,7 +61,7 @@ const ALLOWED_EMPLOYMENT_TYPES = [
 ];
 
 router.post('/', async (req, res) => {
-  const { title, company, apply_url, employment_type } = req.body;
+  const { title, company, apply_url, employment_type, tech_stack, expLevel } = req.body;
 
   // Required fields
   if (!title) {
@@ -98,6 +98,16 @@ router.post('/', async (req, res) => {
     const job = await createJob(jobData); // Assumes createJob is defined and async
     res.status(201).json({message: "Job created successfully",job});
   } catch(err) {
+    res.status(500).json({ error: "ServerError", message: err.message });
+  }
+});
+
+// Imports jobs from external API into our database
+router.post('/import', async (req, res) => {
+  try {
+    await importJobsFromExternal();
+    res.status(201).json({ message: "Imported jobs from external API" });
+  } catch (err) {
     res.status(500).json({ error: "ServerError", message: err.message });
   }
 });

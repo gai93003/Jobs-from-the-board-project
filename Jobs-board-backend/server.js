@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/applications', applicationsRouter)
 
-// await runSetup();
+await runSetup();
 
 app.use('/api/jobs', jobsRouter);
 app.use("/api", userRouter);
