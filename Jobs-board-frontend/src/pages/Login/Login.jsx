@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import './Login.css';
 
 
@@ -7,26 +8,45 @@ function Login() {
  const [password, setPassword] = useState("");
  const [isLoading, setIsLoading] = useState(false);
  const [error, setError] = useState("");
+ const navigate = useNavigate();
 
   const emailStrong = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isEmailValid = emailStrong.test(email);
-  const passwordStrong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-  const isPasswordValid = passwordStrong.test(password);
-  const isFormValid = isEmailValid && isPasswordValid;
+  const isFormValid = email && password; // Simplified validation
  
 
 
- const handleLogin = () => {
+ const handleLogin = async () => {
    setError("");
    setIsLoading(true);
   
-  if (email === "test@email.com" && password === "password123") {
-       console.log("Login successful!");
-       setIsLoading(false);
+   try {
+     const response = await fetch("http://localhost:5501/api/login", {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify({ email, password })
+     });
+
+     const data = await response.json();
+
+     if (response.ok) {
+       // Store token in localStorage
+       localStorage.setItem("token", data.token);
+       localStorage.setItem("user", JSON.stringify(data.user));
+       
+       console.log("Login successful!", data);
+       
+       // Redirect to trainee page
+       navigate("/trainee");
      } else {
-       setError("Invalid email or password");
-       setIsLoading(false);
+       setError(data.error || "Invalid email or password");
      }
+   } catch (error) {
+     console.error("Login error:", error);
+     setError("Something went wrong. Please try again later.");
+   } finally {
+     setIsLoading(false);
+   }
  };
 
 
@@ -60,11 +80,17 @@ function Login() {
 
 
        <div className="forgot-password-container">
-         <p>
+         {/* <p>
            Forgot your password?{" "}
            <a href="/reset-password">
              Reset it here
            </a>
+         </p> */}
+         <p>
+           Don't have an account?{" "}
+           <Link to="/signup">
+             Sign up here
+           </Link>
          </p>
        </div>
      </div>

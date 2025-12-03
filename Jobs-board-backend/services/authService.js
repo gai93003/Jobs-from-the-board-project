@@ -35,6 +35,13 @@ async function usersList(){
     return usersList.rows
 }
 
+//Get user by email for login
+async function getUserByEmail(email) {
+    const result = await pool.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+    );
+    return result.rows[0]; // return user or undefined
+}
 
-
-export{signup, checkUniqEmail, usersList}
+export{signup, checkUniqEmail, usersList, getUserByEmail}
