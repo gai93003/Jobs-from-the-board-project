@@ -1,3 +1,4 @@
+import { fetchWithAuth } from "../../utils/api";
 import JobListView from "../JobListView/JobListView";
 
 
@@ -12,14 +13,11 @@ export function Dashboard() {
 }
 
 export async function fetchApiJobs() {
-  const response = await fetch("https://devitjobs.uk/api/jobsLight");
-  const data = await response.json();
+  const response = await fetchWithAuth("/jobs/all");
+  console.log(response)
+    return response.data.jobs.sort((a, b) => new Date(b.active_from) - new Date(a.active_from));
 
-  // filter example: only "Regular" & "Junior"
-  return data.filter(job =>
-    job.expLevel === "Regular" ||
-    job.expLevel === "Junior"
-  ).slice(0,15);  // Only show last 10 jobs
+
 }
 
 

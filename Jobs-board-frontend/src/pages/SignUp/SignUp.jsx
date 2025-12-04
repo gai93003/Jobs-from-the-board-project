@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+
+
 import './signup.css';
 
 function SignUp() {
@@ -14,10 +16,10 @@ function SignUp() {
     const full_name = formData.get("name");
     const email = formData.get("email");
     const password = formData.get("password");
-    const confirmPassword = formData.get("confirm-password");
-    const role = formData.get("role");
+    const confirm_password = formData.get("confirm-password");
+    const user_role = formData.get("role");
 
-    if (password !== confirmPassword) {
+    if (password !== confirm_password) {
       setErrorMessage("Passwords do not match!");
       setPasswordError(true);
       return;
@@ -27,13 +29,7 @@ function SignUp() {
       const response = await fetch("http://localhost:5501/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          full_name, 
-          email, 
-          password, 
-          confirm_password: confirmPassword, 
-          user_role: role 
-        }),
+        body: JSON.stringify({ full_name, email, password, confirm_password, user_role }),
       });
 
       const data = await response.json();
@@ -43,7 +39,7 @@ function SignUp() {
         console.log(data);
         setErrorMessage(""); // clear error
         setPasswordError(false);
-        // Don't redirect - let user click the login link
+         navigate("/login")
       } else {
         setErrorMessage(data.error || "Failed to signup, please try again...");
       }

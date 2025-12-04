@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
+import { importJobsFromExternal } from "../services/externalJobsService.js";
 import pkg from "pg";
 import fs from "fs";
 
@@ -53,4 +54,6 @@ async function ensureTables() {
 export async function runSetup() {
   await ensureDatabase();
   await ensureTables();
+  await importJobsFromExternal();
 }
+

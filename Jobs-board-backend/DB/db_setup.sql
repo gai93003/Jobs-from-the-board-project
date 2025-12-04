@@ -39,7 +39,9 @@ CREATE TABLE IF NOT EXISTS jobs (
     partner_name VARCHAR(500),
     tech_stack VARCHAR(255),
     source VARCHAR(255),
+    external_job_id VARCHAR(255),
     apply_url VARCHAR(255) NOT NULL,
+    active_from TIMESTAMPTZ,
     approved_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
