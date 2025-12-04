@@ -2,14 +2,15 @@ import express from 'express';
 import { getAllJobs, getJobById, createJob } from 
 '../services/jobsService.js';
 import { isValidUrl } from '../Utils/Check.js';
-
+import { importJobsFromExternal } from '../services/externalJobsService.js';
+import { authenticate } from '../Utils/authMiddleware.js';
 
 const router = express.Router();
 
 router.get('/test', (req, res) => { res.send('Test route works'); });
 
 // Lists all jobs
-router.get('/', async (req, res) => {
+router.get('/all',authenticate, async (req, res) => {
   try {
     const approved =
       req.query.approved === undefined
@@ -20,7 +21,8 @@ router.get('/', async (req, res) => {
       location: req.query.location,
       employment_type: req.query.employment_type,
       company: req.query.company,
-      approved
+      approved,
+      userId: req.query.userId || req.query.user_id // This is to forward userId query param to the service
     });
 
     res.status(200).json({
@@ -35,7 +37,7 @@ router.get('/', async (req, res) => {
 
 
 // Views one job by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id',authenticate, async (req, res) => {
   try {
     const job = await getJobById(parseInt(req.params.id, 10));
     if (job) {
@@ -97,6 +99,16 @@ router.post('/', async (req, res) => {
     const job = await createJob(jobData); // Assumes createJob is defined and async
     res.status(201).json({message: "Job created successfully",job});
   } catch(err) {
+    res.status(500).json({ error: "ServerError", message: err.message });
+  }
+});
+
+// Imports jobs from external API into our database
+router.post('/import', async (req, res) => {
+  try {
+    await importJobsFromExternal();
+    res.status(201).json({ message: "Imported jobs from external API" });
+  } catch (err) {
     res.status(500).json({ error: "ServerError", message: err.message });
   }
 });

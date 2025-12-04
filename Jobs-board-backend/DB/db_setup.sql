@@ -35,11 +35,42 @@ CREATE TABLE IF NOT EXISTS jobs (
     company VARCHAR(100) NOT NULL,
     location VARCHAR(255),
     employment_type employment_type_enum NOT NULL,
+    exp_level VARCHAR(500),
+    partner_name VARCHAR(500),
     tech_stack VARCHAR(255),
     source VARCHAR(255),
+    external_job_id VARCHAR(255),
     apply_url VARCHAR(255) NOT NULL,
+    active_from TIMESTAMPTZ,
     approved_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
+-- application_status enum + applications table
+DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'application_status_enum') THEN
+    CREATE TYPE application_status_enum AS ENUM (
+        'Application Started',
+        'Application Submitted',
+        'Invited to Interview',
+        'Application Declined'
+    );
+    END IF;
+END $$;
+
+CREATE TABLE IF NOT EXISTS applications (
+    application_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users (user_id) ON DELETE CASCADE,
+    job_id INT NOT NULL REFERENCES jobs (job_id) ON DELETE CASCADE,
+    status application_status_enum NOT NULL DEFAULT 'Application Started',
+    created_at TIMESTAMP
+    WITH
+        TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP
+    WITH
+        TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE (user_id, job_id)
+);

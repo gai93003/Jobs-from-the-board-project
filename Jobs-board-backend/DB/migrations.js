@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
-dotenv.config({ path: "../.env" });
+dotenv.config({ path: "./.env" });
+import { importJobsFromExternal } from "../services/externalJobsService.js";
 import pkg from "pg";
 import fs from "fs";
 
@@ -13,7 +14,7 @@ async function ensureDatabase() {
     host: process.env.DB_HOST,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
-    database:process.env.DB_NAME,
+    database: "postgres",  // Connect to default postgres DB first
   });
 
   await client.connect();
@@ -53,4 +54,6 @@ async function ensureTables() {
 export async function runSetup() {
   await ensureDatabase();
   await ensureTables();
+  await importJobsFromExternal();
 }
+
