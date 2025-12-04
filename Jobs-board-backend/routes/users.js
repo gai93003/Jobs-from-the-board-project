@@ -31,6 +31,7 @@ router.post("/signup",async (req, res) => {
       return res.status(409).json({ error: "Email already registered" });
     }
 
+
 // Set defaults for optional fields
 const account_status = 'Pending'; // Default status for new users
 const finalUserRole = user_role || 'Trainee'; // Default to Trainee if not specified
@@ -38,6 +39,7 @@ const finalDescription = description || null;
 const finalMentorId = mentor_id || null;
 
 const newUser = await signup(full_name,email,password,finalUserRole,finalDescription,account_status,finalMentorId)
+
  
 res.status(201).json({
     message: "User created successfully",

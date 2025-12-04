@@ -9,40 +9,38 @@ export async function findJobByExternalId(external_job_id, source) {
 }
 
 // list all jobs from the database, with optional filters
-export async function getAllJobs({ location, employment_type, company, approved } = {}) {
+export async function getAllJobs({ location, employment_type, company, approved, userId } = {}) {
+  // build same WHERE conditions but query includes LEFT JOIN
   const conditions = [];
   const values = [];
-  let index = 1;
+  let idx = 1;
 
-  if (location) {
-    conditions.push(`location ILIKE $${index++}`);
-    values.push(`%${location}%`);
-  }
-
-  if (employment_type) {
-    conditions.push(`employment_type = $${index++}`);
-    values.push(employment_type);
-  }
-
-  if (company) {
-    conditions.push(`company ILIKE $${index++}`);
-    values.push(`%${company}%`);
-  }
+  if (location) { conditions.push(`j.location ILIKE $${idx++}`); values.push(`%${location}%`); }
+  if (employment_type) { conditions.push(`j.employment_type = $${idx++}`); values.push(employment_type); }
+  if (company) { conditions.push(`j.company ILIKE $${idx++}`); values.push(`%${company}%`); }
 
   if (approved !== undefined) {
-    if (approved === true) {
-      conditions.push(`approved_at IS NOT NULL`);
-    } else if (approved === false) {
-      conditions.push(`approved_at IS NULL`);
-    }
+    if (approved === true) conditions.push(`j.approved_at IS NOT NULL`);
+    else conditions.push(`j.approved_at IS NULL`);
   }
 
+  // Left join applications filtered to the provided userId
+  const userJoin = userId ? `LEFT JOIN applications a ON a.job_id = j.job_id AND a.user_id = $${idx++}` : `LEFT JOIN applications a ON a.job_id = j.job_id AND false`;
+  if (userId) values.push(userId);
+
   const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
-  const query = `SELECT * FROM jobs ${whereClause} ORDER BY job_id DESC`;
+
+  const query = `
+    SELECT j.*, a.application_id, a.status as application_status
+    FROM jobs j
+    ${userJoin}
+    ${whereClause}
+    ORDER BY j.job_id DESC
+  `;
 
   const result = await pool.query(query, values);
   return result.rows;
-};
+}
 
 // finding one job by its ID from the database
 export async function getJobById(id) {
