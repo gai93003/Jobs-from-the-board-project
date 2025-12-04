@@ -1,3 +1,4 @@
+import { logout } from "../../utils/api";
 import "./Header.css";
 
 export default function Header() {
@@ -10,6 +11,7 @@ export default function Header() {
           <button className="header-link">Home</button>
           <button className="header-link">Dashboard</button>
           <button className="header-link">Profile</button>
+          <button className="header-link" onClick={logout}>Logout</button>
         </nav>
       </div>
     </header>

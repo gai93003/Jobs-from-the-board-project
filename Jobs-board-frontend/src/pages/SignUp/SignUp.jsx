@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import './signup.css';
 
 function SignUp() {
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const navigate = useNavigate();
 
   async function submitFormData(e) {
     e.preventDefault();
@@ -22,21 +24,28 @@ function SignUp() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/signup", {
+      const response = await fetch("http://localhost:5501/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ full_name, email, password, confirmPassword, role }),
+        body: JSON.stringify({ 
+          full_name, 
+          email, 
+          password, 
+          confirm_password: confirmPassword, 
+          user_role: role 
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert("You have successfully signed up...");
+        alert("You have successfully signed up!");
         console.log(data);
         setErrorMessage(""); // clear error
         setPasswordError(false);
+        // Don't redirect - let user click the login link
       } else {
-        setErrorMessage(data.message || "Failed to signup, please try again...");
+        setErrorMessage(data.error || "Failed to signup, please try again...");
       }
     } catch (error) {
       console.error("Signup error.", error);
@@ -106,7 +115,7 @@ function SignUp() {
         </form>
       </section>
       <section className="go-to-login">
-        <p>Already have an account? <a href="" className="login-link">Log in</a></p>
+        <p>Already have an account? <Link to="/login" className="login-link">Log in</Link></p>
       </section>
     </main>
   );
