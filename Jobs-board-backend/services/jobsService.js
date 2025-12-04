@@ -52,17 +52,17 @@ export async function getJobById(id) {
 export async function createJob(jobData) {
   const {
     title, company, location, employment_type, tech_stack,
-    source, external_job_id, apply_url, approved_at, exp_level, partner_name
+    source, external_job_id, apply_url, approved_at, exp_level, partner_name, active_from
   } = jobData;
 
   const result = await pool.query(
     `INSERT INTO jobs (
       title, company, location, employment_type, tech_stack,
-      source, external_job_id, apply_url, approved_at, exp_level, partner_name
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      source, external_job_id, apply_url, approved_at, exp_level, partner_name, active_from
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
     RETURNING *`,
     [title, company, location, employment_type, tech_stack,
-     source, external_job_id, apply_url, approved_at, exp_level, partner_name]
+     source, external_job_id, apply_url, approved_at, exp_level, partner_name, active_from]
   );
   return result.rows[0];
 }

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
 import './Login.css';
 
 
@@ -33,7 +35,10 @@ function Login() {
        // Store token in localStorage
        localStorage.setItem("token", data.token);
        localStorage.setItem("user", JSON.stringify(data.user));
-       
+      //  const token = localStorage.getItem("token");
+      const token = data.token
+        const decoded = jwtDecode(token);
+        console.log(decoded);
        console.log("Login successful!", data);
        
        // Redirect to trainee page
@@ -49,6 +54,9 @@ function Login() {
    }
  };
 
+   
+  
+ 
 
  return (
    <main>
@@ -73,7 +81,7 @@ function Login() {
       
        <button
          onClick={handleLogin}
-         disabled={!isFormValid || isLoading}
+        
        >
          {isLoading ? "Loading..." : "Log in"}
        </button>

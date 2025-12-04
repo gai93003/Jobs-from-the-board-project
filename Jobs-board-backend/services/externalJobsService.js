@@ -72,7 +72,8 @@ export async function importJobsFromExternal(apiUrl = EXTERNAL_API_URL, baseJobU
       apply_url: safeApplyUrl,
       approved_at: null,
       exp_level: externalJob.expLevel,
-      partner_name: externalJob.partnerName
+      partner_name: externalJob.partnerName,
+      active_from : externalJob.activeFrom
     });
   }
 }

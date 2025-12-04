@@ -101,6 +101,45 @@ router.post("/login", async (req, res) => {
 });
 
 
+/////// Login//////////////
+
+// router.post("/login",async (req, res) => {
+//     const {
+//         email,
+//         password,
+//     } = req.body;
+
+// // Validation
+//     const validationError = loginValidation(email, password)
+//     if (validationError) {
+//       return res.status(400).json({ error: validationError });
+//     }
+
+// // Check if email exists
+//     const user = await findUserByEmail(email);
+//   if (!user) {
+//     return res.status(404).json({ error: "Email doesn't exist, please sign up" });
+//     }
+    
+//     const isPasswordMatch = await bcrypt.compare(password, user.password_hash);
+
+//       if (!isPasswordMatch) {
+//     return res.status(401).json({ error: "Incorrect password" });
+//   }
+
+ 
+// res.status(200).json({
+//     message: "User logged in successfully",
+//     user: {
+//       id: user.user_id,
+//       full_name: user.full_name,
+//       email: user.email,
+//       user_role: user.user_role
+//     },
+//   });
+// });
+
+
 router.get("/users", async(req, res) => {
 const users = await usersList();
   res.json({users});

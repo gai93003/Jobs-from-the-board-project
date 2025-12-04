@@ -3,13 +3,14 @@ import { getAllJobs, getJobById, createJob } from
 '../services/jobsService.js';
 import { isValidUrl } from '../Utils/Check.js';
 import { importJobsFromExternal } from '../services/externalJobsService.js';
+import { authenticate } from '../Utils/authMiddleware.js';
 
 const router = express.Router();
 
 router.get('/test', (req, res) => { res.send('Test route works'); });
 
 // Lists all jobs
-router.get('/', async (req, res) => {
+router.get('/all',authenticate, async (req, res) => {
   try {
     const approved =
       req.query.approved === undefined
@@ -36,7 +37,7 @@ router.get('/', async (req, res) => {
 
 
 // Views one job by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id',authenticate, async (req, res) => {
   try {
     const job = await getJobById(parseInt(req.params.id, 10));
     if (job) {
