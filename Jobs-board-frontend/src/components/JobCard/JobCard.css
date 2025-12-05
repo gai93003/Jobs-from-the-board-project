@@ -19,7 +19,7 @@
   color: var(--cyf-font);
 }
 
-.apply-link {
+.apply-link{
   display: inline-block;
   padding: 8px 14px;
   margin-top: 10px;
@@ -29,6 +29,17 @@
   border-radius: 8px;
   font-weight: 500;
 }
+.interesting-btn{
+  display: inline-block;
+  padding: 8px 14px;
+  margin-top: 10px;
+  background: var(--cyf-primary-red);
+  color: var(--cyf-white);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
 
 .apply-link:hover {
   background: #c83031;
