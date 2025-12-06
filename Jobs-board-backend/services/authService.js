@@ -44,4 +44,13 @@ async function getUserByEmail(email) {
     return result.rows[0]; // return user or undefined
 }
 
-export{signup, checkUniqEmail, usersList, getUserByEmail}
+//Get all trainees
+async function getTraineesList() {
+    const result = await pool.query(
+        "SELECT user_id, full_name, email, description, mentor_id FROM users WHERE user_role = $1",
+        ['Trainee']
+    );
+    return result.rows;
+}
+
+export{signup, checkUniqEmail, usersList, getUserByEmail, getTraineesList}

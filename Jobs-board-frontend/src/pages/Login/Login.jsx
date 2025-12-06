@@ -41,8 +41,12 @@ function Login() {
         console.log(decoded);
        console.log("Login successful!", data);
        
-       // Redirect to trainee page
-       navigate("/trainee");
+       // Redirect based on user role
+       if (data.user.user_role === "Mentor") {
+         navigate("/mentor");
+       } else {
+         navigate("/trainee");
+       }
      } else {
        setError(data.error || "Invalid email or password");
      }

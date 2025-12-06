@@ -2,7 +2,7 @@ import express from "express"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { signupValidation } from "../validation/authValidation.js";
-import { signup,checkUniqEmail, usersList, getUserByEmail } from "../services/authService.js";
+import { signup,checkUniqEmail, usersList, getUserByEmail, getTraineesList } from "../services/authService.js";
 const router = express.Router()
 
 const JWT_SECRET = process.env.JWT_SECRET || "super-secret-key";
@@ -143,6 +143,16 @@ router.post("/login", async (req, res) => {
 router.get("/users", async(req, res) => {
 const users = await usersList();
   res.json({users});
+});
+
+router.get("/trainees", async(req, res) => {
+  try {
+    const trainees = await getTraineesList();
+    res.json({trainees});
+  } catch (error) {
+    console.error("Error fetching trainees:", error);
+    res.status(500).json({ error: "Failed to fetch trainees" });
+  }
 });
 
 
