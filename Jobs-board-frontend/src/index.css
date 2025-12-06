@@ -5,5 +5,9 @@
   --cyf-white: #FFFFFF;
   --cyf-font: #333333;
 
+  --radius: 8px;
+  --radius-lg: 16px;
+  --shadow: 0 2px 6px rgba(0,0,0,0.06);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
+  --border-color: #d6d3d4;
 }
-

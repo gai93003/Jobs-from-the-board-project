@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS jobs (
 DO $$ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'application_status_enum') THEN
     CREATE TYPE application_status_enum AS ENUM (
+        'Interested',
         'Application Started',
         'Application Submitted',
         'Invited to Interview',

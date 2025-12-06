@@ -1,35 +1,45 @@
 .job-card {
   background: var(--cyf-white);
-  border: 1px solid #d6d3d4;
+  border: 1px solid var(--border-color);
   padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  color: var(--cyf-font);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  margin: 10px 100px;
 }
 
-.job-title {
-  margin: 0;
+.job-card .job-title {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--cyf-primary-dark);
 }
 
-.company {
+.job-card .company {
   margin: 5px 0 10px;
   color: var(--cyf-font);
 }
 
-.apply-link {
+.job-card .apply-link,
+.job-card .interested-btn {
   display: inline-block;
   padding: 8px 14px;
-  margin-top: 10px;
   background: var(--cyf-primary-red);
   color: var(--cyf-white);
-  text-decoration: none;
-  border-radius: 8px;
+  border-radius: var(--radius);
+  margin-top: 10px;
   font-weight: 500;
+  margin-left: 20px;
 }
 
-.apply-link:hover {
+.job-card .apply-link:hover,
+.job-card .interested-btn:hover {
   background: #c83031;
+}
+
+.job-card .status-row select {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: var(--cyf-primary-red);
+  color: var(--cyf-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
 }
