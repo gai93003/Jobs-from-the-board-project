@@ -14,11 +14,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  text-align: center;
 }
 
 .header-logo {
   font-size: 22px;
   font-weight: 700;
+  text-align: center;
+  margin-top: 10px;
   color: var(--cyf-primary-red);
 }
 
