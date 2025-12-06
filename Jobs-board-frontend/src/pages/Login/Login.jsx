@@ -59,7 +59,7 @@ function Login() {
  
 
  return (
-   <main>
+   <main className="login-page">
      <div className="login-form-container">
       <h1>Please login here</h1>
       

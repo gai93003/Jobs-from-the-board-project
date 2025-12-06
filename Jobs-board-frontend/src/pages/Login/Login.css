@@ -1,4 +1,5 @@
-:root {
+
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -6,7 +7,7 @@
   --bg-color: #f0f1f5;
   --text-dark-color: #202022;
   --inner-bg: #fff;
-}
+} */
 
 * {
   margin: 0;
@@ -118,3 +119,4 @@ a:hover {
 .forgot-password-container p {
   margin: 0;
 }
+

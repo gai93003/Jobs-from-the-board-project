@@ -1,36 +1,22 @@
-.signup-container{
-/* :root { */
-  --button-color: #0eac94;
-  --bg-color: #f0f1f5;
-  --text-color: #d0d4da;
-  --btn-border-color: #838383;
-  --inner-bg: #fff;
-  --text-dark-color: #202022;
-/* } */
-
-/* *, html { */
-  margin: 0;
-  padding: 0; 
-  box-sizing: border-box;
-/* } */
-
- /* main { */
-  background-color: var(--bg-color);
-  margin: 0 auto;
+.signup-container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  background: var(--cyf-light-bg);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
+  padding: 40px 0;
 }
 
-section.login-container {
+.signup-container .login-container {
   width: 33rem;
+  background: var(--cyf-white);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   background: var(--inner-bg);
   padding: 1.8rem;
@@ -38,36 +24,22 @@ section.login-container {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-}
-fieldset {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  /* padding: 1.7rem; */
-  border: none;
-  padding-top: 0;
+.signup-container .header h1 {
+  margin-bottom: 6px;
+  font-size: 2rem;
+  color: var(--cyf-primary-dark);
 }
 
-fieldset label {
-  font-size: 1.3rem;
-  width: 100%;
-  padding: 0.5rem;
-  padding-left: 0;
-  padding-top: 0;
-  margin-top: 1rem;
-  margin-bottom: 0;
-  margin-left: 0;
+.signup-container .header p {
+  color: var(--cyf-font);
+  opacity: 0.7;
 }
+
+.signup-container form {
+  width: 100%;
+  margin-top: 1rem;
+}
+
 input, select {
   width: 100%;
   padding: 1rem;
@@ -77,19 +49,36 @@ input, select {
   font-size: 1rem;
   background: #f5f5f5;
   font-size: 1.1rem;
+
+
+.signup-container fieldset {
+  border: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
 }
 
-.not-matching-password {
-  border: 1px solid red;
+.signup-container label {
+  margin-top: 1rem;
+  margin-bottom: 4px;
+  font-weight: 600;
 }
 
-#matching-password {
-  border: 2px solid green;
+.signup-container input,
+.signup-container select {
+  padding: 12px;
+  font-size: 1rem;
+  background: rgba(230, 230, 230, 0.8);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
 }
 
-.password-validator {
+.signup-container .password-validator {
+  margin-top: 6px;
   color: red;
 }
+
 
 select {
   margin-left: 0;
@@ -98,52 +87,23 @@ select {
 
 #register-btn {
   background-color: var(--cyf-primary-red);
+
+.signup-container #register-btn {
+  margin-top: 20px;
+
   width: 100%;
-  padding: 1rem;
-  margin-top: 1.5rem;
-  font-size: 1.2rem;
-  font-weight: 600;
-  border: none;
-  outline: none;
-  color: var(--inner-bg);
-  border-radius: 5px;
+  background: var(--cyf-primary-red);
+  color: var(--cyf-white);
+  font-weight: 700;
+  padding: 12px;
+  border-radius: var(--radius);
 }
 
-.header {
+.signup-container #register-btn:hover {
+  background: #0c967f;
+}
+
+.signup-container .go-to-login {
+  margin-top: 20px;
   text-align: center;
-}
-
-.header h1 {
-  color: var(--text-dark-color);
-  font-size: 2.2rem;
-  margin-bottom: 6px;
-}
-
-.header p {
-  font-size: 1.2rem;
-  color: var(--btn-border-color);
-}
-
-.password-char-count {
-  text-align: left;
-  justify-self: right;
-  margin-top: 5px;
-  color: rgb(77, 76, 76);
-  font-size: 1rem;
-  align-self: flex-start;
-}
-
-#password {
-  margin-bottom: 0;
-}
-
-.go-to-login {
-  font-size: 1.4rem;
-  color: rgb(116, 116, 116);
-}
-
-.go-to-login p a{
-  text-decoration: none;
-  color: var(--button-color);
-  font-weight: 550;
 }

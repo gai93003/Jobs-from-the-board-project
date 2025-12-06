@@ -1,23 +1,24 @@
 .trainee-page {
-  width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   background: var(--cyf-light-bg);
-  color: var(--cyf-font);
-  
 }
 
-.trainee-layout {
+.trainee-page .trainee-layout {
   display: flex;
   flex: 1;
   margin-top: 10px;
   position: relative;
 }
 
+
 .trainee-content {
   display: block;
   padding: 25px;
+
+.trainee-page {
+  flex: 1;
   margin: 0 auto;
 }
 

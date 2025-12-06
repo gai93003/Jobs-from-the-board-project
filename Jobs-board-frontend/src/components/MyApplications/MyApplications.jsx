@@ -1,16 +1,18 @@
 import JobListView from "../JobListView/JobListView";
-import { getUsers, getJobsByUser } from "./MockData";
+
+
 
 
 export default function MyApplications() {
+   const user = JSON.parse(localStorage.getItem("user") || "null");
+  const userId = user?.user_id;
+
+
   return (
     <JobListView
-      title="My Applications"
-      subtitle="Select a user to view their applications:"
-      showUserSelect={true}
-      loadUsers={getUsers}
-      fetchJobsForUser={getJobsByUser}
-      // fetchJobs={() => []}    
+      title={`${user.full_name.toUpperCase()} 's Applications`}
+      subtitle="Manage your job application progress"
+      mode="applications"
     />
   );
 }
