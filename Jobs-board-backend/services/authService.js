@@ -53,4 +53,22 @@ async function getTraineesList() {
     return result.rows;
 }
 
-export{signup, checkUniqEmail, usersList, getUserByEmail, getTraineesList}
+//Assign a trainee to a mentor
+async function assignTraineeToMentor(traineeId, mentorId) {
+    const result = await pool.query(
+        "UPDATE users SET mentor_id = $1, updated_at = CURRENT_TIMESTAMP WHERE user_id = $2 AND user_role = 'Trainee' RETURNING user_id, full_name, email, description, mentor_id",
+        [mentorId, traineeId]
+    );
+    return result.rows[0];
+}
+
+//Get trainees assigned to a specific mentor
+async function getAssignedTrainees(mentorId) {
+    const result = await pool.query(
+        "SELECT user_id, full_name, email, description, mentor_id, created_at FROM users WHERE mentor_id = $1 AND user_role = 'Trainee'",
+        [mentorId]
+    );
+    return result.rows;
+}
+
+export{signup, checkUniqEmail, usersList, getUserByEmail, getTraineesList, assignTraineeToMentor, getAssignedTrainees}

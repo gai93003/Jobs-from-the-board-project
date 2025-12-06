@@ -1,18 +1,5 @@
 import { fetchWithAuth, getLoggedInUser } from "./api.js";
 
-export async function markJobInterested(job_id) {
-  const { user_id } = getLoggedInUser();
-
-  return fetchWithAuth("/applications", {
-    method: "POST",
-    body: JSON.stringify({
-      user_id,
-      job_id,
-      status: "Interested"
-    }),
-  });
-}
-
 export async function fetchUserApplications() {
   const { user_id } = getLoggedInUser();
   return fetchWithAuth(`/applications?userId=${user_id}`);

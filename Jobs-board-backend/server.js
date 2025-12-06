@@ -10,6 +10,7 @@ const port = 5501;
 
 app.use(cors());
 app.use(express.json());
+
 app.use('/api/applications', applicationsRouter)
 
 await runSetup();
