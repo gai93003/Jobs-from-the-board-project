@@ -4,6 +4,7 @@
   padding: 20px;
   text-align: center;
   font-size: 14px;
+  margin-top: auto;
   color: var(--cyf-primary-dark);
   position:sticky;
   bottom: 0rem;
