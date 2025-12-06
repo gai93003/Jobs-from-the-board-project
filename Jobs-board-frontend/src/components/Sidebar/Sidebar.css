@@ -4,6 +4,7 @@
   margin-top: 70px;
   padding: 25px;
   border: 2px solid var(--cyf-primary-dark);
+  border-radius: var(--radius);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -26,6 +27,7 @@
   padding: 12px 16px;
   border-radius: 8px;
   border: none;
+  border-radius: var(--radius);
   background: #e5e3e4;
   text-align: left;
   font-size: 15px;

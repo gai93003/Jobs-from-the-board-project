@@ -46,6 +46,56 @@ export async function fetchWithAuth(endpoint, options = {}) {
   }
 }
 
+// export function getUserIdFromToken() {
+//   const token = localStorage.getItem("token");
+//   if (!token) return null;
+
+//   try {
+//     const payload = JSON.parse(atob(token.split(".")[1]));
+//     return payload.user_id;
+//   } catch (err) {
+//     console.error("Invalid token", err);
+//     return null;
+//   }
+// }
+
+
+export function getLoggedInUser() {
+  const token = localStorage.getItem("token");
+  const userStr = localStorage.getItem("user");
+
+  let decodedUserId = null;
+  let storedUser = null;
+
+  // Decode user_id from token
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      decodedUserId = payload.user_id;
+    } catch (err) {
+      console.error("Invalid token", err);
+    }
+  }
+
+  // Load full user data from localStorage
+  if (userStr) {
+    try {
+      storedUser = JSON.parse(userStr);
+    } catch (err) {
+      console.error("Invalid user object in localStorage", err);
+    }
+  }
+
+  // Combine both
+  return {
+    user_id: decodedUserId,
+    full_name: storedUser?.full_name || null,
+    email: storedUser?.email || null,
+    role: storedUser?.user_role || null,
+    raw: storedUser || null
+  };
+}
+
 // Example usage:
 // const { response, data } = await fetchWithAuth("/jobs");
 // if (response.ok) { /* handle success */ }

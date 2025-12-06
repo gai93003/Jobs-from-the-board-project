@@ -3,8 +3,9 @@
   border-top: 1px solid var(--cyf-primary-red);
   padding: 20px;
   text-align: center;
-  color: var(--cyf-primary-dark);
   font-size: 14px;
   margin-top: auto;
-  position:absolute;
+  color: var(--cyf-primary-dark);
+  position:sticky;
+  bottom: 0rem;
 }

@@ -21,7 +21,29 @@ export async function updateApplicationStatus(application_id, status) {
 }
 
 export async function getApplicationsByUser(user_id) {
-  const r = await pool.query('SELECT * FROM applications WHERE user_id = $1 ORDER BY updated_at DESC', [user_id]);
+  // const r = await pool.query('SELECT * FROM applications WHERE user_id = $1 ORDER BY updated_at DESC', [user_id]);
+  const r = await pool.query(
+    `SELECT 
+        a.application_id,
+        a.user_id,
+        a.job_id,
+        a.status,
+        a.created_at,
+        a.updated_at,
+        j.title,
+        j.company,
+        j.location,
+        j.employment_type,
+        j.exp_level,
+        j.partner_name,
+        j.apply_url,
+        j.active_from
+     FROM applications a
+     JOIN jobs j ON j.job_id = a.job_id
+     WHERE a.user_id = $1
+     ORDER BY a.updated_at DESC`,
+    [user_id]
+  );
   return r.rows;
 }
 
