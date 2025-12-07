@@ -24,13 +24,10 @@ function Login() {
    setIsLoading(true);
   
    try {
-     const response = await fetchWithAuth("/login", {
+     const { response, data }= await fetchWithAuth("/login", {
        method: "POST",
-       headers: { "Content-Type": "application/json" },
        body: JSON.stringify({ email, password })
      });
-
-     const data = await response.json();
 
      if (response.ok) {
        // Store token in localStorage

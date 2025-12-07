@@ -27,14 +27,11 @@ function SignUp() {
     }
 
     try {
-      const response = await fetchWithAuth("/signup", {
+      const { response, data }= await fetchWithAuth("/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ full_name, email, password, confirm_password, user_role }),
       });
-
-      const data = await response.json();
-
+      
       if (response.ok) {
         alert("You have successfully signed up!");
         console.log(data);
