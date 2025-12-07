@@ -8,7 +8,7 @@ export async function markJobInterested(job_id) {
     body: JSON.stringify({
       user_id,
       job_id,
-      status: "Application Started" 
+      status: "Interested" 
     }),
   });
 }
