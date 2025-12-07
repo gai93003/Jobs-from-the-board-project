@@ -8,12 +8,13 @@ import applicationsRouter from "./routes/applications.js"
 const app = express();
 const port = 5501;
 
-app.use(cors({
-  origin: "https://jobboard-frontend.hosting.codeyourfuture.io",
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-}));
+app.use(cors())
+// app.use(cors({
+//   origin: "https://jobboard-frontend.hosting.codeyourfuture.io",
+//   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   credentials: true
+// }));
 
 
 app.use(express.json());
