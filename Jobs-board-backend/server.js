@@ -5,6 +5,9 @@ import cors from "cors";
 import { runSetup } from "./DB/migrations.js";
 import applicationsRouter from "./routes/applications.js"
 
+console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
+
+
 const app = express();
 const port = 5501;
 
