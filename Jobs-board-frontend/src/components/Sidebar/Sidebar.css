@@ -43,4 +43,5 @@
 
 .sidebar-item:hover {
   background: #d6d3d4;
+  color: var(--cyf-white);
 }
