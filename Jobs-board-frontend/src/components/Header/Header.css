@@ -34,8 +34,10 @@
   padding: 8px 12px;
   border-radius: var(--radius);
   background: none;
+  color: var(--cyf-primary-dark);
 }
 
 .header-link:hover {
   background: var(--cyf-light-bg);
+  color: var(--cyf-white);
 }
