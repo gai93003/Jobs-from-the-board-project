@@ -15,7 +15,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.options("*", cors()); // ✅ THIS IS REQUIRED FOR LOGIN PREFLIGHT
+
 app.use(express.json());
 app.use('/api/applications', applicationsRouter)
 
