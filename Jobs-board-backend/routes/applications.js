@@ -12,7 +12,11 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   try {
     const { user_id, job_id, status } = req.body;
-    if (!user_id || !job_id) return res.status(400).json({ error: 'user_id and job_id required' });
+    
+    if (!user_id || !job_id) {
+      return res.status(400).json({ error: 'user_id and job_id required' });
+    }
+    
     const app = await createApplication({ user_id, job_id, status });
     res.status(201).json({ application: app });
   } catch (err) {

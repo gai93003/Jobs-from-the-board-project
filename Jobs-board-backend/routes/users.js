@@ -2,7 +2,7 @@ import express from "express"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { signupValidation } from "../validation/authValidation.js";
-import { signup,checkUniqEmail, usersList, getUserByEmail } from "../services/authService.js";
+import { signup,checkUniqEmail, usersList, getUserByEmail, getTraineesList, assignTraineeToMentor, getAssignedTrainees } from "../services/authService.js";
 const router = express.Router()
 
 const JWT_SECRET = process.env.JWT_SECRET || "super-secret-key";
@@ -143,6 +143,50 @@ router.post("/login", async (req, res) => {
 router.get("/users", async(req, res) => {
 const users = await usersList();
   res.json({users});
+});
+
+router.get("/trainees", async(req, res) => {
+  try {
+    const trainees = await getTraineesList();
+    res.json({trainees});
+  } catch (error) {
+    console.error("Error fetching trainees:", error);
+    res.status(500).json({ error: "Failed to fetch trainees" });
+  }
+});
+
+// Assign a trainee to a mentor
+router.post("/assign-trainee", async(req, res) => {
+  try {
+    const { traineeId, mentorId } = req.body;
+    
+    if (!traineeId || !mentorId) {
+      return res.status(400).json({ error: "traineeId and mentorId are required" });
+    }
+    
+    const updatedTrainee = await assignTraineeToMentor(traineeId, mentorId);
+    
+    if (!updatedTrainee) {
+      return res.status(404).json({ error: "Trainee not found or not a trainee" });
+    }
+    
+    res.json({ message: "Trainee assigned successfully", trainee: updatedTrainee });
+  } catch (error) {
+    console.error("Error assigning trainee:", error);
+    res.status(500).json({ error: "Failed to assign trainee" });
+  }
+});
+
+// Get trainees assigned to a mentor
+router.get("/my-trainees/:mentorId", async(req, res) => {
+  try {
+    const { mentorId } = req.params;
+    const trainees = await getAssignedTrainees(mentorId);
+    res.json({ trainees });
+  } catch (error) {
+    console.error("Error fetching assigned trainees:", error);
+    res.status(500).json({ error: "Failed to fetch assigned trainees" });
+  }
 });
 
 

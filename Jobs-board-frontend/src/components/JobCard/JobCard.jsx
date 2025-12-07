@@ -39,19 +39,13 @@ export function JobCard(props){
         </div>
       )}
 
-      <a className="apply-link" href={props.apply_url} target="_blank">
-      Apply Here
+      <a 
+        className="apply-link" 
+        href={props.apply_url} 
+        target="_blank"
+      >
+        Apply Here
       </a>
-
-      {/* DASHBOARD — SHOW INTERESTED BUTTON */}
-      {!props.status && props.onInterested && (
-        <button
-          className="interested-btn"
-          onClick={() => props.onInterested(props)}
-        >
-          Interested
-        </button>
-      )}
      
 
     </article>

@@ -1,5 +1,6 @@
 import { fetchWithAuth, getLoggedInUser } from "./api.js";
 
+
 export async function markJobInterested(job_id) {
   const { user_id } = getLoggedInUser();
 
@@ -12,6 +13,7 @@ export async function markJobInterested(job_id) {
     }),
   });
 }
+
 
 export async function fetchUserApplications() {
   const { user_id } = getLoggedInUser();
