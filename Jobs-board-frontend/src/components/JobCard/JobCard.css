@@ -30,6 +30,10 @@
   margin-left: 20px;
 }
 
+.interested-btn {
+  width: 100px;
+}
+
 .job-card .apply-link:hover,
 .job-card .interested-btn:hover {
   background: #c83031;
@@ -42,4 +46,7 @@
   color: var(--cyf-white);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
+}
+.status-row {
+  width: 200px;
 }
