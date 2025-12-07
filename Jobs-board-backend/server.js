@@ -5,10 +5,37 @@ import cors from "cors";
 import { runSetup } from "./DB/migrations.js";
 import applicationsRouter from "./routes/applications.js"
 
-const app = express();
-const port = 5501;
+console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
 
-app.use(cors());
+
+const app = express();
+const port = process.env.PORT ||5501;
+
+// app.use(cors())
+
+const allowedOrigin = "https://jobboard-frontend.hosting.codeyourfuture.io";
+
+// ✅ CORS
+app.use(cors({
+  origin: allowedOrigin,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
+// ✅ SAFE PREFLIGHT HANDLER
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Origin", allowedOrigin);
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Credentials", "true");
+    return res.sendStatus(204);
+  }
+  next();
+});
+
+
 app.use(express.json());
 
 app.use('/api/applications', applicationsRouter)
