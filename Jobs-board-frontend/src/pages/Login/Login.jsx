@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { fetchWithAuth } from "../../utils/api";
 
 import './Login.css';
 
@@ -23,13 +24,10 @@ function Login() {
    setIsLoading(true);
   
    try {
-     const response = await fetch("http://localhost:5501/api/login", {
+     const { response, data }= await fetchWithAuth("/login", {
        method: "POST",
-       headers: { "Content-Type": "application/json" },
        body: JSON.stringify({ email, password })
      });
-
-     const data = await response.json();
 
      if (response.ok) {
        // Store token in localStorage
