@@ -9,7 +9,7 @@ console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
 
 
 const app = express();
-const port = 5501;
+const port = process.env.PORT ||5501;
 
 // app.use(cors())
 
