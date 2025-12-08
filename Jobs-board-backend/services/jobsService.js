@@ -8,6 +8,40 @@ export async function findJobByExternalId(external_job_id, source) {
   return result.rows[0] || null;
 }
 
+// // list all jobs from the database, with optional filters
+// export async function getAllJobs({ location, employment_type, company, approved, userId } = {}) {
+//   // build same WHERE conditions but query includes LEFT JOIN
+//   const conditions = [];
+//   const values = [];
+//   let idx = 1;
+
+//   if (location) { conditions.push(`j.location ILIKE $${idx++}`); values.push(`%${location}%`); }
+//   if (employment_type) { conditions.push(`j.employment_type = $${idx++}`); values.push(employment_type); }
+//   if (company) { conditions.push(`j.company ILIKE $${idx++}`); values.push(`%${company}%`); }
+
+//   if (approved !== undefined) {
+//     if (approved === true) conditions.push(`j.approved_at IS NOT NULL`);
+//     else conditions.push(`j.approved_at IS NULL`);
+//   }
+
+//   // Left join applications filtered to the provided userId
+//   const userJoin = userId ? `LEFT JOIN applications a ON a.job_id = j.job_id AND a.user_id = $${idx++}` : `LEFT JOIN applications a ON a.job_id = j.job_id AND false`;
+//   if (userId) values.push(userId);
+
+//   const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+
+//   const query = `
+//     SELECT j.*, a.application_id, a.status as application_status
+//     FROM jobs j
+//     ${userJoin}
+//     ${whereClause}
+//     ORDER BY j.job_id DESC
+//   `;
+
+//   const result = await pool.query(query, values);
+//   return result.rows;
+// }
+
 // list all jobs from the database, with optional filters
 export async function getAllJobs({
   location,
@@ -60,17 +94,36 @@ export async function getAllJobs({
     else conditions.push(`j.approved_at IS NULL`);
   }
 
-  const userJoin = userId
-    ? `LEFT JOIN applications a ON a.job_id = j.job_id AND a.user_id = $${idx++}`
-    : `LEFT JOIN applications a ON a.job_id = j.job_id AND false`;
+// Left join applications filtered to the provided userId
+const userJoin = userId
+  ? `LEFT JOIN applications a ON a.job_id = j.job_id AND a.user_id = $${idx++}`
+  : `LEFT JOIN applications a ON a.job_id = j.job_id AND false`;
+
   if (userId) values.push(userId);
 
   const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
 
+  // ✅ ✅ ONLY ADDITION: LEFT JOIN star_companies + is_star FIELD
   const query = `
-    SELECT j.*, a.application_id, a.status as application_status
+    SELECT 
+      j.*, 
+      a.application_id, 
+      a.status as application_status,
+
+      -- ⭐ STAR COMPANY CHECK (ADDED)
+      CASE 
+        WHEN sc.company_name IS NOT NULL THEN true 
+        ELSE false 
+      END AS is_star
+
     FROM jobs j
+
     ${userJoin}
+
+    -- ⭐ STAR TABLE JOIN (ADDED)
+    LEFT JOIN star_companies sc
+      ON TRIM(LOWER(sc.company_name)) = TRIM(LOWER(j.company))
+
     ${whereClause}
     ORDER BY j.job_id DESC
   `;

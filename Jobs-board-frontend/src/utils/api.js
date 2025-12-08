@@ -1,7 +1,8 @@
 // API utility for making authenticated requests
 
 // const API_URL = "https://jobboard-backend.hosting.codeyourfuture.io/api";
-const API_URL = "http://localhost:5501/api";
+
+const API_URL = "http://localhost:5501/api"
 
 // Logout function - clears token and redirects to login
 export function logout() {

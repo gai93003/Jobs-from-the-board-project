@@ -4,6 +4,8 @@ import userRouter from "./routes/users.js";
 import cors from "cors";
 import { runSetup } from "./DB/migrations.js";
 import applicationsRouter from "./routes/applications.js"
+import staffRoutes from "./routes/staff.js";
+
 
 console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
 
@@ -11,16 +13,9 @@ console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
 const app = express();
 const port = process.env.PORT ||5501;
 
-// app.use(cors())
+// const allowedOrigin = "https://jobboard-frontend.hosting.codeyourfuture.io";
 
-const allowedOrigin = "https://jobboard-frontend.hosting.codeyourfuture.io";
-
-// ✅ CORS
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}));
-
+// // ✅ CORS
 // app.use(cors({
 //   origin: allowedOrigin,
 //   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -28,27 +23,29 @@ app.use(cors({
 //   credentials: true
 // }));
 
-// ✅ SAFE PREFLIGHT HANDLER
-app.use((req, res, next) => {
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Origin", allowedOrigin);
-    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH,OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true");
-    return res.sendStatus(204);
-  }
-  next();
-});
+// // ✅ SAFE PREFLIGHT HANDLER
+// app.use((req, res, next) => {
+//   if (req.method === "OPTIONS") {
+//     res.header("Access-Control-Allow-Origin", allowedOrigin);
+//     res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH,OPTIONS");
+//     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//     res.header("Access-Control-Allow-Credentials", "true");
+//     return res.sendStatus(204);
+//   }
+//   next();
+// });
 
 
 app.use(express.json());
-
-app.use('/api/applications', applicationsRouter)
 
 await runSetup();
 
 app.use('/api/jobs', jobsRouter);
 app.use("/api", userRouter);
+app.use("/api/staff", staffRoutes);
+app.use('/api/applications', applicationsRouter)
+
+
 
 app.get("/", (req, res) => {
   res.send("Backend is running");

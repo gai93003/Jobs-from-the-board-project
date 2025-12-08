@@ -73,3 +73,9 @@ CREATE TABLE IF NOT EXISTS applications (
         TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
         UNIQUE (user_id, job_id)
 );
+
+CREATE TABLE IF NOT EXISTS star_companies (
+  company_name TEXT PRIMARY KEY,
+  marked_by INTEGER REFERENCES users(user_id),
+  marked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
