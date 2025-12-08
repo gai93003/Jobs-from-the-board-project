@@ -14,7 +14,7 @@ export default function Sidebar({onSelectPage}) {
           My Applications
         </button>
 
-        <button className="sidebar-item">Profile</button>
+        <button className="sidebar-item" onClick={() => onSelectPage("profile")}>Profile</button>
         <button className="sidebar-item">Settings</button>
       </nav>
     </aside>

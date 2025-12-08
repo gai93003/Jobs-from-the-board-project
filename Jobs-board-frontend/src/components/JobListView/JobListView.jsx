@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { JobCard } from "../JobCard/JobCard";
-import { fetchUserApplications, updateApplicationStatus } from "../../utils/applications.js";
+import { fetchUserApplications, updateApplicationStatus, markJobInterested } from "../../utils/applications.js";
+
+
 
 export default function JobListView({
   title,
@@ -10,6 +12,7 @@ export default function JobListView({
 }) {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [interestedJobs, setInterestedJobs] = useState(new Set());
   const [location, setLocation] = useState("");
   const [expLevel, setExpLevel] = useState("");
   const [techStack, setTechStack] = useState("");
@@ -20,6 +23,19 @@ export default function JobListView({
       setLoading(true);
 
       if (mode === "dashboard") {
+
+         // fetchJobs() returns an ARRAY, not an object
+      const jobsList = await fetchJobs();
+      setJobs(jobsList);
+      
+      // Fetch user applications to check which jobs are already marked as interested
+      const apps = await fetchUserApplications();
+      const interested = new Set(
+        apps.data.applications.map(app => app.job_id)
+      );
+      setInterestedJobs(interested);
+    }
+
         const params = new URLSearchParams();
         if (location) params.set("location", location);
         if (locationType) params.set("location_type", locationType);
@@ -31,6 +47,7 @@ export default function JobListView({
         setJobs(jobsList);
       }
 
+
       if (mode === "applications") {
         const apps = await fetchUserApplications();
         setJobs(apps.data.applications);
@@ -41,6 +58,24 @@ export default function JobListView({
 
     load();
   }, [mode, fetchJobs, location,expLevel, techStack]); // ← include filters here
+
+  async function handleInterested(job) {
+    try {
+      const result = await markJobInterested(job.job_id);
+      
+      // Check if successful
+      if (result && result.response.ok) {
+        // Add to interested jobs set
+        setInterestedJobs(prev => new Set([...prev, job.job_id]));
+        
+        // Show success message
+        console.log("✅ Job marked as interested successfully!");
+      }
+    } catch (error) {
+      console.error("Error marking job as interested:", error);
+      alert(`Failed to mark job as interested: ${error.message}`);
+    }
+  }
 
   async function handleStatusChange(application_id, newStatus) {
     await updateApplicationStatus(application_id, newStatus);
@@ -102,14 +137,17 @@ export default function JobListView({
 
       <ul className="jobs-list">
         {jobs.map((job) => (
-          <JobCard
-            key={job.job_id}
-            {...job}
-            {...(
-              mode === "applications"
-                ? { onStatusChange: (newStatus) => handleStatusChange(job.application_id, newStatus) }
-                : {}
-            )}
+
+          <JobCard key={job.job_id} {...job}
+          {...(
+            mode === "dashboard"
+            ? { 
+                onInterested: handleInterested,
+                isInterested: interestedJobs.has(job.job_id)
+              }
+            : { onStatusChange: (newStatus) => handleStatusChange(job.application_id, newStatus) }
+          )}
+
           />
         ))}
       </ul>

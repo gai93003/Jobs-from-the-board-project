@@ -13,27 +13,48 @@ console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
 const app = express();
 const port = process.env.PORT ||5501;
 
-// const allowedOrigin = "https://jobboard-frontend.hosting.codeyourfuture.io";
 
-// // ✅ CORS
-// app.use(cors({
-//   origin: allowedOrigin,
-//   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-//   credentials: true
-// }));
+// Allow both production and local development origins
+const allowedOrigins = [
+  "https://jobboard-frontend.hosting.codeyourfuture.io",
+  "http://localhost:5173",
+  "http://localhost:5174"
+];
 
-// // ✅ SAFE PREFLIGHT HANDLER
-// app.use((req, res, next) => {
-//   if (req.method === "OPTIONS") {
-//     res.header("Access-Control-Allow-Origin", allowedOrigin);
-//     res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH,OPTIONS");
-//     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//     res.header("Access-Control-Allow-Credentials", "true");
-//     return res.sendStatus(204);
-//   }
-//   next();
-// });
+// ✅ CORS with dynamic origin checking
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
+// ✅ SAFE PREFLIGHT HANDLER
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  if (req.method === "OPTIONS") {
+    // Check if the origin is allowed
+    if (!origin || allowedOrigins.includes(origin)) {
+      res.header("Access-Control-Allow-Origin", origin || allowedOrigins[0]);
+      res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,PATCH,OPTIONS");
+      res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+      res.header("Access-Control-Allow-Credentials", "true");
+      return res.sendStatus(204);
+    }
+  }
+  next();
+});
+
 
 
 app.use(express.json());

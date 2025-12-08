@@ -4,7 +4,7 @@ import { fetchWithAuth, getLoggedInUser } from "./api.js";
 export async function markJobInterested(job_id) {
   const { user_id } = getLoggedInUser();
 
-  return fetchWithAuth("/applications", {
+  const result = await fetchWithAuth("/applications", {
     method: "POST",
     body: JSON.stringify({
       user_id,
@@ -12,6 +12,13 @@ export async function markJobInterested(job_id) {
       status: "Interested" 
     }),
   });
+
+  // Check if the request was successful
+  if (!result || !result.response.ok) {
+    throw new Error(result?.data?.error || "Failed to create application");
+  }
+
+  return result;
 }
 
 

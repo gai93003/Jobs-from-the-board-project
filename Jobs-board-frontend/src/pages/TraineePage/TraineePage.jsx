@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Dashboard } from "../../components/Dashboard/Dashboard";
 import MyApplications from "../../components/MyApplications/MyApplications";
+import { Profile } from "../../components/Profile/Profile";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -21,6 +22,7 @@ export function TraineePage() {
         <main className="trainee-content">
           {activePage === "dashboard" && <Dashboard />}
           {activePage === "applications" && <MyApplications />}
+          {activePage === "profile" && <Profile />}
         </main>
       </div>
 
