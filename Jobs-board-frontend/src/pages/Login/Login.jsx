@@ -42,9 +42,15 @@ function Login() {
        // Redirect based on user role
        if (data.user.user_role === "Mentor") {
          navigate("/mentor");
+       }
+       else if (
+         data.user.user_role === "Staff") {
+         navigate("/staff");
        } else {
          navigate("/trainee");
        }
+       console.log("Logged in user:", data.user);
+       console.log("User role:", data.user.user_role);
      } else {
        setError(data.error || "Invalid email or password");
      }
@@ -54,6 +60,9 @@ function Login() {
    } finally {
      setIsLoading(false);
    }
+   
+
+
  };
 
    

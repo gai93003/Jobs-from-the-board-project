@@ -101,7 +101,7 @@ function SignUp() {
             <select name="role" id="role">
               <option value="Trainee">Trainee</option>
               <option value="Mentor">Mentor</option>
-              <option value="Admin">Staff</option>
+              <option value="Staff">Staff</option>
             </select>
           </fieldset>
 
