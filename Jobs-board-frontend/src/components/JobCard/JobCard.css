@@ -5,6 +5,31 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   margin: 10px 100px;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+/* Green border when job is marked as interested */
+.job-card.interested {
+  border: 2px solid #28a745;
+}
+
+/* Green heart badge in top-right corner */
+.interested-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  animation: heartPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 .job-card .job-title {
@@ -18,24 +43,64 @@
   color: var(--cyf-font);
 }
 
+/* Container for action buttons */
+.job-card-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  align-items: center;
+}
+
 .job-card .apply-link,
 .job-card .interested-btn {
   display: inline-block;
-  padding: 8px 14px;
-  background: var(--cyf-primary-red);
-  color: var(--cyf-white);
+  padding: 10px 18px;
   border-radius: var(--radius);
-  margin-top: 10px;
   font-weight: 500;
-  margin-left: 20px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
 }
 
-.interested-btn {
-  width: 100px;
+.job-card .apply-link {
+  background: var(--cyf-primary-red);
+  color: var(--cyf-white);
 }
-.job-card .apply-link:hover,
-.job-card .interested-btn:hover {
+
+.job-card .apply-link:hover {
   background: #c83031;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Interested button default state */
+.interested-btn {
+  background: #f0f0f0;
+  color: #333;
+  border: 2px solid #ddd;
+  min-width: 180px;
+}
+
+.interested-btn:hover:not(:disabled) {
+  background: #e0e0e0;
+  border-color: #28a745;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Interested button active state (when job is marked as interested) */
+.interested-btn.interested-active {
+  background: #28a745;
+  color: white;
+  border-color: #28a745;
+  cursor: not-allowed;
+}
+
+.interested-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
 }
 
 .job-card .status-row select {
