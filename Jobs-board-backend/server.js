@@ -13,8 +13,6 @@ console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
 const app = express();
 const port = process.env.PORT ||5501;
 
-app.use(cors())
-
 // const allowedOrigin = "https://jobboard-frontend.hosting.codeyourfuture.io";
 
 // // ✅ CORS
