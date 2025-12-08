@@ -1,12 +1,16 @@
 import { fetchWithAuth } from "../../utils/api";
 import JobListView from "../JobListView/JobListView";
+import { getLoggedInUser } from "../../utils/api";
 
 
 export function Dashboard() {
+    const user = getLoggedInUser();
+
   return (
     <JobListView
-      title="All Jobs"
-      subtitle="Jobs from API:"
+      title={`Welcome, " ${user.full_name.toUpperCase()}`}
+      subtitle="All Jobs from API:"
+      mode="dashboard"
       fetchJobs={fetchApiJobs}      // API fetch only here
     />
   );

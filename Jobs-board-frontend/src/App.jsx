@@ -1,7 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from './pages/Login/Login.jsx';
 import {TraineePage} from './pages/TraineePage/TraineePage.jsx';
+import {MentorPage} from './pages/mentorPage/MentorPage.jsx';
 import SignUp from "./pages/SignUp/SignUp.jsx";
+import StaffPage from "./pages/StaffPage/StaffPage.jsx";
 
 function App() {
   return (
@@ -13,6 +15,10 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
 
       <Route path="/trainee" element={<TraineePage />} />
+      
+      <Route path="/mentor" element={<MentorPage />} />
+
+      <Route path="/staff" element={<StaffPage /> } />
     </Routes>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { fetchWithAuth } from "../../utils/api";
 
 import './Login.css';
 
@@ -23,13 +24,10 @@ function Login() {
    setIsLoading(true);
   
    try {
-     const response = await fetch("http://localhost:5501/api/login", {
+     const { response, data }= await fetchWithAuth("/login", {
        method: "POST",
-       headers: { "Content-Type": "application/json" },
        body: JSON.stringify({ email, password })
      });
-
-     const data = await response.json();
 
      if (response.ok) {
        // Store token in localStorage
@@ -41,8 +39,18 @@ function Login() {
         console.log(decoded);
        console.log("Login successful!", data);
        
-       // Redirect to trainee page
-       navigate("/trainee");
+       // Redirect based on user role
+       if (data.user.user_role === "Mentor") {
+         navigate("/mentor");
+       }
+       else if (
+         data.user.user_role === "Staff") {
+         navigate("/staff");
+       } else {
+         navigate("/trainee");
+       }
+       console.log("Logged in user:", data.user);
+       console.log("User role:", data.user.user_role);
      } else {
        setError(data.error || "Invalid email or password");
      }
@@ -52,6 +60,9 @@ function Login() {
    } finally {
      setIsLoading(false);
    }
+   
+
+
  };
 
    
@@ -59,9 +70,9 @@ function Login() {
  
 
  return (
-   <main>
+   <main className="login-page">
      <div className="login-form-container">
-       <h1>Login</h1>
+      <h1>Please login here</h1>
       
        <input
          type="email"

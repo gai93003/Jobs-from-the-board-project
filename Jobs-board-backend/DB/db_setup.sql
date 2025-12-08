@@ -51,15 +51,12 @@ CREATE TABLE IF NOT EXISTS jobs (
 
 -- application_status enum + applications table
 DO $$ BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'application_status_enum') THEN
-    CREATE TYPE application_status_enum AS ENUM (
-        'Interested',
-        'Application Started',
-        'Application Submitted',
-        'Invited to Interview',
-        'Application Declined'
-    );
-    END IF;
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Interested';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Started';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Submitted';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Invited to Interview';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Declined';
+
 END $$;
 
 CREATE TABLE IF NOT EXISTS applications (
@@ -74,4 +71,10 @@ CREATE TABLE IF NOT EXISTS applications (
     WITH
         TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
         UNIQUE (user_id, job_id)
+);
+
+CREATE TABLE IF NOT EXISTS star_companies (
+  company_name TEXT PRIMARY KEY,
+  marked_by INTEGER REFERENCES users(user_id),
+  marked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

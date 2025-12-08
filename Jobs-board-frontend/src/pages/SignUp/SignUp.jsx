@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { fetchWithAuth } from "../../utils/api";
 
 
 import './signup.css';
@@ -26,14 +27,11 @@ function SignUp() {
     }
 
     try {
-      const response = await fetch("http://localhost:5501/api/signup", {
+      const { response, data }= await fetchWithAuth("/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ full_name, email, password, confirm_password, user_role }),
       });
-
-      const data = await response.json();
-
+      
       if (response.ok) {
         alert("You have successfully signed up!");
         console.log(data);
@@ -103,7 +101,7 @@ function SignUp() {
             <select name="role" id="role">
               <option value="Trainee">Trainee</option>
               <option value="Mentor">Mentor</option>
-              <option value="Admin">Staff</option>
+              <option value="Staff">Staff</option>
             </select>
           </fieldset>
 
