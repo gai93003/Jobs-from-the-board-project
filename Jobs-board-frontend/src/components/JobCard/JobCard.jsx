@@ -16,9 +16,10 @@ export function JobCard(props){
     <article className="job-card">
       <h3 className="job-title">
         {props.title}
-        {props.is_star && <span className="star-badge"> ⭐</span>}
       </h3>
-      <p className="company">{props.company}</p>
+      <p className="company">{props.company}
+        {props.is_star && <span className="star-badge"> ⭐</span>}
+      </p>
       <p><strong>Location:</strong> {props.location}</p>
       <p><strong>Type:</strong> {props.employment_type}</p>
       <p><strong>Exprience:</strong> {props.exp_level}</p>
@@ -39,18 +40,25 @@ export function JobCard(props){
             <option value="Application Submitted">Application Submitted</option>
             <option value="Invited to Interview">Invited to Interview</option>
             <option value="Application Declined">Application Declined</option>
+            <option value="Offer Received">Offer Received</option>
           </select>
         </div>
       )}
 
-      <a 
-        className="apply-link" 
-        href={props.apply_url} 
-        target="_blank"
-      >
-        Apply Here
-      </a>
-     
+        <a 
+          className="apply-link" href={props.apply_url} target="_blank">
+          Apply Here
+        </a>
+        
+        {/* DASHBOARD — SHOW INTERESTED BUTTON */}
+        {!props.status && props.onInterested && (
+          <button
+            className="interested-btn"
+            onClick={() => props.onInterested(props)}
+          >
+            Interested
+          </button>
+        )}
 
     </article>
   )

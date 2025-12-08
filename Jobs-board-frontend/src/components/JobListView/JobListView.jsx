@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { JobCard } from "../JobCard/JobCard";
-import { fetchUserApplications, updateApplicationStatus } from "../../utils/applications.js";
+import { markJobInterested, fetchUserApplications, updateApplicationStatus } from "../../utils/applications.js";
 
 
 export default function JobListView({
@@ -33,6 +33,11 @@ title,
 
     load();
   }, [mode, fetchJobs]);
+  
+  async function handleInterested(job) {
+      await markJobInterested(job.job_id);
+      alert("Marked as Interested!");
+    }
 
   async function handleStatusChange(application_id, newStatus) {
   await updateApplicationStatus(application_id, newStatus);
@@ -62,9 +67,9 @@ title,
         {jobs.map((job) => (
           <JobCard key={job.job_id} {...job}
           {...(
-            mode === "applications"
-            ? { onStatusChange: (newStatus) => handleStatusChange(job.application_id, newStatus) }
-            : {}
+            mode === "dashboard"
+            ? { onInterested: handleInterested }
+            : { onStatusChange: (newStatus) => handleStatusChange(job.application_id, newStatus) }
           )}
           />
         ))}

@@ -56,6 +56,8 @@ DO $$ BEGIN
     ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Submitted';
     ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Invited to Interview';
     ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Declined';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Offer Received';
+
 END $$;
 
 CREATE TABLE IF NOT EXISTS applications (
