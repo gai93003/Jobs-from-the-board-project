@@ -115,3 +115,9 @@
 .status-row {
   width: 200px;
 }
+
+.star-badge {
+  margin-left: 6px;
+  font-size: 18px;
+  color: gold;
+}

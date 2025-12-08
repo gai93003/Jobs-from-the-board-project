@@ -4,12 +4,15 @@ import userRouter from "./routes/users.js";
 import cors from "cors";
 import { runSetup } from "./DB/migrations.js";
 import applicationsRouter from "./routes/applications.js"
+import staffRoutes from "./routes/staff.js";
+
 
 console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
 
 
 const app = express();
 const port = process.env.PORT ||5501;
+
 
 // Allow both production and local development origins
 const allowedOrigins = [
@@ -53,14 +56,17 @@ app.use((req, res, next) => {
 });
 
 
-app.use(express.json());
 
-app.use('/api/applications', applicationsRouter)
+app.use(express.json());
 
 await runSetup();
 
 app.use('/api/jobs', jobsRouter);
 app.use("/api", userRouter);
+app.use("/api/staff", staffRoutes);
+app.use('/api/applications', applicationsRouter)
+
+
 
 app.get("/", (req, res) => {
   res.send("Backend is running");

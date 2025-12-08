@@ -13,6 +13,7 @@ export function JobCard(props){
   }
 
   return(
+
     <article className={`job-card ${props.isInterested ? 'interested' : ''}`}>
       {/* Green heart indicator when job is marked as interested */}
       {props.isInterested && (
@@ -21,7 +22,11 @@ export function JobCard(props){
         </div>
       )}
       
-      <h3 className="job-title">{props.title}</h3>
+      <h3 className="job-title">
+        {props.title}
+        {props.is_star && <span className="star-badge"> ⭐</span>}
+      </h3>
+
       <p className="company">{props.company}</p>
       <p><strong>Location:</strong> {props.location}</p>
       <p><strong>Type:</strong> {props.employment_type}</p>
@@ -29,6 +34,7 @@ export function JobCard(props){
       <p><strong>Source:</strong> {props.partner_name}</p>
       <p><strong>Job Age:</strong> {diffDaysText}</p>
 
+          
       {/* MY APPLICATIONS — SHOW DROPDOWN */}
       {props.status && props.onStatusChange && (
         <div className="status-row">

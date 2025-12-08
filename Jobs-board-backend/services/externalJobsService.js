@@ -60,6 +60,22 @@ export async function importJobsFromExternal(apiUrl = EXTERNAL_API_URL, baseJobU
     const source = 'DevITJobs'.slice(0, 255);
     const safeApplyUrl = applyUrl.slice(0, 255);
 
+    let normalizedExpLevel = null;
+    if(expLevel){
+      const match = ALLOWED_EXP_LEVELS.find(level => expLevel.includes(level));
+      normalizedExpLevel = match || expLevel; // falls back to the original if not match 
+    }
+    function mapLocationType(externalWorkplace, cityCategory) {
+  const w = (externalWorkplace || "").toLowerCase();
+
+  if (w === "remote") {
+    return "remote";
+  }
+  if (w === "hybrid") {
+    return "hybrid";
+  }
+  return "onsite";
+}
     // Insertsa  new job
     await createJob({
       title: externalJob.name,
@@ -71,9 +87,10 @@ export async function importJobsFromExternal(apiUrl = EXTERNAL_API_URL, baseJobU
       external_job_id: externalId, // stores external ID
       apply_url: safeApplyUrl,
       approved_at: null,
-      exp_level: externalJob.expLevel,
+      exp_level: normalizedExpLevel, // using the normalized value
       partner_name: externalJob.partnerName,
-      active_from : externalJob.activeFrom
+      active_from : externalJob.activeFrom,
+      location_type: mapLocationType(externalJob.workplace, externalJob.cityCategory)
     });
   }
 }
