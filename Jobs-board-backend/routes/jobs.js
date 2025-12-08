@@ -10,7 +10,8 @@ const router = express.Router();
 router.get('/test', (req, res) => { res.send('Test route works'); });
 
 // Lists all jobs
-router.get('/all',authenticate, async (req, res) => {
+// router.get('/all',authenticate, async (req, res) => {
+  router.get('/all', async(req, res) =>{
   try {
     const approved =
       req.query.approved === undefined
@@ -22,7 +23,11 @@ router.get('/all',authenticate, async (req, res) => {
       employment_type: req.query.employment_type,
       company: req.query.company,
       approved,
-      userId: req.query.userId || req.query.user_id // This is to forward userId query param to the service
+      userId: req.query.userId || req.query.user_id, // This is to forward userId query param to the service
+      tech_stack: req.query.tech_stack, // adding filtering tech stack
+      exp_level: req.query.exp_level, // adding filtering for experience level
+      //new
+      location_type: req.query.location_type,
     });
 
     res.status(200).json({

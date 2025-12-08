@@ -47,7 +47,9 @@ CREATE TABLE IF NOT EXISTS jobs (
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-
+-- NEW: ensure location_type exists
+ALTER TABLE jobs
+  ADD COLUMN IF NOT EXISTS location_type VARCHAR(50);
 
 -- application_status enum + applications table
 DO $$ BEGIN
