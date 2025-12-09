@@ -1,8 +1,7 @@
 import express from "express"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { signupValidation } from "../validation/authValidation.js";
-import { signup,checkUniqEmail, usersList, getUserByEmail, getTraineesList, assignTraineeToMentor, getAssignedTrainees } from "../services/authService.js";
+import { signupValidation } from "../validation/authValidation.js";import { signup,checkUniqEmail, usersList, getUserByEmail, getTraineesList, assignTraineeToMentor, getAssignedTrainees, getMentorsList, getUserById } from "../services/authService.js";
 const router = express.Router()
 
 const JWT_SECRET = process.env.JWT_SECRET || "super-secret-key";
@@ -156,6 +155,34 @@ router.get("/my-trainees/:mentorId", async(req, res) => {
   } catch (error) {
     console.error("Error fetching assigned trainees:", error);
     res.status(500).json({ error: "Failed to fetch assigned trainees" });
+  }
+});
+
+// Get all mentors
+router.get("/mentors", async(req, res) => {
+  try {
+    const mentors = await getMentorsList();
+    res.json({ mentors });
+  } catch (error) {
+    console.error("Error fetching mentors:", error);
+    res.status(500).json({ error: "Failed to fetch mentors" });
+  }
+});
+
+// Get user profile by ID
+router.get("/profile/:userId", async(req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await getUserById(userId);
+    
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    
+    res.json({ user });
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res.status(500).json({ error: "Failed to fetch user profile" });
   }
 });
 

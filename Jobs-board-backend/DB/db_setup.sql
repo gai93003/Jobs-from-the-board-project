@@ -47,16 +47,20 @@ CREATE TABLE IF NOT EXISTS jobs (
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-
+-- NEW: ensure location_type exists
+ALTER TABLE jobs
+  ADD COLUMN IF NOT EXISTS location_type VARCHAR(50);
 
 -- application_status enum + applications table
 DO $$ BEGIN
+
     ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Interested';
     ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Started';
     ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Submitted';
     ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Invited to Interview';
     ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Declined';
     ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Offer Received';
+
 
 END $$;
 

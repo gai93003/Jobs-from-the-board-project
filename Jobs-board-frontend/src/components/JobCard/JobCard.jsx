@@ -13,13 +13,23 @@ export function JobCard(props){
   }
 
   return(
-    <article className="job-card">
+
+    <article className={`job-card ${props.isInterested ? 'interested' : ''}`}>
+      {/* Green heart indicator when job is marked as interested */}
+      {props.isInterested && (
+        <div className="interested-badge">
+          💚
+        </div>
+      )}
+      
       <h3 className="job-title">
         {props.title}
       </h3>
+
       <p className="company">{props.company}
         {props.is_star && <span className="star-badge"> ⭐</span>}
       </p>
+
       <p><strong>Location:</strong> {props.location}</p>
       <p><strong>Type:</strong> {props.employment_type}</p>
       <p><strong>Exprience:</strong> {props.exp_level}</p>
@@ -45,20 +55,29 @@ export function JobCard(props){
         </div>
       )}
 
-        <a 
-          className="apply-link" href={props.apply_url} target="_blank">
-          Apply Here
-        </a>
-        
-        {/* DASHBOARD — SHOW INTERESTED BUTTON */}
+
+      <div className="job-card-actions">
+        {/* DASHBOARD — SHOW INTERESTED BUTTON ABOVE APPLY LINK */}
         {!props.status && props.onInterested && (
           <button
-            className="interested-btn"
+            className={`interested-btn ${props.isInterested ? 'interested-active' : ''}`}
             onClick={() => props.onInterested(props)}
+            disabled={props.isInterested}
           >
-            Interested
+            {props.isInterested ? '💚 Interested' : '🤍 Mark as Interested'}
           </button>
         )}
+        
+        <a 
+          className="apply-link" 
+          href={props.apply_url} 
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Apply Here
+        </a>
+      </div>
+
 
     </article>
   )

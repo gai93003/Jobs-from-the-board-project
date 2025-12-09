@@ -16,13 +16,19 @@ export function Dashboard() {
   );
 }
 
-export async function fetchApiJobs() {
-  const response = await fetchWithAuth("/jobs/all");
-  console.log(response)
-    return response.data.jobs.sort((a, b) => new Date(b.active_from) - new Date(a.active_from));
+export async function fetchApiJobs(queryString = "") {
+  const { response, data } = await fetchWithAuth(`/jobs/all${queryString}`);
+  console.log(response, data);
 
+  if (!response.ok || !data?.jobs) {
+    return [];
+  }
 
+  return data.jobs.sort(
+    (a, b) => new Date(b.active_from) - new Date(a.active_from)
+  );
 }
+
 
 
 // ******************* I can add Slack chennel API here ********************

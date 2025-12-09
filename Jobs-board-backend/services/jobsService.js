@@ -43,25 +43,61 @@ export async function findJobByExternalId(external_job_id, source) {
 // }
 
 // list all jobs from the database, with optional filters
-export async function getAllJobs({ location, employment_type, company, approved, userId } = {}) {
-  // build same WHERE conditions but query includes LEFT JOIN
+export async function getAllJobs({
+  location,
+  employment_type,
+  company,
+  approved,
+  userId,
+  tech_stack,
+  exp_level,
+  location_type
+} = {}) {
   const conditions = [];
   const values = [];
   let idx = 1;
 
-  if (location) { conditions.push(`j.location ILIKE $${idx++}`); values.push(`%${location}%`); }
-  if (employment_type) { conditions.push(`j.employment_type = $${idx++}`); values.push(employment_type); }
-  if (company) { conditions.push(`j.company ILIKE $${idx++}`); values.push(`%${company}%`); }
+  if (location) {
+    conditions.push(`j.location ILIKE $${idx++}`);
+    values.push(`%${location}%`);
+  }
+
+  if (location_type) {
+    conditions.push(`j.location_type = $${idx++}`);
+    values.push(location_type);
+  }
+
+  if (employment_type) {
+    conditions.push(`j.employment_type = $${idx++}`);
+    values.push(employment_type);
+  }
+
+  if (company) {
+    conditions.push(`j.company ILIKE $${idx++}`);
+    values.push(`%${company}%`);
+  }
+
+  if (exp_level) {
+    const cleanLevel = exp_level.trim();
+    conditions.push(`j.exp_level = $${idx++}`);
+    values.push(cleanLevel);
+  }
+
+  if (tech_stack) {
+    const cleanTech = tech_stack.trim();
+    conditions.push(`j.tech_stack ILIKE $${idx++}`);
+    values.push(`%${cleanTech}%`);
+  }
 
   if (approved !== undefined) {
     if (approved === true) conditions.push(`j.approved_at IS NOT NULL`);
     else conditions.push(`j.approved_at IS NULL`);
   }
 
-  // Left join applications filtered to the provided userId
-  const userJoin = userId
-    ? `LEFT JOIN applications a ON a.job_id = j.job_id AND a.user_id = $${idx++}`
-    : `LEFT JOIN applications a ON a.job_id = j.job_id AND false`;
+// Left join applications filtered to the provided userId
+const userJoin = userId
+  ? `LEFT JOIN applications a ON a.job_id = j.job_id AND a.user_id = $${idx++}`
+  : `LEFT JOIN applications a ON a.job_id = j.job_id AND false`;
 
   if (userId) values.push(userId);
 
@@ -91,6 +127,8 @@ export async function getAllJobs({ location, employment_type, company, approved,
     ${whereClause}
     ORDER BY j.job_id DESC
   `;
+  console.log('QUERY:', query);
+  console.log('VALUES', values);
 
   const result = await pool.query(query, values);
   return result.rows;
@@ -106,17 +144,17 @@ export async function getJobById(id) {
 export async function createJob(jobData) {
   const {
     title, company, location, employment_type, tech_stack,
-    source, external_job_id, apply_url, approved_at, exp_level, partner_name, active_from
+    source, external_job_id, apply_url, approved_at, exp_level, partner_name, active_from, location_type
   } = jobData;
 
   const result = await pool.query(
     `INSERT INTO jobs (
       title, company, location, employment_type, tech_stack,
-      source, external_job_id, apply_url, approved_at, exp_level, partner_name, active_from
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      source, external_job_id, apply_url, approved_at, exp_level, partner_name, active_from, location_type
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
     RETURNING *`,
     [title, company, location, employment_type, tech_stack,
-     source, external_job_id, apply_url, approved_at, exp_level, partner_name, active_from]
+     source, external_job_id, apply_url, approved_at, exp_level, partner_name, active_from,location_type]
   );
   return result.rows[0];
 }
