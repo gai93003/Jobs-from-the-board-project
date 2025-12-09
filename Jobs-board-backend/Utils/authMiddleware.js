@@ -20,4 +20,16 @@ function authenticate(req, res, next) {
   });
 }
 
-export { authenticate };
+function requireRole(...allowedRoles) {
+  return (req, res, next) => {
+    const user = req.user; 
+
+    if (!user || !allowedRoles.includes(user.user_role)) {
+      return res.status(403).json({ error: "Forbidden: Insufficient role" });
+    }
+
+    next();
+  };
+}
+
+export { authenticate, requireRole };

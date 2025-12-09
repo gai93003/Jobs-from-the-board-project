@@ -1,4 +1,5 @@
 .app-header {
+   height: 100px; 
   background: var(--cyf-white);
   border-bottom: 2px solid var(--cyf-primary-red);
   padding: 14px 25px;

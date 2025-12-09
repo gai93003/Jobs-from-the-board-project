@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { JobCard } from "../JobCard/JobCard";
-import { fetchUserApplications, updateApplicationStatus, markJobInterested } from "../../utils/applications.js";
+import { markJobInterested, fetchUserApplications, updateApplicationStatus } from "../../utils/applications.js";
 
 
 
@@ -57,6 +57,7 @@ export default function JobListView({
     }
 
     load();
+
   }, [mode, fetchJobs, location,expLevel, techStack]); // ← include filters here
 
   async function handleInterested(job) {
@@ -76,6 +77,7 @@ export default function JobListView({
       alert(`Failed to mark job as interested: ${error.message}`);
     }
   }
+
 
   async function handleStatusChange(application_id, newStatus) {
     await updateApplicationStatus(application_id, newStatus);
@@ -141,10 +143,12 @@ export default function JobListView({
           <JobCard key={job.job_id} {...job}
           {...(
             mode === "dashboard"
+
             ? { 
                 onInterested: handleInterested,
                 isInterested: interestedJobs.has(job.job_id)
               }
+
             : { onStatusChange: (newStatus) => handleStatusChange(job.application_id, newStatus) }
           )}
 

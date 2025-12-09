@@ -1,10 +1,12 @@
 import express from "express";
 import { pool } from "../DB/db.js";
+import { authenticate, requireRole } from "../Utils/authMiddleware.js";
+
 
 const router = express.Router();
 
 // STAR A COMPANY (STAFF ONLY)
-router.post("/star-company", async (req, res) => {
+router.post("/star-company", authenticate, requireRole("Staff"), async (req, res) => {
   try {
     const { company } = req.body;
 
@@ -30,7 +32,7 @@ router.post("/star-company", async (req, res) => {
 });
 
 // UNSTAR A COMPANY 
-router.delete("/star-company/:company", async (req, res) => {
+router.delete("/star-company/:company",authenticate, requireRole("Staff"), async (req, res) => {
   try {
     const { company } = req.params;
 
@@ -44,5 +46,61 @@ router.delete("/star-company/:company", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+
+
+router.get("/cohort/funnel", authenticate, requireRole("Staff") ,async (req, res) => {
+  const result = await pool.query(`
+    SELECT status, COUNT(*)::int AS total
+    FROM applications a
+    JOIN users u ON u.user_id = a.user_id
+    WHERE u.user_role = 'Trainee'
+    GROUP BY status
+  `);
+
+  const stats = {
+    "Application Submitted": 0,
+    "Invited to Interview": 0,
+    "Application Declined": 0,
+    "Offer Received": 0
+  };
+
+  result.rows.forEach(row => {
+    if (stats[row.status] !== undefined) {
+      stats[row.status] = row.total;
+    }
+  });
+
+  res.json({
+    cohort: "Launch Module Nov25",
+    stats
+  });
+});
+
+router.get("/cohort/trainees", authenticate,requireRole("Staff") ,async (req, res) => {
+  const result = await pool.query(`
+    SELECT 
+      u.user_id,
+      u.full_name,
+      a.status,
+      COUNT(*)::int AS total
+    FROM users u
+    LEFT JOIN applications a ON a.user_id = u.user_id
+    WHERE u.user_role = 'Trainee'
+    GROUP BY u.user_id, u.full_name, a.status
+    ORDER BY u.full_name
+  `);
+
+  res.json({ rows: result.rows });
+});
+
+
+
+
+
+
+
+
+
 
 export default router;

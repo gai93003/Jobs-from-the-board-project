@@ -1,53 +1,107 @@
-.staff-dashboard {
-  padding: 30px;
-  background: var(--cyf-light-bg);
-  min-height: 100vh;
+/* ✅ GLOBAL SCROLL FIX */
+html, body {
+  height: auto;
+  overflow-y: auto;
 }
 
+/* ✅ MAIN PAGE */
+.staff-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ STAFF LAYOUT */
+.staff-layout {
+  flex: 1;
+  display: flex;
+  min-height: 0;  /* ✅ REQUIRED for scrolling inside flex */
+  padding-top: 20px; 
+}
+
+/* ✅ MAIN CONTENT AREA */
+.staff-content {
+  flex: 1;
+  overflow-y: auto;   /* ✅ ENABLE PAGE SCROLL */
+  padding: 30px;
+  padding-top: 100px;
+  padding-bottom: 80px;
+  background: var(--cyf-light-bg);
+}
+
+
+/* ✅ STAFF STAR PAGE CONTAINER */
+.staff-dashboard {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* ✅ TITLE */
 .staff-title {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
-  color: var(--cyf-primary-dark);
   margin-bottom: 20px;
 }
 
+/* ✅ STAR JOBS TABLE */
 .staff-table {
   width: 100%;
   border-collapse: collapse;
   background: var(--cyf-white);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
+  border-radius: 10px;
+  /* overflow: hidden; */
+  margin-top: 20px;
+}
+
+/* ✅ STICKY HEADER (SO YOU CAN ALWAYS SEE IT) */
+.staff-table thead {
+  position: sticky;
+  top: 0;
+  background: #f5f5f5;
+  z-index: 10;
 }
 
 .staff-table th,
 .staff-table td {
-  padding: 14px 16px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #ddd;
   text-align: left;
-  border-bottom: 1px solid #ececec;
+  font-size: 14px;
 }
 
-.staff-table th {
-  background: #f7f7f7;
-  color: var(--cyf-primary-dark);
+/* ✅ STATUS BADGE */
+.staff-table td:nth-child(4) {
   font-weight: 600;
 }
 
-.staff-table tr:hover {
-  background: #f5f5f5;
-}
-
-.staff-star-btn .staff-star-btn-remove {
-  padding: 8px 14px;
+/* ✅ STAR BUTTONS */
+.staff-star-btn {
   background: var(--cyf-primary-red);
-  color: var(--cyf-white);
-  border-radius: 6px;
+  color: white;
   border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .staff-star-btn-remove {
+  background: #777;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-  background: var(--cyf-light-bg);
-  color: var(--cyf-primary-dark);
-  
+.staff-star-btn:hover,
+.staff-star-btn-remove:hover {
+  opacity: 0.9;
+}
+
+
+.staff-table-wrapper {
+  max-height: calc(100vh - 240px);  /* ✅ Leaves space for header + title */
+  overflow-y: auto;
+  margin-top: 10px;
+  border-radius: 10px;
 }
