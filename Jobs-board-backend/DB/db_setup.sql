@@ -53,15 +53,16 @@ ALTER TABLE jobs
 
 -- application_status enum + applications table
 DO $$ BEGIN
-
-    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Interested';
-    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Started';
-    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Submitted';
-    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Invited to Interview';
-    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Declined';
-    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Offer Received';
-
-
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'application_status_enum') THEN
+        CREATE TYPE application_status_enum AS ENUM (
+            'Interested',
+            'Application Started',
+            'Application Submitted',
+            'Invited to Interview',
+            'Application Declined',
+            'Offer Received'
+        );
+    END IF;
 END $$;
 
 CREATE TABLE IF NOT EXISTS applications (
