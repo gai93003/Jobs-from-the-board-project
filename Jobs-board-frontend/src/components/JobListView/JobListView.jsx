@@ -23,30 +23,17 @@ export default function JobListView({
       setLoading(true);
 
       if (mode === "dashboard") {
-
-         // fetchJobs() returns an ARRAY, not an object
-      const jobsList = await fetchJobs();
-      setJobs(jobsList);
-      
-      // Fetch user applications to check which jobs are already marked as interested
-      const apps = await fetchUserApplications();
-      const interested = new Set(
-        apps.data.applications.map(app => app.job_id)
-      );
-      setInterestedJobs(interested);
-    }
-
-        const params = new URLSearchParams();
-        if (location) params.set("location", location);
-        if (locationType) params.set("location_type", locationType);
-        if (expLevel) params.set("exp_level", expLevel);
-        if (techStack) params.set("tech_stack", techStack);
-
-        const queryString = params.toString() ? `?${params.toString()}` : "";
-        const jobsList = await fetchJobs(queryString);
+        // fetchJobs() returns an ARRAY, not an object
+        const jobsList = await fetchJobs();
         setJobs(jobsList);
+        
+        // Fetch user applications to check which jobs are already marked as interested
+        const apps = await fetchUserApplications();
+        const interested = new Set(
+          apps.data.applications.map(app => app.job_id)
+        );
+        setInterestedJobs(interested);
       }
-
 
       if (mode === "applications") {
         const apps = await fetchUserApplications();
@@ -57,7 +44,7 @@ export default function JobListView({
     }
 
     load();
-  }, [mode, fetchJobs, location,expLevel, techStack]); // ← include filters here
+  }, [mode, fetchJobs]); // ← include filters here
 
   async function handleInterested(job) {
     try {
