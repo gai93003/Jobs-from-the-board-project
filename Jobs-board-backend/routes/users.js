@@ -1,7 +1,8 @@
 import express from "express"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { signupValidation } from "../validation/authValidation.js";import { signup,checkUniqEmail, usersList, getUserByEmail, getTraineesList, assignTraineeToMentor, getAssignedTrainees, getMentorsList, getUserById } from "../services/authService.js";
+import { signupValidation } from "../validation/authValidation.js";
+import { signup,checkUniqEmail, usersList, getUserByEmail, getTraineesList, assignTraineeToMentor, getAssignedTrainees } from "../services/authService.js";
 const router = express.Router()
 
 const JWT_SECRET = process.env.JWT_SECRET || "super-secret-key";

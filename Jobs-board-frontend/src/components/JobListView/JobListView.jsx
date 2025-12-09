@@ -18,47 +18,27 @@ export default function JobListView({
   const [techStack, setTechStack] = useState("");
   const [locationType, setLocationType] = useState("");
 
-  useEffect(() => {
+useEffect(() => {
     async function load() {
       setLoading(true);
-
       if (mode === "dashboard") {
-
-         // fetchJobs() returns an ARRAY, not an object
-      const jobsList = await fetchJobs();
-      setJobs(jobsList);
-      
-      // Fetch user applications to check which jobs are already marked as interested
-      const apps = await fetchUserApplications();
-      const interested = new Set(
-        apps.data.applications.map(app => app.job_id)
-      );
-      setInterestedJobs(interested);
-    }
-
         const params = new URLSearchParams();
         if (location) params.set("location", location);
         if (locationType) params.set("location_type", locationType);
         if (expLevel) params.set("exp_level", expLevel);
         if (techStack) params.set("tech_stack", techStack);
-
         const queryString = params.toString() ? `?${params.toString()}` : "";
         const jobsList = await fetchJobs(queryString);
         setJobs(jobsList);
       }
-
-
       if (mode === "applications") {
         const apps = await fetchUserApplications();
         setJobs(apps.data.applications);
       }
-
       setLoading(false);
     }
-
     load();
-
-  }, [mode, fetchJobs, location,expLevel, techStack]); // ← include filters here
+  }, [mode, fetchJobs, location,expLevel, techStack, locationType]); // ← include filters here
 
   async function handleInterested(job) {
     try {
@@ -87,6 +67,7 @@ export default function JobListView({
         : job
     ));
   }
+  console.log("JOB IDS:", jobs.map(j => j.job_id));
 
   return (
     <div className="dashboard-container">
@@ -140,19 +121,19 @@ export default function JobListView({
       <ul className="jobs-list">
         {jobs.map((job) => (
 
-          <JobCard key={job.job_id} {...job}
-          {...(
-            mode === "dashboard"
-
-            ? { 
-                onInterested: handleInterested,
-                isInterested: interestedJobs.has(job.job_id)
-              }
-
-            : { onStatusChange: (newStatus) => handleStatusChange(job.application_id, newStatus) }
-          )}
-
+          <JobCard 
+            key={mode === "dashboard" ? job.job_id : job.application_id}
+            {...job}
+            {...(
+              mode === "dashboard"
+              ? { 
+                  onInterested: handleInterested,
+                  isInterested: interestedJobs.has(job.job_id)
+                }
+              : { onStatusChange: (newStatus) => handleStatusChange(job.application_id, newStatus) }
+            )}
           />
+
         ))}
       </ul>
     </div>
