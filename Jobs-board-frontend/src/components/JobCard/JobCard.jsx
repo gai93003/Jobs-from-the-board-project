@@ -24,10 +24,12 @@ export function JobCard(props){
       
       <h3 className="job-title">
         {props.title}
-        {props.is_star && <span className="star-badge"> ⭐</span>}
       </h3>
 
-      <p className="company">{props.company}</p>
+      <p className="company">{props.company}
+        {props.is_star && <span className="star-badge"> ⭐</span>}
+      </p>
+
       <p><strong>Location:</strong> {props.location}</p>
       <p><strong>Type:</strong> {props.employment_type}</p>
       <p><strong>Exprience:</strong> {props.exp_level}</p>
@@ -48,9 +50,11 @@ export function JobCard(props){
             <option value="Application Submitted">Application Submitted</option>
             <option value="Invited to Interview">Invited to Interview</option>
             <option value="Application Declined">Application Declined</option>
+            <option value="Offer Received">Offer Received</option>
           </select>
         </div>
       )}
+
 
       <div className="job-card-actions">
         {/* DASHBOARD — SHOW INTERESTED BUTTON ABOVE APPLY LINK */}
@@ -73,6 +77,7 @@ export function JobCard(props){
           Apply Here
         </a>
       </div>
+
 
     </article>
   )

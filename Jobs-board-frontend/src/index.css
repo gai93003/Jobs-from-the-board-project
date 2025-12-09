@@ -4,6 +4,7 @@
   --cyf-light-bg: #F2EFF0;
   --cyf-white: #FFFFFF;
   --cyf-font: #333333;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 * {
