@@ -31,8 +31,9 @@ export async function getAllJobs({
   }
 
   if (location_type) {
-    conditions.push(`j.location_type = $${idx++}`);
-    values.push(location_type);
+  const normalizedLocationType = location_type.trim().toLowerCase();
+  conditions.push(`LOWER(j.location_type) = $${idx++}`);
+  values.push(normalizedLocationType);
   }
 
   if (employment_type) {
@@ -137,5 +138,5 @@ export default {
   getAllJobs,
   getJobById,
   createJob,
-  findJobByExternalId 
+  findJobByExternalId
 };

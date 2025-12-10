@@ -85,3 +85,18 @@ CREATE TABLE IF NOT EXISTS star_companies (
   marked_by INTEGER REFERENCES users(user_id),
   marked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Comments table for mentor-trainee communication
+CREATE TABLE IF NOT EXISTS comments (
+    comment_id SERIAL PRIMARY KEY,
+    trainee_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    mentor_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    author_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    comment_text TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Add index for faster queries
+CREATE INDEX IF NOT EXISTS idx_comments_trainee_mentor ON comments(trainee_id, mentor_id);
+CREATE INDEX IF NOT EXISTS idx_comments_created_at ON comments(created_at DESC);

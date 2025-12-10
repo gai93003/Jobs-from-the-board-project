@@ -1,14 +1,17 @@
 import express from "express";
+import cors from "cors";
+
 import jobsRouter from "./routes/jobs.js";
 import userRouter from "./routes/users.js";
-import cors from "cors";
-import { runSetup } from "./DB/migrations.js";
-import applicationsRouter from "./routes/applications.js"
+import applicationsRouter from "./routes/applications.js";
 import staffRoutes from "./routes/staff.js";
 import "./services/slackCron.js";
 import { fetchAndStoreSlackJobs } from "./services/slackJobService.js";
+import commentsRouter from "./routes/comments.js";
 
 
+import { runSetup } from "./DB/migrations.js";
+import {setupCronJobs } from "./services/CronSchedule.js";
 
 console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
 
@@ -68,6 +71,7 @@ app.use('/api/jobs', jobsRouter);
 app.use("/api", userRouter);
 app.use("/api/staff", staffRoutes);
 app.use('/api/applications', applicationsRouter)
+app.use('/api', commentsRouter);
 
 
 
@@ -77,5 +81,6 @@ app.get("/", (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+  setupCronJobs();
 });
 
