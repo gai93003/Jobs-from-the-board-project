@@ -1,23 +1,28 @@
 import { fetchWithAuth } from "../../utils/api";
 import JobListView from "../JobListView/JobListView";
 import { getLoggedInUser } from "../../utils/api";
-
+import "./Dashboard.css"
 
 export function Dashboard() {
     const user = getLoggedInUser();
 
   return (
-    <JobListView
-      title={`Welcome, " ${user.full_name.toUpperCase()}`}
-      subtitle="All Jobs from API:"
-      mode="dashboard"
-      fetchJobs={fetchApiJobs}      // API fetch only here
-    />
+  
+      <JobListView
+        subtitle="All Jobs from API:"
+        mode="dashboard"
+        fetchJobsSlack={fetchSlackJobs}
+        fetchJobs={fetchApiJobs}
+      />
+     
   );
 }
 
 export async function fetchApiJobs(queryString = "") {
-  const { response, data } = await fetchWithAuth(`/jobs/all${queryString}`);
+  const url = queryString
+    ? `/jobs/all${queryString}&api_source=DevitJobs`
+    : `/jobs/all?api_source=DevitJobs`;
+  const { response, data } = await fetchWithAuth(url)
   console.log(response, data);
 
   if (!response.ok || !data?.jobs) {
@@ -32,3 +37,17 @@ export async function fetchApiJobs(queryString = "") {
 
 
 // ******************* I can add Slack chennel API here ********************
+
+export async function fetchSlackJobs(queryString = "") {
+  const url = queryString
+    ? `/jobs/all${queryString}&api_source=CYFslack`
+    : `/jobs/all?api_source=CYFslack`;
+  const { response, data } = await fetchWithAuth(url)
+  console.log(response, data);
+
+  if (!response.ok || !data?.jobs) return [];
+
+  return data.jobs.sort(
+    (a, b) => new Date(b.active_from) - new Date(a.active_from)
+  );
+}

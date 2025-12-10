@@ -32,6 +32,7 @@ export function JobCard(props){
 
       <p><strong>Location:</strong> {props.location}</p>
       <p><strong>Type:</strong> {props.employment_type}</p>
+      <p><strong>Work Place:</strong> {props.location_type}</p>
       <p><strong>Exprience:</strong> {props.exp_level}</p>
       <p><strong>Source:</strong> {props.partner_name}</p>
       <p><strong>Job Age:</strong> {diffDaysText}</p>

@@ -63,9 +63,9 @@ console.log("🔄 Slack job fetch started...");
     await pool.query(
       `
       INSERT INTO jobs
-        (title, company, location, apply_url, location_type, tech_stack,employment_type, api_source)
+        (title, company, location, apply_url, location_type, tech_stack,employment_type, api_source, partner_name)
       VALUES
-        ($1, $2, $3, $4, $5, $6, $7, 'CYFslack')
+        ($1, $2, $3, $4, $5, $6, $7, 'CYFslack','CYF Slack')
       `,
       [
         job.title,
