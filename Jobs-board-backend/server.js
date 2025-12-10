@@ -5,6 +5,7 @@ import jobsRouter from "./routes/jobs.js";
 import userRouter from "./routes/users.js";
 import applicationsRouter from "./routes/applications.js";
 import staffRoutes from "./routes/staff.js";
+import commentsRouter from "./routes/comments.js";
 
 import { runSetup } from "./DB/migrations.js";
 import {setupCronJobs } from "./services/CronSchedule.js";
@@ -67,6 +68,7 @@ app.use('/api/jobs', jobsRouter);
 app.use("/api", userRouter);
 app.use("/api/staff", staffRoutes);
 app.use('/api/applications', applicationsRouter)
+app.use('/api', commentsRouter);
 
 
 

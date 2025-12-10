@@ -95,7 +95,8 @@ router.post("/login", async (req, res) => {
                 full_name: user.full_name,
                 email: user.email,
                 user_role: user.user_role,
-                account_status: user.account_status
+                account_status: user.account_status,
+                mentor_id: user.mentor_id
             }
         });
     } catch (error) {
