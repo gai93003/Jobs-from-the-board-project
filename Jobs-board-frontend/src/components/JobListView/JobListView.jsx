@@ -34,11 +34,11 @@ useEffect(() => {
         setJobs(jobsList);
         
         // Fetch user applications to check which jobs are already marked as interested
-        const apps = await fetchUserApplications();
-        const interested = new Set(
-          apps.data.applications.map(app => app.job_id)
-        );
-        setInterestedJobs(interested);
+        // const apps = await fetchUserApplications();
+        // const interested = new Set(
+        //   apps.data.applications.map(app => app.job_id)
+        // );
+        // setInterestedJobs(interested);
       }
 
       if (mode === "applications") {
@@ -130,10 +130,11 @@ useEffect(() => {
       )}
 
       <ul className="jobs-list">
-        {jobs.map((job) => (
+        {jobs.map((job, i) => (
 
           <JobCard 
-            key={mode === "dashboard" ? job.job_id : job.application_id}
+            // key={mode === "dashboard" ? job.job_id : job.application_id}
+            key = {i}
             {...job}
             {...(
               mode === "dashboard"

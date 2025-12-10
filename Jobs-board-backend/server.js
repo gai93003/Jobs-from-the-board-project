@@ -5,6 +5,9 @@ import cors from "cors";
 import { runSetup } from "./DB/migrations.js";
 import applicationsRouter from "./routes/applications.js"
 import staffRoutes from "./routes/staff.js";
+import "./services/slackCron.js";
+import { fetchAndStoreSlackJobs } from "./services/slackJobService.js";
+
 
 
 console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
@@ -75,3 +78,4 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
