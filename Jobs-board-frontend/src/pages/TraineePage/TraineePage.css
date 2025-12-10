@@ -16,6 +16,9 @@
 .trainee-content {
   display: block;
   padding: 25px;
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
+  flex: 1;
 }
 .trainee-page {
   flex: 1;

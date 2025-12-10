@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { JobCard } from "../JobCard/JobCard";
 import { updateApplicationStatus } from "../../utils/applications";
+import { CommentSection } from "../CommentSection/CommentSection";
 import "./TraineeApplications.css";
 
 export function TraineeApplications({ trainee, onBack }) {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
+  const mentorId = currentUser?.user_id;
 
   useEffect(() => {
     fetchTraineeApplications();
@@ -86,6 +89,14 @@ export function TraineeApplications({ trainee, onBack }) {
             />
           ))}
         </ul>
+      )}
+
+      {mentorId && (
+        <CommentSection 
+          traineeId={trainee.user_id} 
+          mentorId={mentorId} 
+          mode="mentor"
+        />
       )}
     </div>
   );

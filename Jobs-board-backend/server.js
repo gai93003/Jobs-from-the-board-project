@@ -5,6 +5,7 @@ import cors from "cors";
 import { runSetup } from "./DB/migrations.js";
 import applicationsRouter from "./routes/applications.js"
 import staffRoutes from "./routes/staff.js";
+import commentsRouter from "./routes/comments.js";
 
 
 console.log("✅✅✅ NEW CORS VERSION IS RUNNING ✅✅✅");
@@ -65,6 +66,7 @@ app.use('/api/jobs', jobsRouter);
 app.use("/api", userRouter);
 app.use("/api/staff", staffRoutes);
 app.use('/api/applications', applicationsRouter)
+app.use('/api', commentsRouter);
 
 
 

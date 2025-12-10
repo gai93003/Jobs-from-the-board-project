@@ -11,10 +11,19 @@
   margin: 0 auto;
   width: 100%;
   padding: 2rem;
+  overflow: hidden;
 }
 
 .mentor-content {
   flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 140px);
+}
+
+.trainee-content {
+  overflow-y: auto;
+  max-height: calc(100vh - 140px);
   padding: 2rem;
 }
 
