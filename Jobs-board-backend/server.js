@@ -5,7 +5,10 @@ import jobsRouter from "./routes/jobs.js";
 import userRouter from "./routes/users.js";
 import applicationsRouter from "./routes/applications.js";
 import staffRoutes from "./routes/staff.js";
+import "./services/slackCron.js";
+import { fetchAndStoreSlackJobs } from "./services/slackJobService.js";
 import commentsRouter from "./routes/comments.js";
+
 
 import { runSetup } from "./DB/migrations.js";
 import {setupCronJobs } from "./services/CronSchedule.js";

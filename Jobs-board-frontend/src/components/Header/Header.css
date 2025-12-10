@@ -22,7 +22,7 @@
   font-size: 22px;
   font-weight: 700;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 20px;
   color: var(--cyf-primary-red);
 }
 
@@ -35,12 +35,18 @@
   padding: 8px 12px;
   border-radius: var(--radius);
 
-  /* background: none; */
-/*   color: var(--cyf-primary-dark); */
 
 }
 
 .header-link:hover {
   background: var(--cyf-light-bg);
   color: var(--cyf-white);
+}
+.welcome-text {
+  margin-top: 25px;
+  margin-right: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgb(8, 7, 7);
+  flex: flex;
 }

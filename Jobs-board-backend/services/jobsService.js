@@ -18,7 +18,8 @@ export async function getAllJobs({
   userId,
   tech_stack,
   exp_level,
-  location_type
+  location_type,
+  api_source
 } = {}) {
   const conditions = [];
   const values = [];
@@ -60,6 +61,11 @@ export async function getAllJobs({
   if (approved !== undefined) {
     if (approved === true) conditions.push(`j.approved_at IS NOT NULL`);
     else conditions.push(`j.approved_at IS NULL`);
+  }
+
+  if (api_source) {
+    conditions.push(`j.api_source = $${idx++}`);
+    values.push(api_source);
   }
 
 // Left join applications filtered to the provided userId

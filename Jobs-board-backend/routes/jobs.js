@@ -28,6 +28,7 @@ router.get('/test', (req, res) => { res.send('Test route works'); });
       exp_level: req.query.exp_level, // adding filtering for experience level
       //new
       location_type: req.query.location_type,
+      api_source: req.query.api_source
     });
 
     res.status(200).json({
