@@ -57,11 +57,12 @@ export function JobCard(props){
             onChange={(e) => props.onStatusChange(e.target.value)}
           >
             <option value="Interested">Interested</option>
-            <option value="Application Started">Application Started</option>
             <option value="Application Submitted">Application Submitted</option>
-            <option value="Invited to Interview">Invited to Interview</option>
-            <option value="Application Declined">Application Declined</option>
+            <option value="Initial Screening">Initial Screening</option>
+            <option value="1st Round Interview">1st Round Interview</option>
+            <option value="2nd Round Interview">2nd Round Interview</option>
             <option value="Offer Received">Offer Received</option>
+            <option value="Application Declined">Application Declined</option>
           </select>
         </div>
       )}

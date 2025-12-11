@@ -14,6 +14,7 @@ function parseSlackJob(text) {
   const tech_stack = get("Tech Stack");
   const company = get("Company");
   const employment_type = get("Employment Type")
+  const exp_level = get("Experience Level")
   // const apply_url = get("Apply URL")
 
   const urlMatch = text.match(/\*Apply URL\*\n<([^>]+)>/i);
@@ -29,6 +30,7 @@ function parseSlackJob(text) {
     tech_stack,
     apply_url,
     company,
+    exp_level
   };
 }
 
@@ -60,12 +62,33 @@ console.log("🔄 Slack job fetch started...");
     const job = parseSlackJob(msg.text);
     if (!job) continue;
 
+     const external_job_id = msg.ts
+
+         // skip if we've already processed this message
+    const existing = await pool.query(
+      `SELECT 1 
+       FROM jobs 
+       WHERE external_job_id = $1 
+         AND api_source = 'CYFslack'
+       LIMIT 1`,
+      [external_job_id]
+    );
+
+    if (existing.rowCount > 0) {
+      // console.log("Skipping duplicate Slack job", external_job_id);
+      continue;
+    }
+
+
+    const active_from_ts = new Date(msg.ts * 1000).toISOString().replace('Z', '+00:00');
+      console.log(active_from_ts);
+
     await pool.query(
       `
       INSERT INTO jobs
-        (title, company, location, apply_url, location_type, tech_stack,employment_type, api_source, partner_name)
+        (title, company, location, apply_url, location_type, tech_stack,employment_type, api_source, partner_name , active_from, exp_level,  external_job_id)
       VALUES
-        ($1, $2, $3, $4, $5, $6, $7, 'CYFslack','CYF Slack')
+        ($1, $2, $3, $4, $5, $6, $7, 'CYFslack','CYF Slack',$8, $9, $10)
       `,
       [
         job.title,
@@ -74,7 +97,10 @@ console.log("🔄 Slack job fetch started...");
         job.apply_url,
         job.location_type,
         job.tech_stack,
-        job.employment_type
+        job.employment_type,
+        active_from_ts,
+        job.exp_level,
+        external_job_id
       ]
     );
   }
