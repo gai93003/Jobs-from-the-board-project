@@ -60,7 +60,9 @@ router.get("/cohort/funnel", authenticate, requireRole("Staff") ,async (req, res
 
   const stats = {
     "Application Submitted": 0,
-    "Invited to Interview": 0,
+    "Initial Screening": 0,
+    "1st Round Interview": 0,
+    "2nd Round Interview": 0,
     "Application Declined": 0,
     "Offer Received": 0
   };

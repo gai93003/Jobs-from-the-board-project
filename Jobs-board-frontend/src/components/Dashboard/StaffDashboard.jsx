@@ -49,15 +49,77 @@ export default function StaffDashboard() {
 
   if (!funnel) return <p>Loading dashboard...</p>;
 
-  const chartData = {
-    labels: Object.keys(funnel.stats),
-    datasets: [
-      {
-        data: Object.values(funnel.stats),
-        backgroundColor: ["#2196F3", "#FF9800", "#F44336", "#4CAF50"]
-      }
-    ]
-  };
+  // const chartData = {
+  //   labels: Object.keys(funnel.stats),
+  //   datasets: [
+  //     {
+  //       data: Object.values(funnel.stats),
+  //       backgroundColor: [
+  //             "#EE4344", // submitted
+  //             "#F59E0B", // initial screening
+  //             "#3B82F6", // 1st interview
+  //             "#6366F1", // 2nd interview
+  //             "#10B981", // offer
+  //             "#6B7280" , // declined
+  //           ]
+  //     }
+  //   ]
+  // };
+
+  const stats = funnel?.stats || {};
+  const LABELS = [
+  "Application Submitted",
+  "Initial Screening",
+  "1st Round Interview",
+  "2nd Round Interview",
+  "Offer Received",
+  "Application Declined",
+];
+
+const chartData = {
+  labels: LABELS,
+  datasets: [
+    {
+      data: LABELS.map(label => stats[label] || 0),
+      backgroundColor: [
+        "#EE4344", // submitted
+        "#F59E0B", // initial screening
+        "#3B82F6", // 1st interview
+        "#6366F1", // 2nd interview
+        "#10B981", // offer
+        "#6B7280", // declined
+      ],
+    },
+  ],
+};
+
+const submittedTotal =
+  (stats["Application Submitted"] || 0) +
+  (stats["Initial Screening"] || 0) +
+  (stats["1st Round Interview"] || 0) +
+  (stats["2nd Round Interview"] || 0) +
+  (stats["Offer Received"] || 0) +
+  (stats["Application Declined"] || 0);
+
+const initialScreeningTotal =
+  (stats["Initial Screening"] || 0) +
+  (stats["1st Round Interview"] || 0) +
+  (stats["2nd Round Interview"] || 0) +
+  (stats["Offer Received"] || 0);
+
+const firstRoundTotal =
+  (stats["1st Round Interview"] || 0) +
+  (stats["2nd Round Interview"] || 0) +
+  (stats["Offer Received"] || 0);
+
+const secondRoundTotal =
+  (stats["2nd Round Interview"] || 0) +
+  (stats["Offer Received"] || 0);
+
+const offersTotal = stats["Offer Received"] || 0;
+
+const declinedTotal =
+  (stats["Application Declined"] || 0)
 
   return (
     <div className="staff-dashboard">
@@ -65,12 +127,15 @@ export default function StaffDashboard() {
       <p className="cohort-name">Launch Module Nov25</p>
 
       {/* SUMMARY CARDS  */}
-      <div className="summary-grid">
-        <Summary title="Submitted" value={funnel.stats["Application Submitted"]} />
-        <Summary title="Interview" value={funnel.stats["Invited to Interview"]} />
-        <Summary title="Declined" value={funnel.stats["Application Declined"]} />
-        <Summary title="Offers" value={funnel.stats["Offer Received"]} />
-      </div>
+    <div className="summary-grid">
+          <Summary title="Applications Submitted" value={submittedTotal} />
+          <Summary title="Initial Screening" value={initialScreeningTotal} />
+          <Summary title="1st Round Interview" value={firstRoundTotal} />
+          <Summary title="2nd Round Interview" value={secondRoundTotal} />
+          <Summary title="Offers" value={offersTotal} />
+          <Summary title="Declined" value={declinedTotal} />
+    </div>
+
 
       {/* TRAINEE STATUS TABLE */}
       <table className="staff-table">
@@ -78,9 +143,11 @@ export default function StaffDashboard() {
           <tr>
             <th>Trainee</th>
             <th>Submitted</th>
-            <th>Interview</th>
-            <th>Declined</th>
+            <th>Initial Screening</th>
+            <th>1st Interview</th>
+            <th>2nd Interview</th>
             <th>Offer</th>
+            <th>Declined</th>
           </tr>
         </thead>
         <tbody>
@@ -95,9 +162,11 @@ export default function StaffDashboard() {
                 {t.full_name}
               </td>
               <td>{t["Application Submitted"]}</td>
-              <td>{t["Invited to Interview"]}</td>
-              <td>{t["Application Declined"]}</td>
+              <td>{t["Initial Screening"]}</td>
+              <td>{t["1st Round Interview"]}</td>
+              <td>{t["2nd Round Interview"]}</td>
               <td>{t["Offer Received"]}</td>
+              <td>{t["Application Declined"]}</td>
             </tr>
           ))}
         </tbody>
@@ -121,6 +190,32 @@ function Summary({ title, value }) {
   );
 }
 
+// function mapTraineeData(rows) {
+//   const map = {};
+
+//   rows.forEach((row) => {
+//     if (!map[row.user_id]) {
+//       map[row.user_id] = {
+//         user_id: row.user_id,
+//         full_name: row.full_name,
+//         email: row.email,
+//         "Application Submitted": 0,
+//         "Initial Screening": 0,
+//         "1st Round Interview":0,
+//         "2nd Round Interview":0,
+//         "Application Declined": 0,
+//         "Offer Received": 0,
+//       };
+//     }
+
+//     if (map[row.user_id][row.status] !== undefined) {
+//       map[row.user_id][row.status] += row.total;
+//     }
+//   });
+
+//   return Object.values(map);
+// }
+
 function mapTraineeData(rows) {
   const map = {};
 
@@ -131,16 +226,52 @@ function mapTraineeData(rows) {
         full_name: row.full_name,
         email: row.email,
         "Application Submitted": 0,
-        "Invited to Interview": 0,
-        "Application Declined": 0,
+        "Initial Screening": 0,
+        "1st Round Interview": 0,
+        "2nd Round Interview": 0,
         "Offer Received": 0,
+        "Application Declined": 0,
       };
     }
 
-    if (map[row.user_id][row.status] !== undefined) {
+    if (row.status && map[row.user_id][row.status] !== undefined) {
       map[row.user_id][row.status] += row.total;
     }
   });
 
-  return Object.values(map);
+  const trainees = Object.values(map);
+
+  trainees.forEach((t) => {
+    const submitted = t["Application Submitted"] || 0;
+    const initial   = t["Initial Screening"] || 0;
+    const first     = t["1st Round Interview"] || 0;
+    const second    = t["2nd Round Interview"] || 0;
+    const offers    = t["Offer Received"] || 0;
+    const declined  = t["Application Declined"] || 0;
+
+    const submittedTotal =
+      submitted + initial + first + second + declined + offers;
+
+    const initialScreeningTotal =
+      initial + first + second + offers;
+
+    const firstRoundTotal =
+      first + second + offers;
+
+    const secondRoundTotal =
+      second + offers;
+      
+    const offersTotal = offers;
+    const declinedTotal = declined;
+    
+
+    t["Application Submitted"] = submittedTotal;
+    t["Initial Screening"]     = initialScreeningTotal;
+    t["1st Round Interview"]   = firstRoundTotal;
+    t["2nd Round Interview"]   = secondRoundTotal;
+    t["Offer Received"]        = offersTotal;
+    t["Application Declined"]  = declinedTotal;
+  });
+
+  return trainees;
 }
