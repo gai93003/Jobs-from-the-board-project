@@ -50,7 +50,9 @@ CREATE TABLE IF NOT EXISTS jobs (
 -- NEW
 ALTER TABLE jobs
   ADD COLUMN IF NOT EXISTS location_type VARCHAR(50),
-  ADD COLUMN IF NOT EXISTS api_source TEXT DEFAULT 'DevitJobs';
+  ADD COLUMN IF NOT EXISTS api_source TEXT DEFAULT 'DevitJobs',
+  ADD COLUMN IF NOT EXISTS salary_min NUMERIC,
+  ADD COLUMN IF NOT EXISTS salary_max NUMERIC;
 
 -- application_status enum + applications table
 DO $$ BEGIN

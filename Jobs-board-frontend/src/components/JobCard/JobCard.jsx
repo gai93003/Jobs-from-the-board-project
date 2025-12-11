@@ -1,8 +1,17 @@
-import "./JobCard.css"
+import "./JobCard.css";
+import { formatSalaryRange } from "../../utils/jobListHelper.js";
 
- 
+
+// function formatSalaryRange(min, max) {
+//   if (min == null && max == null) return null;
+//   if (min != null && max != null) return `£${min} – £${max}`;
+//   if (min != null) return `From £${min}`;
+//   return `Up to £${max}`;
+// }
+
 export function JobCard(props){
   let diffDaysText = "N/A";
+    const salaryText = formatSalaryRange(props.salary_min, props.salary_max, props.currency || "GBP");
    if (props.active_from) {
     const activeDate = new Date(props.active_from);
     if (!isNaN(activeDate)) {
@@ -33,7 +42,8 @@ export function JobCard(props){
       <p><strong>Location:</strong> {props.location}</p>
       <p><strong>Type:</strong> {props.employment_type}</p>
       <p><strong>Work Place:</strong> {props.location_type}</p>
-      <p><strong>Exprience:</strong> {props.exp_level}</p>
+      <p><strong>Salary range:</strong>{" "}{salaryText ?? "Not provided"}</p>
+      <p><strong>Experience:</strong> {props.exp_level}</p>
       <p><strong>Source:</strong> {props.partner_name}</p>
       <p><strong>Job Age:</strong> {diffDaysText}</p>
 
