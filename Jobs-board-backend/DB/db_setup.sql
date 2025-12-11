@@ -51,8 +51,9 @@ CREATE TABLE IF NOT EXISTS jobs (
 ALTER TABLE jobs
   ADD COLUMN IF NOT EXISTS location_type VARCHAR(50),
   ADD COLUMN IF NOT EXISTS api_source TEXT DEFAULT 'DevitJobs',
-  ADD COLUMN IF NOT EXISTS salary_min NUMERIC,
-  ADD COLUMN IF NOT EXISTS salary_max NUMERIC;
+  ADD COLUMN IF NOT EXISTS salary_min INT,
+  ADD COLUMN IF NOT EXISTS salary_max INT,
+  ADD COLUMN IF NOT EXISTS is_star_employer BOOLEAN DEFAULT FALSE;
 
 -- application_status enum + applications table
 DO $$ BEGIN

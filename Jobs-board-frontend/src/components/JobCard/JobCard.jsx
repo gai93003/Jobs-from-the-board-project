@@ -36,7 +36,7 @@ export function JobCard(props){
       </h3>
 
       <p className="company">{props.company}
-        {props.is_star && <span className="star-badge"> ⭐</span>}
+        {props.is_star && (<span className="star-badge" title="This employer has hired a CYFer before">⭐</span>)}
       </p>
 
       <p><strong>Location:</strong> {props.location}</p>

@@ -19,7 +19,8 @@ export async function getAllJobs({
   tech_stack,
   exp_level,
   location_type,
-  api_source
+  api_source,
+  star_companies
 } = {}) {
   const conditions = [];
   const values = [];
@@ -67,6 +68,11 @@ export async function getAllJobs({
     conditions.push(`j.api_source = $${idx++}`);
     values.push(api_source);
   }
+  
+  if (star_companies === 'true') {
+  conditions.push('sc.company_name IS NOT NULL');
+  }
+
 
 // Left join applications filtered to the provided userId
 const userJoin = userId
