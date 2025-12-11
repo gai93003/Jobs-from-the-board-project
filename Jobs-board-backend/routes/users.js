@@ -2,7 +2,7 @@ import express from "express"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { signupValidation } from "../validation/authValidation.js";
-import { signup,checkUniqEmail, usersList, getUserByEmail, getTraineesList, assignTraineeToMentor, getAssignedTrainees } from "../services/authService.js";
+import { signup,checkUniqEmail, usersList, getUserByEmail, getTraineesList, assignTraineeToMentor, getAssignedTrainees, getMentorsList, getUserById } from "../services/authService.js";
 const router = express.Router()
 
 const JWT_SECRET = process.env.JWT_SECRET || "super-secret-key";
@@ -164,6 +164,7 @@ router.get("/my-trainees/:mentorId", async(req, res) => {
 router.get("/mentors", async(req, res) => {
   try {
     const mentors = await getMentorsList();
+    console.log(mentors)
     res.json({ mentors });
   } catch (error) {
     console.error("Error fetching mentors:", error);
