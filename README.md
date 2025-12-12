@@ -1,78 +1,122 @@
-🚀 Career Flow
-💼 A data‑driven job platform built for the CodeYourFuture community
+<div align="center">
 
-Career Flow is a full‑stack application that centralises, organises, and surfaces job opportunities for CodeYourFuture trainees, mentors, staff.
-The project is structured as a monorepo with separate backend and frontend codebases.
+# 🚀 Career Flow
 
-📖 Overview
-Career Flow helps CodeYourFuture trainees discover curated roles while giving mentors and staff a simple way to manage and share opportunities.
+### 💼 A data-driven job platform built for the CodeYourFuture community
 
-🎯 Key goals
-🎓 Reduce noise from generic job boards by focusing on roles relevant to CYF trainees
+[![GitHub Stars](https://img.shields.io/github/stars/gai93003/Jobs-from-the-board-project?style=social)](https://github.com/gai93003/Jobs-from-the-board-project)
+[![Contributors](https://img.shields.io/github/contributors/gai93003/Jobs-from-the-board-project)](https://github.com/gai93003/Jobs-from-the-board-project/graphs/contributors)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-🛠️ Provide a maintainable, extensible full‑stack codebase for learning and collaboration
+</div>
 
-👥 Enable different user types (trainees, mentors, staff) to interact with the same source of truth for opportunities
+---
+## 📑 Table of Contents
 
-✨ Features
-📋 Centralised job board: Aggregated job listings stored and served by the backend and displayed via a dedicated frontend application
+- [📖 Overview](#-overview)
+- [✨ Features](#-features)
+- [🔧 Tech Stack](#-tech-stack)
+- [🚀 Getting Started](#-getting-started)
+- [👥 Contributors](#-contributors)
+- [🤝 Contributing](#-contributing)
 
-🔄 Deduplicated listings: The frontend includes logic to deduplicate jobs by job_id, preventing repeated postings of the same role
+---
+## 🔧 Tech Stack
 
-🏗️ Full‑stack architecture: Clear separation of concerns with Jobs-board-backend for APIs/data and Jobs-board-frontend for UI and client‑side logic
+<details open>
+<summary><b>🎨 Frontend (Jobs-board-frontend)</b></summary>
+<br>
 
-🔐 Input validation and auth‑ready: The codebase includes regex‑based login and password validation work, laying the groundwork for secure authentication flows
+| Technology | Purpose | Details |
+|:-----------|:--------|:--------|
+| **⚛️ React** | UI Framework | Component-based architecture for building interactive user interfaces |
+| **⚡ Vite** | Build Tool | Fast development server with Hot Module Replacement (HMR) |
+| **🟨 JavaScript (ES6+)** | Programming Language | Modern JavaScript features including async/await, destructuring |
+| **🎨 CSS3** | Styling | Responsive design and modern layout techniques (23.1% of codebase) |
+| **📄 HTML5** | Markup | Semantic HTML structure (0.2% of codebase) |
 
-🤝 Collaborative workflow: Multiple contributors work via branches and pull requests, making it a realistic learning project for production‑style development
+</details>
 
-🔧 Tech Stack
-Frontend 
+<details open>
+<summary><b>⚙️ Backend (Jobs-board-backend)</b></summary>
+<br>
 
-⚛️ React	UI Framework	Component-based architecture for building interactive user interfaces with reusable components
+| Technology | Purpose | Details |
+|:-----------|:--------|:--------|
+| **🟢 Node.js** | Runtime Environment | JavaScript runtime built on Chrome's V8 engine |
+| **🚂 Express.js** | Web Framework | Minimalist web framework for building RESTful APIs |
+| **🐘 PostgreSQL** | Database | Relational database for persistent storage of job listings |
+| **📦 npm** | Package Manager | Dependency management and script running |
 
-⚡ Vite	Build Tool	Fast development server with Hot Module Replacement (HMR) for rapid development
+</details>
 
-🟨 JavaScript (ES6+)	Programming Language	Modern JavaScript features including async/await, destructuring, and arrow functions
+## 👥 Contributors
 
-🎨 CSS3	Styling	Responsive design and modern layout techniques (23.1% of codebase)
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/RihannaP">
+        <img src="https://github.com/RihannaP.png" width="100px;" alt="RihannaP"/>
+        <br />
+        <sub><b>Rihanna P</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/gai93003">
+        <img src="https://github.com/gai93003.png" width="100px;" alt="gai93003"/>
+        <br />
+        <sub><b>Gabriel Deng</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/donarbI">
+        <img src="https://github.com/donarbI.png" width="100px;" alt="donarbI"/>
+        <br />
+        <sub><b>Donara Blanc</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
-📄 HTML5	Markup	Semantic HTML structure (0.2% of codebase)
+Want to contribute? Check out our [Contributing Guidelines](#-contributing) 👇
 
-Backend 
+> [!NOTE]
+> Career Flow is actively developed by CodeYourFuture trainees as a learning project.
 
-🟢 Node.js	Runtime Environment	JavaScript runtime built on Chrome's V8 engine for server-side execution
+> [!IMPORTANT]
+> Make sure PostgreSQL is installed and running before starting the backend.
 
-🚂 Express.js	Web Framework	Minimalist web framework for building RESTful APIs and handling HTTP requests
+> [!TIP]
+> Use `npm run dev` for hot-reload during development!
+## 🚀 Getting Started
 
-🐘 PostgreSQL	Database	Relational database for persistent storage of job listings, user data, and application state
+### ✅ Prerequisites
 
-📦 npm	Package Manager	Dependency management and script running for both frontend and backend
+Before you begin, ensure you have the following installed:
 
-Development Tools
+- ![Node.js](https://img.shields.io/badge/Node.js-v14+-green?logo=node.js) 
+- ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v12+-blue?logo=postgresql)
+- ![Git](https://img.shields.io/badge/Git-latest-red?logo=git)
 
-🔀 Git/GitHub	Version control and collaboration with branching strategy for feature development
+### 📥 Installation
 
-💻 VS Code	Primary IDE with extensions for JavaScript, React, and PostgreSQL
+<details>
+<summary><b>Click to expand installation steps</b></summary>
 
-🔧 Postman	API testing and development for backend endpoints
+1. **Clone the repository**
 
-✅ ESLint	Code quality and style enforcement
+---
 
-👥 Contributors
+<div align="center">
 
-Career Flow is built and maintained by:
+### 🌟 Star this repo if you find it helpful!
 
-@RihannaP - Rihanna P
+**Built with ❤️ by the CodeYourFuture community**
 
-@gai93003 - Gabriel Deng
+[Report Bug](https://github.com/gai93003/Jobs-from-the-board-project/issues) · 
+[Request Feature](https://github.com/gai93003/Jobs-from-the-board-project/issues) · 
+[View Demo](#)
 
-@donarbl - Donara Blanc
+</div>
 
-🤝 Contributing
-Career Flow is an actively developed collaborative project with multiple contributors.
-Contributions that improve functionality, UX, documentation, and test coverage are welcome!
 
-Code of conduct
-Please be respectful and collaborative; this project is part of a learning environment for CodeYourFuture developers, mentors, and staff. 💙
-
-📫 For questions or suggestions, please open an issue or reach out to the contributors.
