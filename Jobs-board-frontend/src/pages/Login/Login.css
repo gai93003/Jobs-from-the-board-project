@@ -119,4 +119,22 @@ a:hover {
 .forgot-password-container p {
   margin: 0;
 }
+.password-field {
+  position: relative;
+  width: 100%;
+}
 
+/* Only affects the eye button, not other buttons */
+.toggle-password-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #1a3a52;
+}
