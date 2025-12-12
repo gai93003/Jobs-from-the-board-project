@@ -8,6 +8,9 @@ import './signup.css';
 function SignUp() {
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
 
   async function submitFormData(e) {
@@ -34,11 +37,12 @@ function SignUp() {
       
       if (response.ok) {
         alert("You have successfully signed up!");
-        console.log(data);
+        console.log("signup success",data);
         setErrorMessage(""); // clear error
         setPasswordError(false);
          navigate("/login")
       } else {
+        console.log("Signup error response:", response.status, data);
         setErrorMessage(data.error || "Failed to signup, please try again...");
       }
     } catch (error) {
@@ -77,24 +81,44 @@ function SignUp() {
             />
 
             <label htmlFor="password">Password</label>
-            <input 
-              type="password" 
-              name="password" 
-              id="password" 
+            <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              id="password"
               placeholder="Create a password"
-              required 
+              required
             />
-            <p className="password-char-count">8+ characters, one number</p>
+            <button
+              type="button"
+              className="toggle-password-btn"
+              onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+            </div>
+            {/* <p className="password-char-count">8+ characters, one number</p> */}
 
             <label htmlFor="confirm-password">Confirm password</label>
-            <input
-              type="password"
-              id="confirm-password"
-              name="confirm-password"
-              placeholder="Confirm your password"
-              required
-              className={passwordError ? "not-matching-password" : ""}
-            />
+            <div className="password-field">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirm-password"
+                name="confirm-password"
+                placeholder="Confirm your password"
+                required
+                className={passwordError ? "not-matching-password" : ""}
+              />
+              <button
+                type="button"
+                className="toggle-password-btn"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+              >
+                {showConfirmPassword ? "Hide" : "Show"}
+              </button>
+            </div>
             {errorMessage && <p id="password-validator" className="password-validator">{errorMessage}</p>}
 
             <label htmlFor="role">Select Your Role</label>

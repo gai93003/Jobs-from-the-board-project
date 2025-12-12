@@ -9,13 +9,14 @@ import './Login.css';
 function Login() {
  const [email, setEmail] = useState("");
  const [password, setPassword] = useState("");
+ const [showPassword, setShowPassword] = useState(false);
  const [isLoading, setIsLoading] = useState(false);
  const [error, setError] = useState("");
  const navigate = useNavigate();
 
   const emailStrong = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isEmailValid = emailStrong.test(email);
-  const isFormValid = email && password; // Simplified validation
+  // const isEmailValid = emailStrong.test(email);
+  // const isFormValid = email && password; // Simplified validation
  
 
 
@@ -81,17 +82,29 @@ function Login() {
          onChange={(e) => setEmail(e.target.value)}
        />
       
-       <input
-         type="password"
-         placeholder="Password"
-         value={password}
-         onChange={(e) => setPassword(e.target.value)}
-       />
+       <div className="password-field">
+      <input
+        type={showPassword ? "text" : "password"}
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button
+        type="button"
+        className="toggle-password-btn"
+        onClick={() => setShowPassword((prev) => !prev)}
+        aria-label={showPassword ? "Hide password" : "Show password"}
+      >
+        {showPassword ? "Hide" : "Show"}
+        </button>
+      </div>
+
       
        {error && <div style={{ color: "red" }}>{error}</div>}
       
        <button
          onClick={handleLogin}
+         
         
        >
          {isLoading ? "Loading..." : "Log in"}
