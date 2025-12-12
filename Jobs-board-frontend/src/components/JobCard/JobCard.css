@@ -368,27 +368,32 @@
 button:hover {
   background: green;
 }
-=======
-/*
-.status-row {
-  width: 200px;
-} */
 
 .delete-app-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0 5px;
-  margin-left: auto; /* Pushes the button to the right end of the status-row */
-  opacity: 0.7;
-  transition: opacity 0.3s ease, transform 0.2s ease;
+    /* Ensures no background color is visible */
+    background: transparent !important; 
+    border: none;
+    cursor: pointer;
+    font-size: 18px; 
+    padding: 0;         
+    opacity: 0.7;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    position: absolute;
+    top: 5px;   
+    right: -130px; 
+}
+
+.status-row {
+    position: relative;
+    padding-right: 20px; 
+    min-height: 25px; 
+    background-color: transparent
 }
 
 .delete-app-btn:hover {
   opacity: 1;
   transform: scale(1.1);
-  color: var(--cyf-primary-red); /* Use your defined red color variable */
+  color: var(--cyf-primary-red); 
 }
 
 /* Ensure the status row aligns items properly */

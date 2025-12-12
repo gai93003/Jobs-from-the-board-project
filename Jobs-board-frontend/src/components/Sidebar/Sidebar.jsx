@@ -41,7 +41,7 @@ export default function Sidebar({ activePage, onSelectPage }) {
             className={`sidebar-item ${activePage ==="jobs" ? "active" : ""}`}
             onClick={() => onSelectPage("jobs")}
           >
-            Star Companies
+            Jobs & Companies
           </button>
         )}
 
@@ -54,14 +54,14 @@ export default function Sidebar({ activePage, onSelectPage }) {
             My Trainees
           </button>
         )}
-
+        
         <button
         className={`sidebar-item ${activePage ==="profile" ? "active" : ""}`}
         onClick={() => onSelectPage("profile")}
         >Profile
         </button>
 
-        <button className="sidebar-item">Settings</button>
+        {/* <button className="sidebar-item">Settings</button> */}
       </nav>
     </aside>
   );

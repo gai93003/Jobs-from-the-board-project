@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { fetchWithAuth } from "../../utils/api.js";
 import { TraineeApplications } from "../TraineeApplications/TraineeApplications";
-import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import "chart.js/auto";
 import "./StaffDashboard.css";
@@ -32,8 +31,6 @@ export default function StaffDashboard() {
   // IF TRAINEE IS SELECTED > SHOW THEIR APPLICATIONS
   if (selectedTrainee) {
     return (
-     <div className="staff-dashboard">
-          <Header />
           <div className="mentor-layout">
             <main className="trainee-content">
                 <TraineeApplications
@@ -42,8 +39,6 @@ export default function StaffDashboard() {
                 />
             </main>
           </div>
-          <Footer />
-        </div>
     );
   }
 

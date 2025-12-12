@@ -110,3 +110,12 @@ CREATE TABLE IF NOT EXISTS job_comments (
 -- Add index for faster queries
 CREATE INDEX IF NOT EXISTS idx_job_comments_application ON job_comments(application_id);
 CREATE INDEX IF NOT EXISTS idx_job_comments_created_at ON job_comments(created_at DESC);
+
+ALTER TABLE job_comments
+DROP CONSTRAINT IF EXISTS job_comments_application_id_fkey;
+
+ALTER TABLE job_comments
+ADD CONSTRAINT job_comments_application_id_fkey
+FOREIGN KEY (application_id)
+REFERENCES applications(application_id)
+ON DELETE CASCADE;
