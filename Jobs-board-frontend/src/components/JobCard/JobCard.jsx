@@ -154,7 +154,7 @@ export function JobCard(props){
       {/* MY APPLICATIONS — SHOW DROPDOWN */}
       {props.status && props.onStatusChange && (
         <div className="status-row">
-          <label>Status: </label>
+          {/* <label>Status: </label> */}
           <select
             value={props.status}
             onChange={(e) => props.onStatusChange(e.target.value)}

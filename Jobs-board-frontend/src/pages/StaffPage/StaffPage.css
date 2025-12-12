@@ -23,10 +23,12 @@ html, body {
 .staff-content {
   flex: 1;
   overflow-y: auto;   /* ✅ ENABLE PAGE SCROLL */
-  padding: 30px;
-  padding-top: 100px;
+  padding: 5px;
+  padding-top: 5px;
   padding-bottom: 80px;
-  background: var(--cyf-light-bg);
+  /* background: var(--cyf-light-bg); */
+  background-color: transparent
+  ;
 }
 
 

@@ -8,7 +8,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 3000,
     allowedHosts: [
-      'jobboard-frontend.hosting.codeyourfuture.io'
+      'https://careerflow.hosting.codeyourfuture.io/'
     ]
   }
 })

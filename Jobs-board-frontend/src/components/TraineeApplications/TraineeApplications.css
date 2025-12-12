@@ -1,6 +1,6 @@
 .trainee-applications {
   padding: 1rem;
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
@@ -43,12 +43,16 @@
 }
 
 .applications-list {
+  display: grid;
+  grid-template-columns:repeat(3,450px) ;
+  justify-content: center;
   list-style: none;
   padding: 0;
   margin: 0 auto;
   /* display: flex; */
   width: 100%;
-  display: block;
+  /* display: block; */
+  background-color: transparent;
 }
 
 .no-applications {

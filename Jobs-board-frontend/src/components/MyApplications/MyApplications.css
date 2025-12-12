@@ -28,14 +28,14 @@
 }
 
 /* Comments column on the right */
-.applications-comments {
+/* .applications-comments {
   flex: 1.4;
   min-width: 260px;
   max-width: 360px;
   position: sticky;
-  top: 90px; /* sits under the main header */
+  top: 90px; 
   align-self: flex-start;
-}
+} */
 
 /* When there is no mentor yet */
 .no-mentor-card {

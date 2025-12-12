@@ -10,12 +10,15 @@
 }
 
 .header-content {
-  max-width: 1200px;
-  margin: auto;
+  max-width: 1600px;
+  top:0;
   display: flex;
+  width: 100%;
+  position: absolute;
   justify-content: space-between;
   align-items: center;
   text-align: center;
+  background-color: transparent
 }
 
 .header-content img {
@@ -37,6 +40,7 @@
 }
 
 .header-link {
+  margin-top: 15px;
   padding: 8px 12px;
   border-radius: var(--radius);
 
@@ -47,8 +51,8 @@
   background: var(--cyf-light-bg);
 }
 .welcome-text {
-  margin-top: 25px;
-  margin-right: 20px;
+  margin-top: 20px;
+  margin-right: 40px;
   font-size: 16px;
   font-weight: 600;
   color: rgb(8, 7, 7);
