@@ -1,5 +1,4 @@
 import "./Sidebar.css";
-
 export default function Sidebar({ activePage, onSelectPage, isOpen, onClose }) {
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const role = user?.user_role;
@@ -21,7 +20,6 @@ export default function Sidebar({ activePage, onSelectPage, isOpen, onClose }) {
             Dashboard
           </button>
 
-        )}
         {/* ✅ STAFF ONLY */}
         {role === "Staff" && (
           <button
@@ -76,20 +74,10 @@ export default function Sidebar({ activePage, onSelectPage, isOpen, onClose }) {
           >Profile
           </button>
 
-          <button className="sidebar-item">Settings</button>
+          {/* <button className="sidebar-item">Settings</button> */}
         </nav>
       </aside>
-    </>
-        )}
-        
-        <button
-        className={`sidebar-item ${activePage ==="profile" ? "active" : ""}`}
-        onClick={() => onSelectPage("profile")}
-        >Profile
-        </button>
-
-        {/* <button className="sidebar-item">Settings</button> */}
-      </nav>
-    </aside>
-  );
-}
+         </>
+      )}
+   
+      
