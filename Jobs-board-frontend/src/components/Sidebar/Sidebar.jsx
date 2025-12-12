@@ -21,6 +21,17 @@ export default function Sidebar({ activePage, onSelectPage, isOpen, onClose }) {
             Dashboard
           </button>
 
+        )}
+        {/* ✅ STAFF ONLY */}
+        {role === "Staff" && (
+          <button
+            className={`sidebar-item ${activePage ==="jobs" ? "active" : ""}`}
+            onClick={() => onSelectPage("jobs")}
+          >
+            Jobs & Companies
+          </button>
+        )}
+
           {/* TRAINEE ONLY */}
           {role === "Trainee" && (
             <button
@@ -69,5 +80,16 @@ export default function Sidebar({ activePage, onSelectPage, isOpen, onClose }) {
         </nav>
       </aside>
     </>
+        )}
+        
+        <button
+        className={`sidebar-item ${activePage ==="profile" ? "active" : ""}`}
+        onClick={() => onSelectPage("profile")}
+        >Profile
+        </button>
+
+        {/* <button className="sidebar-item">Settings</button> */}
+      </nav>
+    </aside>
   );
 }

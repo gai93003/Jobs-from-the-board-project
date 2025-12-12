@@ -18,6 +18,11 @@
   text-align: center;
 }
 
+.header-content img {
+  margin-top: 0;
+  width: 170px;
+  height: 110px;
+}
 .header-logo {
   font-size: 22px;
   font-weight: 700;

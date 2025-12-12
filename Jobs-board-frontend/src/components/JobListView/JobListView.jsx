@@ -19,6 +19,7 @@ import "../Dashboard/Dashboard.css";
 
 const PAGE_SIZE = 10;
 
+
 export default function JobListView({
   subtitle,
   fetchJobs,

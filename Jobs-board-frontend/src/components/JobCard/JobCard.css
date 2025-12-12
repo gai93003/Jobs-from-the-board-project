@@ -374,13 +374,29 @@
 button:hover {
   background: green;
 }
-=======
-/*
-.status-row {
-  width: 200px;
-} */
 
 .delete-app-btn {
+    /* Ensures no background color is visible */
+    background: transparent !important; 
+    border: none;
+    cursor: pointer;
+    font-size: 18px; 
+    padding: 0;         
+    opacity: 0.7;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    position: absolute;
+    top: 5px;   
+    right: -130px; 
+}
+
+.status-row {
+    position: relative;
+    padding-right: 20px; 
+    min-height: 25px; 
+    background-color: transparent
+}
+
+/* .delete-app-btn {
   background: var(--cyf-primary-red);
   border: none;
   cursor: pointer;
@@ -400,7 +416,12 @@ button:hover {
 .delete-app-btn:hover {
   opacity: 1;
   transform: scale(1.05);
-  background: #dc2626;
+  background: #dc2626; */
+
+.delete-app-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  color: var(--cyf-primary-red); 
 }
 
 /* Ensure the status row aligns items properly */
@@ -409,4 +430,6 @@ button:hover {
   align-items: center;
   gap: 8px;
   margin-top: 8px;
+  gap: 6px;
+  /* ... other status-row styles ... */
 }

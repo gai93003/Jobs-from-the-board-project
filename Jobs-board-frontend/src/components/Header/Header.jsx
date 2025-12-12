@@ -1,13 +1,14 @@
 import { logout, getLoggedInUser } from "../../utils/api";
 import "./Header.css";
 import hamburgerIcon from "../../assets/images-for-components/hamburger.jpg";
+import careerFlowLogo from "../../assets/logo.png";
 
 export default function Header({ onToggleSidebar }) {
   const user = getLoggedInUser(); 
   return (
     <header className="app-header">
       <div className="header-content">
-        <h1 className="header-logo">CodeYourFuture</h1>
+        <img src={careerFlowLogo} alt="Career Flow Logo" />
 
         <nav className="header-nav">
           {/* <button className="header-link">Home</button> */}

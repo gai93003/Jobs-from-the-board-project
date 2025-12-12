@@ -69,7 +69,7 @@ export default function StaffPage() {
 
           {activePage === "jobs" && (
             <div className="staff-dashboard">
-              <h1 className="staff-title">Staff — Star Companies</h1>
+              <h1 className="staff-title">Jobs & Companies</h1>
 
               {loading && <p>Loading jobs...</p>}
 
@@ -82,7 +82,7 @@ export default function StaffPage() {
                       <th>Company</th>
                       <th>Location</th>
                       <th>Status</th>
-                      <th>Star</th>
+                      <th>Mark as a Star</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -127,122 +127,3 @@ export default function StaffPage() {
     </div>
   );
 }
-
-
-
-
-
-// import { useEffect, useState } from "react";
-// import { fetchWithAuth } from "../../utils/api.js";
-// import { markCompanyAsStar, unstarCompany } from "../../utils/staff.js";
-// import Header from "../../components/Header/Header.jsx";
-// import Footer from "../../components/Footer/Footer.jsx";
-// import Sidebar from "../../components/Sidebar/Sidebar.jsx";
-// import "./StaffPage.css";
-// import "../../pages/TraineePage/TraineePage.css"
-
-// export default function StaffPage() {
-//   const [activePage, setActivePage] = useState("dashboard"); 
-//   const [jobs, setJobs] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     async function loadJobs() {
-//       setLoading(true);
-//       const res = await fetchWithAuth("/jobs/all");
-//       setJobs(res.data.jobs || []);
-//       setLoading(false);
-//     }
-
-//     loadJobs();
-//   }, []);
-
-//   async function handleStar(job) {
-//     await markCompanyAsStar(job.company);
-
-//     setJobs((prev) =>
-//       prev.map((j) =>
-//         j.company === job.company
-//           ? { ...j, is_star: true }
-//           : j
-//       )
-//     );
-//   }
-
-//   async function handleUnstar(job) {
-//     await unstarCompany(job.company);
-
-//     setJobs((prev) =>
-//       prev.map((j) =>
-//         j.company === job.company
-//           ? { ...j, is_star: false }
-//           : j
-//       )
-//     );
-//   }
-
-//   return (
-
-        
-    
-
-//       <div className="trainee-page">
-//             <Header />
-      
-//             <div className="trainee-layout">
-//               <Sidebar onSelectPage={setActivePage} />
-//     <div className="staff-dashboard"></div>
-//       {/* {activePage === "dashboard" && <Dashboard />}
-//       {activePage === "applications" && <MyApplications />} */}
-//       <h1 className="staff-title">Staff Dashboard — Star Companies</h1>
-
-//       {loading && <p>Loading jobs...</p>}
-
-//       {!loading && (
-//         <table className="staff-table">
-//           <thead>
-//             <tr>
-//               <th>Job Title</th>
-//               <th>Company</th>
-//               <th>Location</th>
-//               <th>Star Status</th>
-//               <th>Action</th>
-//             </tr>
-//           </thead>
-
-//           <tbody>
-//             {jobs.map((job) => (
-//               <tr key={job.job_id}>
-//                 <td>{job.title}</td>
-//                 <td>
-//                   {job.company} {job.is_star && "⭐"}
-//                 </td>
-//                 <td>{job.location}</td>
-//                 <td>{job.is_star ? "Star Company" : "Normal"}</td>
-//                 <td>
-//                   {!job.is_star ? (
-//                     <button
-//                       className="staff-star-btn"
-//                       onClick={() => handleStar(job)}
-//                     >
-//                       Mark as ⭐
-//                     </button>
-//                   ) : (
-//                     <button
-//                       className="staff-star-btn-remove"
-//                       onClick={() => handleUnstar(job)}
-//                     >
-//                       Remove ⭐
-//                     </button>
-//                   )}
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       )}
-//       </div>
-//       <Footer />
-//     </div>
-//   );
-// }

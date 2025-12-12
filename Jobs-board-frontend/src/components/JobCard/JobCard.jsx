@@ -119,14 +119,15 @@ export function JobCard(props){
         {props.is_star && <span className="star-badge" title={starDescription}> ⭐</span>}
       </p>
 
-      <p><strong>Location:</strong> {props.location}</p>
-      <p><strong>Type:</strong> {props.employment_type}</p>
-      <p><strong>Work Place:</strong> {props.location_type}</p>
-      <p><strong>Salary range:</strong>{" "}{salaryText ?? "Not provided"}</p>
-      <p><strong>Experience:</strong> {props.exp_level}</p>
+
+      <p>Location:<strong> {props.location}</strong></p>
+      <p>Type: <strong>{props.employment_type}</strong></p>
+      <p>Work Place: <strong>{props.location_type}</strong></p>
+      <p>Salary range:<strong>{" "}{salaryText ?? "Not provided"}</strong></p>
+      <p>Experience:<strong> {props.exp_level}</strong></p>
       {/* <p><strong>Source:</strong> {props.partner_name}</p> */}
       <p className="source-row">
-          <strong>Source:</strong>{" "}
+          Source:{" "}
           <span
             className={
               props.api_source === "CYFslack"
@@ -137,7 +138,8 @@ export function JobCard(props){
             {props.partner_name || props.api_source}
           </span>
       </p>
-      <p><strong>Job Age:</strong> {diffDaysText}</p>
+
+      <p>Job Age:<strong> {diffDaysText}</strong></p>
 
        {/* New Delete Button */}
           {props.onDelete && (
@@ -146,7 +148,7 @@ export function JobCard(props){
               className="delete-app-btn"
               title="Remove this application"
             >
-              Remove job
+              🗑️
             </button>
           )}   
       {/* MY APPLICATIONS — SHOW DROPDOWN */}
