@@ -30,17 +30,24 @@ Career Flow helps CodeYourFuture trainees discover curated roles while giving me
 Frontend (Career flow frontend)
 
 React	UI Framework	Component-based architecture for building interactive user interfaces with reusable components
+
 Vite	Build Tool	Fast development server with Hot Module Replacement (HMR) for rapid development
+
 JavaScript (ES6+)	Programming Language	Modern JavaScript features including async/await, destructuring, and arrow functions
+
 CSS3	Styling	Responsive design and modern layout techniques (23.1% of codebase)
+
 HTML5	Markup	Semantic HTML structure (0.2% of codebase)
 
 Backend (Career flow backend)
 
 Node.js	Runtime Environment	JavaScript runtime built on Chrome's V8 engine for server-side execution
+
 Express.js	Web Framework	Minimalist web framework for building RESTful APIs and handling HTTP requests
+
 PostgreSQL	Database	Relational database for persistent storage of job listings, user data, and application state
-npm	Package Manager	Dependency management and script running for both frontend and backend
+
+Npm	Package Manager	Dependency management and script running for both frontend and backend
 
 Development Tools
 
