@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { fetchWithAuth } from "../../utils/api";
 
 import './Login.css';
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5501/api";
 
 
 function Login() {
@@ -24,10 +25,15 @@ function Login() {
    setIsLoading(true);
   
    try {
-     const { response, data }= await fetchWithAuth("/login", {
+     const response = await fetch(`${API_URL}/login`, {
        method: "POST",
+       headers: {
+         "Content-Type": "application/json"
+       },
        body: JSON.stringify({ email, password })
      });
+
+     const data = await response.json();
 
      if (response.ok) {
        // Store token in localStorage

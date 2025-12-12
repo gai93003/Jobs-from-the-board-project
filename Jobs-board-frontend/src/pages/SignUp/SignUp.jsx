@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { fetchWithAuth } from "../../utils/api";
-
 
 import './signup.css';
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5501/api";
 
 function SignUp() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -27,10 +27,15 @@ function SignUp() {
     }
 
     try {
-      const { response, data }= await fetchWithAuth("/signup", {
+      const response = await fetch(`${API_URL}/signup`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({ full_name, email, password, confirm_password, user_role }),
       });
+      
+      const data = await response.json();
       
       if (response.ok) {
         alert("You have successfully signed up!");

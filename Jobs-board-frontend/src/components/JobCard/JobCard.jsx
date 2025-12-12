@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./JobCard.css";
 import { formatSalaryRange } from "../../utils/jobListHelper.js";
 
@@ -10,6 +11,12 @@ import { formatSalaryRange } from "../../utils/jobListHelper.js";
 // }
 
 export function JobCard(props){
+  const [showComments, setShowComments] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [loadingComments, setLoadingComments] = useState(false);
+  const [showCommentInput, setShowCommentInput] = useState(false);
+
   let diffDaysText = "N/A";
     const salaryText = formatSalaryRange(props.salary_min, props.salary_max, props.currency || "GBP");
    if (props.active_from) {
@@ -20,6 +27,77 @@ export function JobCard(props){
       diffDaysText = `${diffDays} days ago`;
     }
   }
+
+  const fetchComments = async () => {
+    if (!props.application_id) return;
+    
+    setLoadingComments(true);
+    try {
+      const response = await fetch(
+        `http://localhost:5501/api/job-comments/${props.application_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setComments(data.comments || []);
+      }
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    } finally {
+      setLoadingComments(false);
+    }
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !props.application_id) return;
+
+    try {
+      const response = await fetch("http://localhost:5501/api/job-comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          applicationId: props.application_id,
+          comment: newComment,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setComments([...comments, data.comment]);
+        setNewComment("");
+        setShowCommentInput(false);
+      } else {
+        alert(data.error || "Failed to post comment");
+      }
+    } catch (error) {
+      console.error("Error posting comment:", error);
+      alert("Failed to post comment");
+    }
+  };
+
+  const toggleComments = () => {
+    if (!showComments && comments.length === 0) {
+      fetchComments();
+    }
+    setShowComments(!showComments);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   return(
 
@@ -90,6 +168,78 @@ export function JobCard(props){
         </a>
       </div>
 
+      {/* Comments section - only show for applications */}
+      {props.application_id && (
+        <div className="comments-section">
+          <button className="toggle-comments-btn" onClick={toggleComments}>
+            {showComments ? '▼' : '▶'} Comments - 💬
+          </button>
+
+          {showComments && (
+            <div className="comments-container">
+              {loadingComments ? (
+                <p className="loading-text">Loading comments...</p>
+              ) : (
+                <>
+                  {comments.length === 0 ? (
+                    <p className="no-comments-text">No comments yet</p>
+                  ) : (
+                    <div className="comments-list">
+                      {comments.map((comment) => (
+                        <div key={comment.comment_id} className="comment-item">
+                          <div className="comment-header">
+                            <span className="comment-author">{comment.author_name}</span>
+                            <span className="comment-role">({comment.role})</span>
+                            <span className="comment-date">{formatDate(comment.created_at)}</span>
+                          </div>
+                          <p className="comment-text">{comment.comment_text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {showCommentInput ? (
+                    <div className="add-comment-form">
+                      <textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Write a comment..."
+                        className="comment-textarea"
+                        rows="2"
+                      />
+                      <div className="comment-actions">
+                        <button 
+                          onClick={handleAddComment} 
+                          className="post-comment-btn"
+                          disabled={!newComment.trim()}
+                        >
+                          Post
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setShowCommentInput(false);
+                            setNewComment("");
+                          }} 
+                          className="cancel-comment-btn"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button 
+                      className="add-comment-btn" 
+                      onClick={() => setShowCommentInput(true)}
+                    >
+                      <span className="plus-icon">+</span> Add Comment
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
     </article>
   )
