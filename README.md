@@ -27,7 +27,7 @@ Career Flow helps CodeYourFuture trainees discover curated roles while giving me
 
 🔧 Tech Stack
 
-Frontend (Jobs-board-frontend)
+Frontend (Career flow frontend)
 
 React	UI Framework	Component-based architecture for building interactive user interfaces with reusable components
 Vite	Build Tool	Fast development server with Hot Module Replacement (HMR) for rapid development
@@ -35,7 +35,7 @@ JavaScript (ES6+)	Programming Language	Modern JavaScript features including asyn
 CSS3	Styling	Responsive design and modern layout techniques (23.1% of codebase)
 HTML5	Markup	Semantic HTML structure (0.2% of codebase)
 
-Backend (Jobs-board-backend)
+Backend (Career flow backend)
 
 Node.js	Runtime Environment	JavaScript runtime built on Chrome's V8 engine for server-side execution
 Express.js	Web Framework	Minimalist web framework for building RESTful APIs and handling HTTP requests
