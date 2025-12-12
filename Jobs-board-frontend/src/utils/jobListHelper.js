@@ -53,3 +53,9 @@ export function formatSalaryRange(min, max, currency = "GBP") {
   if (minText) return `From ${minText}`;
   return `Up to ${maxText}`;
 }
+
+export function applyApiSourceFilter(jobs, apiSource) {
+  // apiSource examples: "" | "CYFslack" | "DevitJobs"
+  if (!apiSource) return jobs;
+  return jobs.filter(job => job.api_source === apiSource);
+}

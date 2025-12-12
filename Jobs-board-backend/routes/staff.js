@@ -94,6 +94,7 @@ router.get("/cohort/trainees", authenticate,requireRole("Staff") ,async (req, re
   `);
 
   res.json({ rows: result.rows });
+  console.log(res.json({ rows: result.rows }))
 });
 
 

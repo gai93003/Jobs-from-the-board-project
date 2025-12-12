@@ -19,7 +19,6 @@ export default function MyApplications() {
 
   return (
     <div className="applications-layout">
-      {/* LEFT: Kanban / board */}
       <section className="applications-board">
         <h1 className="applications-title">
           {user?.full_name?.toUpperCase()}’s Applications
