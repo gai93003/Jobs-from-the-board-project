@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { fetchWithAuth } from "../../utils/api";
 import "./CommentSection.css";
 
-export function CommentSection({ traineeId, mentorId, mode = "trainee" }) {
+export function CommentSectionold({ traineeId, mentorId, mode = "trainee" }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+
+
 
   useEffect(() => {
     fetchComments();
@@ -127,4 +129,8 @@ export function CommentSection({ traineeId, mentorId, mode = "trainee" }) {
       )}
     </div>
   );
+}
+
+export function CommentSection({ traineeId, mentorId, mode = "trainee" }) {
+  return ""
 }

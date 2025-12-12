@@ -75,8 +75,8 @@ export default function StaffPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {jobs.map((job) => (
-                      <tr key={job.job_id}>
+                    {jobs.map((job, i) => (
+                      <tr key={i}>
                         <td>{job.title}</td>
                         <td>
                           {job.company} {job.is_star && "⭐"}

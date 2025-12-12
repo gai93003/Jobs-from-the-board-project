@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { JobCard } from "../JobCard/JobCard";
 import { updateApplicationStatus } from "../../utils/applications";
-// import { CommentSection1 } from "../CommentSection/CommentSection";
+import { CommentSection } from "../CommentSection/CommentSection";
 import "./TraineeApplications.css";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5501/api";
 
 export function TraineeApplications({ trainee, onBack }) {
   const [applications, setApplications] = useState([]);
@@ -19,7 +21,7 @@ export function TraineeApplications({ trainee, onBack }) {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5501/api/applications?userId=${trainee.user_id}`,
+        `${API_URL}/applications?userId=${trainee.user_id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -93,7 +95,7 @@ export function TraineeApplications({ trainee, onBack }) {
       )}
 
       {mentorId && (
-        <CommentSection1 
+        <CommentSection
           traineeId={trainee.user_id} 
           mentorId={mentorId} 
           mode="mentor"
