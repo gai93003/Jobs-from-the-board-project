@@ -123,7 +123,7 @@ The project lives in this repo as two main folders: **`backend`** (server and da
     </td>
     <td align="center">
       <a href="https://github.com/donarbl">
-        <img src="https://github.com/donarbI.png" width="100px;" alt="donarbI"/>
+        <img src="https://github.com/donarbl.png" width="100px;" alt="donarbl"/>
         <br />
         <sub><b>Donara Blanc</b></sub>
       </a>
