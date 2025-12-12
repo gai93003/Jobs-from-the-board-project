@@ -26,12 +26,43 @@ Career Flow helps CodeYourFuture trainees discover curated roles while giving me
 🤝 Collaborative workflow: Multiple contributors work via branches and pull requests, making it a realistic learning project for production‑style development
 
 🔧 Tech Stack
-Layer	Technologies
-Frontend	JavaScript, React, CSS, HTML (in Jobs-board-frontend)
-Backend	JavaScript (Node/Express‑style backend in Jobs-board-backend)
-Repository	GitHub monorepo with separate frontend/backend folders
+
+Frontend (Jobs-board-frontend)
+
+React	UI Framework	Component-based architecture for building interactive user interfaces with reusable components
+Vite	Build Tool	Fast development server with Hot Module Replacement (HMR) for rapid development
+JavaScript (ES6+)	Programming Language	Modern JavaScript features including async/await, destructuring, and arrow functions
+CSS3	Styling	Responsive design and modern layout techniques (23.1% of codebase)
+HTML5	Markup	Semantic HTML structure (0.2% of codebase)
+
+Backend (Jobs-board-backend)
+
+Node.js	Runtime Environment	JavaScript runtime built on Chrome's V8 engine for server-side execution
+Express.js	Web Framework	Minimalist web framework for building RESTful APIs and handling HTTP requests
+PostgreSQL	Database	Relational database for persistent storage of job listings, user data, and application state
+npm	Package Manager	Dependency management and script running for both frontend and backend
+
+Development Tools
+
+Git/GitHub	Version control and collaboration with branching strategy for feature development
+VS Code	Primary IDE with extensions for JavaScript, React, and PostgreSQL
+Postman	API testing and development for backend endpoints
+ESLint	Code quality and style enforcement
+
+Architecture Highlights
+
+🗄️ Database: PostgreSQL provides robust relational data storage with ACID compliance, perfect for job listings, user accounts, and application tracking
+
+🔌 API Design: RESTful API architecture with Express.js handling routes, middleware, and business logic
+
+⚛️ Component Structure: React components organized for reusability and maintainability
+
+📦 Package Management: npm manages dependencies across both frontend and backend, with separate package.json files for each
+
+🔄 Data Flow: Backend serves data via API endpoints; frontend consumes and displays data through React components
 
 👥 Contributors
+
 Career Flow is built and maintained by:
 
 @RihannaP - Rihanna P
