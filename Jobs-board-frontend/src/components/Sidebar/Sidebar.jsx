@@ -61,7 +61,7 @@ export default function Sidebar({ activePage, onSelectPage }) {
         >Profile
         </button>
 
-        <button className="sidebar-item">Settings</button>
+        {/* <button className="sidebar-item">Settings</button> */}
       </nav>
     </aside>
   );

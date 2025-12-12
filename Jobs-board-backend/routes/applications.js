@@ -5,6 +5,8 @@ import {
   getApplicationsByUser,
   getApplicationByUserAndJob
 } from '../services/applicationsService.js';
+import { authenticate } from "../Utils/authMiddleware.js";
+import { pool } from '../DB/db.js';
 
 const router = express.Router();
 
@@ -60,6 +62,29 @@ router.get('/by', async (req, res) => {
     res.json({ application: app });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+router.delete("/:id", authenticate, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.user_id;
+
+  try {
+    const result = await pool.query(
+      `DELETE FROM applications
+       WHERE application_id = $1 AND user_id = $2
+       RETURNING application_id`,
+      [id, userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Application not found" });
+    }
+
+    return res.json({ ok: true, deletedId: result.rows[0].application_id });
+  } catch (err) {
+    console.error("Delete application error:", err);
+    return res.status(500).json({ error: "Server error deleting application" });
   }
 });
 
