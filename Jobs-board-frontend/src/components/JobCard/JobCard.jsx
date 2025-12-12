@@ -98,7 +98,7 @@ export function JobCard(props){
   
       {props.isInterested && (
         <div className="interested-badge">
-          💚
+          
         </div>
       )}
       <div className="source-badge">
@@ -119,6 +119,7 @@ export function JobCard(props){
         {props.is_star && <span className="star-badge" title={starDescription}> ⭐</span>}
       </p>
 
+
       <p>Location:<strong> {props.location}</strong></p>
       <p>Type: <strong>{props.employment_type}</strong></p>
       <p>Work Place: <strong>{props.location_type}</strong></p>
@@ -137,6 +138,7 @@ export function JobCard(props){
             {props.partner_name || props.api_source}
           </span>
       </p>
+
       <p>Job Age:<strong> {diffDaysText}</strong></p>
 
        {/* New Delete Button */}

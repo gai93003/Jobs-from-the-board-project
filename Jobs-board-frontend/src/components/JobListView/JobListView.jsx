@@ -17,7 +17,8 @@ import { dedupeByJobId } from "../../utils/jobDedupe.js";
 
 import "../Dashboard/Dashboard.css";
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 10;
+
 
 export default function JobListView({
   subtitle,

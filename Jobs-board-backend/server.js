@@ -23,7 +23,7 @@ const port = process.env.PORT ||5501;
 
 // Allow both production and local development origins
 const allowedOrigins = [
-  "https://jobboard-frontend.hosting.codeyourfuture.io",
+  "https://careerflow.hosting.codeyourfuture.io",
   "http://localhost:5173",
   "http://localhost:5174"
 ];

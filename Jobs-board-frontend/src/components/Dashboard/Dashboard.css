@@ -7,6 +7,15 @@
   list-style: none;     /* remove bullets */
   width: 100%;
   box-sizing: border-box;
+  
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.jobs-grid::-webkit-scrollbar {
+  display: none;
 }
 .section-title {
   margin: 20px 0 10px;
@@ -104,22 +113,7 @@
   margin-top: 20px;
 }
 
-/* :white_check_mark: MOBILE */
-@media (max-width: 1024px) {
-  .jobs-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 
-@media (max-width: 600px) {
-  .jobs-list {
-    grid-template-columns: 1fr;
-  }
-
-  .filters {
-    grid-template-columns: 1fr;
-  }
-}
 
 
 .dashboard-container {
@@ -138,8 +132,43 @@
   color: var(--cyf-font);
 }
 
+/* Make dashboard container take 90% width on small screens */
+/* @media (max-width: 768px) {
+  .dashboard-container {
+    width: 90%;
+    margin: 0 auto;
+  }
+} */
+
 .jobs-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+
+/* :white_check_mark: MOBILE */
+@media (max-width: 1024px) {
+  .jobs-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .jobs-grid {
+    width: 90%;
+    margin: 0 auto 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .jobs-list {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    width: 90%;
+    margin: 0 auto 20px auto;
+    flex-direction: column;
+  }
 }

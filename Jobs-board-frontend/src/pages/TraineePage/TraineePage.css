@@ -12,6 +12,32 @@
   position: relative;
 }
 
+/* On mobile, make layout full width and let sidebar overlay */
+@media (max-width: 768px) {
+  .trainee-page .trainee-layout {
+    display: block;
+    width: 100%;
+    position: relative;
+  }
+  
+  .trainee-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+  }
+  
+  /* Sidebar uses position: fixed from Sidebar.css, but we need to ensure it doesn't affect layout */
+  .trainee-page .sidebar {
+    position: absolute;
+    pointer-events: none;
+  }
+  
+  /* When sidebar is open, allow interaction */
+  .trainee-page .sidebar.sidebar-open {
+    pointer-events: auto;
+  }
+}
+
 
 .trainee-content {
   display: block;
@@ -19,6 +45,15 @@
   overflow-y: auto;
   max-height: calc(100vh - 120px);
   flex: 1;
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.trainee-content::-webkit-scrollbar {
+  display: none;
 }
 .trainee-page {
   flex: 1;
