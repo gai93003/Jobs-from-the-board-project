@@ -21,7 +21,7 @@ The project is structured as a monorepo with separate backend and frontend codeb
 
 Career Flow helps CodeYourFuture trainees discover curated roles while giving mentors and staff a simple way to manage and share opportunities.
 
-The project lives in this repo as two main folders: **`Jobs-board-backend`** (server and data layer) and **`Jobs-board-frontend`** (user interface).
+The project lives in this repo as two main folders: **`backend`** (server and data layer) and **`frontend`** (user interface).
 
 ### 🎯 Key goals
 
@@ -122,7 +122,7 @@ The project lives in this repo as two main folders: **`Jobs-board-backend`** (se
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/donarbI">
+      <a href="https://github.com/donarbl">
         <img src="https://github.com/donarbI.png" width="100px;" alt="donarbI"/>
         <br />
         <sub><b>Donara Blanc</b></sub>
@@ -144,15 +144,6 @@ The project lives in this repo as two main folders: **`Jobs-board-backend`** (se
 > [!NOTE]
 > Career Flow is an actively developed collaborative project with multiple contributors. Contributions that improve functionality, UX, documentation, and test coverage are welcome!
 
-### How to Contribute
-
-1. 🍴 **Fork and clone** the repo
-2. 🌿 **Create a feature branch** from `main`
-3. 💻 **Work inside the appropriate folder** (`Jobs-board-backend` or `Jobs-board-frontend`) and follow existing patterns
-4. 📝 **Write clear commit messages** and open a pull request describing your changes and how to test them
-5. 🔍 **Tag or request review** from existing contributors listed above
-
-### Development Workflow
 
 ## Code of Conduct
 
