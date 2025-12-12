@@ -1,14 +1,10 @@
 import { useState } from "react";
 import "./JobCard.css";
 import { formatSalaryRange } from "../../utils/jobListHelper.js";
+import slackBadge from "../../assets/slack-badge.png";
+import { fetchWithAuth } from "../../utils/api.js";
 
-
-// function formatSalaryRange(min, max) {
-//   if (min == null && max == null) return null;
-//   if (min != null && max != null) return `£${min} – £${max}`;
-//   if (min != null) return `From £${min}`;
-//   return `Up to £${max}`;
-// }
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5501/api";
 
 export function JobCard(props){
   const [showComments, setShowComments] = useState(false);
@@ -27,21 +23,14 @@ export function JobCard(props){
       diffDaysText = `${diffDays} days ago`;
     }
   }
+      const starDescription = "Star company is a company that has hired CYFers before or works with the CYF community.";
 
   const fetchComments = async () => {
     if (!props.application_id) return;
     
     setLoadingComments(true);
     try {
-      const response = await fetch(
-        `http://localhost:5501/api/job-comments/${props.application_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await response.json();
+      const {response , data} = await fetchWithAuth(`/job-comments/${props.application_id}`)
       if (response.ok) {
         setComments(data.comments || []);
       }
@@ -56,7 +45,10 @@ export function JobCard(props){
     if (!newComment.trim() || !props.application_id) return;
 
     try {
-      const response = await fetch("http://localhost:5501/api/job-comments", {
+      // const {response, data} = await fetchWithAuth(`/job-comments`),{
+
+      
+      const response = await fetch(`${API_URL}/job-comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,20 +93,30 @@ export function JobCard(props){
 
   return(
 
-    <article className={`job-card ${props.isInterested ? 'interested' : ''}`}>
-      {/* Green heart indicator when job is marked as interested */}
+    
+    <article className={`job-card ${props.isInterested ? "interested" : ""}`}>
+  
       {props.isInterested && (
         <div className="interested-badge">
           💚
         </div>
       )}
-      
+      <div className="source-badge">
+        {props.api_source === "CYFslack" ? 
+
+        <div className="job-card-slack-badge">
+           <img src={slackBadge} alt="CYF Slack" />
+        </div>
+        
+        : "🌐"}
+      </div>
+
       <h3 className="job-title">
         {props.title}
       </h3>
 
       <p className="company">{props.company}
-        {props.is_star && (<span className="star-badge" title="This employer has hired a CYFer before">⭐</span>)}
+        {props.is_star && <span className="star-badge" title={starDescription}> ⭐</span>}
       </p>
 
       <p><strong>Location:</strong> {props.location}</p>
@@ -122,10 +124,31 @@ export function JobCard(props){
       <p><strong>Work Place:</strong> {props.location_type}</p>
       <p><strong>Salary range:</strong>{" "}{salaryText ?? "Not provided"}</p>
       <p><strong>Experience:</strong> {props.exp_level}</p>
-      <p><strong>Source:</strong> {props.partner_name}</p>
+      {/* <p><strong>Source:</strong> {props.partner_name}</p> */}
+      <p className="source-row">
+          <strong>Source:</strong>{" "}
+          <span
+            className={
+              props.api_source === "CYFslack"
+                ? "source-pill source-pill--slack"
+                : "source-pill source-pill--platform"
+            }
+          >
+            {props.partner_name || props.api_source}
+          </span>
+      </p>
       <p><strong>Job Age:</strong> {diffDaysText}</p>
 
-          
+       {/* New Delete Button */}
+          {props.onDelete && (
+            <button 
+              onClick={props.onDelete} 
+              className="delete-app-btn"
+              title="Remove this application"
+            >
+              🗑️
+            </button>
+          )}   
       {/* MY APPLICATIONS — SHOW DROPDOWN */}
       {props.status && props.onStatusChange && (
         <div className="status-row">

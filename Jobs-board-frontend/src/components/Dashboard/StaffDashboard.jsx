@@ -29,7 +29,7 @@ export default function StaffDashboard() {
     setSelectedTrainee(null);
   };
 
-  // IF TRAINEE IS SELECTED → SHOW THEIR APPLICATIONS
+  // IF TRAINEE IS SELECTED > SHOW THEIR APPLICATIONS
   if (selectedTrainee) {
     return (
      <div className="staff-dashboard">
@@ -48,23 +48,6 @@ export default function StaffDashboard() {
   }
 
   if (!funnel) return <p>Loading dashboard...</p>;
-
-  // const chartData = {
-  //   labels: Object.keys(funnel.stats),
-  //   datasets: [
-  //     {
-  //       data: Object.values(funnel.stats),
-  //       backgroundColor: [
-  //             "#EE4344", // submitted
-  //             "#F59E0B", // initial screening
-  //             "#3B82F6", // 1st interview
-  //             "#6366F1", // 2nd interview
-  //             "#10B981", // offer
-  //             "#6B7280" , // declined
-  //           ]
-  //     }
-  //   ]
-  // };
 
   const stats = funnel?.stats || {};
   const LABELS = [
@@ -190,33 +173,9 @@ function Summary({ title, value }) {
   );
 }
 
-// function mapTraineeData(rows) {
-//   const map = {};
 
-//   rows.forEach((row) => {
-//     if (!map[row.user_id]) {
-//       map[row.user_id] = {
-//         user_id: row.user_id,
-//         full_name: row.full_name,
-//         email: row.email,
-//         "Application Submitted": 0,
-//         "Initial Screening": 0,
-//         "1st Round Interview":0,
-//         "2nd Round Interview":0,
-//         "Application Declined": 0,
-//         "Offer Received": 0,
-//       };
-//     }
 
-//     if (map[row.user_id][row.status] !== undefined) {
-//       map[row.user_id][row.status] += row.total;
-//     }
-//   });
-
-//   return Object.values(map);
-// }
-
-function mapTraineeData(rows) {
+export function mapTraineeData(rows) {
   const map = {};
 
   rows.forEach((row) => {

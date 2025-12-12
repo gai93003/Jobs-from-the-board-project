@@ -46,12 +46,16 @@ export function formatCurrency(value, currency = "GBP") {
 export function formatSalaryRange(min, max, currency = "GBP") {
   const minText = formatCurrency(min, currency);
   const maxText = formatCurrency(max, currency);
- console.log("min:", min, "type:", typeof min);
- console.log("max:", max, "type:", typeof max);
  
   if (!minText && !maxText) return null;
   if (minText && maxText && min !== max) return `${minText} – ${maxText}`;
   if (minText && maxText && min === max) return `${minText}`;
   if (minText) return `From ${minText}`;
   return `Up to ${maxText}`;
+}
+
+export function applyApiSourceFilter(jobs, apiSource) {
+  // apiSource examples: "" | "CYFslack" | "DevitJobs"
+  if (!apiSource) return jobs;
+  return jobs.filter(job => job.api_source === apiSource);
 }
