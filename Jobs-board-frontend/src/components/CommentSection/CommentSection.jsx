@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchWithAuth } from "../../utils/api";
 import "./CommentSection.css";
 
 export function CommentSection({ traineeId, mentorId, mode = "trainee" }) {
@@ -15,15 +16,9 @@ export function CommentSection({ traineeId, mentorId, mode = "trainee" }) {
   const fetchComments = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `http://localhost:5501/api/comments?traineeId=${traineeId}&mentorId=${mentorId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      const { response, data } = await fetchWithAuth(
+        `/comments?traineeId=${traineeId}&mentorId=${mentorId}`
       );
-      const data = await response.json();
       if (response.ok) {
         setComments(data.comments || []);
       } else {
@@ -42,12 +37,8 @@ export function CommentSection({ traineeId, mentorId, mode = "trainee" }) {
 
     setSubmitting(true);
     try {
-      const response = await fetch("http://localhost:5501/api/comments", {
+      const { response, data } = await fetchWithAuth("/comments", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
         body: JSON.stringify({
           traineeId,
           mentorId,
@@ -55,7 +46,6 @@ export function CommentSection({ traineeId, mentorId, mode = "trainee" }) {
         }),
       });
 
-      const data = await response.json();
       if (response.ok) {
         setComments([...comments, data.comment]);
         setNewComment("");

@@ -1,3 +1,4 @@
+import JobListView from "../JobListView/JobListView";
 // import JobListView from "../JobListView/JobListView";
 // import { CommentSection } from "../CommentSection/CommentSection";
 
@@ -43,6 +44,16 @@ import { CommentSection } from "../CommentSection/CommentSection";
 import "./MyApplications.css";   // ⬅️ add this
 
 export default function MyApplications() {
+//    const user = JSON.parse(localStorage.getItem("user") || "null");
+
+//   return (
+//     <div>
+//       <JobListView
+//         title={`${user.full_name.toUpperCase()} 's Applications`}
+//         subtitle="Manage your job application progress"
+//         mode="applications"
+//       />
+
   const user = JSON.parse(localStorage.getItem("user") || "null");
   const userId = user?.user_id;
   const mentorId = user?.mentor_id;
