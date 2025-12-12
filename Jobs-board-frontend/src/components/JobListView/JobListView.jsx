@@ -13,6 +13,8 @@ import {
   applyApiSourceFilter
 } from "../../utils/jobListHelper.js";
 
+import { dedupeByJobId } from "../../utils/jobDedupe.js";
+
 import "../Dashboard/Dashboard.css";
 
 const PAGE_SIZE = 6;
@@ -98,7 +100,10 @@ export default function JobListView({
     if (mode === "dashboard") {
       filtered = applyApiSourceFilter(filtered, apiSource);
       filtered = applyStarFilter(filtered, starCompaniesOnly);
+       // NEW: remove duplicates by job_id
+      filtered = dedupeByJobId(filtered);
       filtered = sortJobs(filtered, sortBy, sortDirection);
+     
     }
 
   // pagination
