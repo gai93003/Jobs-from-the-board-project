@@ -1,7 +1,15 @@
 import { useState } from "react";
-import "./JobCard.css"
+import "./JobCard.css";
+import { formatSalaryRange } from "../../utils/jobListHelper.js";
 
- 
+
+// function formatSalaryRange(min, max) {
+//   if (min == null && max == null) return null;
+//   if (min != null && max != null) return `£${min} – £${max}`;
+//   if (min != null) return `From £${min}`;
+//   return `Up to £${max}`;
+// }
+
 export function JobCard(props){
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState([]);
@@ -10,6 +18,7 @@ export function JobCard(props){
   const [showCommentInput, setShowCommentInput] = useState(false);
 
   let diffDaysText = "N/A";
+    const salaryText = formatSalaryRange(props.salary_min, props.salary_max, props.currency || "GBP");
    if (props.active_from) {
     const activeDate = new Date(props.active_from);
     if (!isNaN(activeDate)) {
@@ -105,13 +114,14 @@ export function JobCard(props){
       </h3>
 
       <p className="company">{props.company}
-        {props.is_star && <span className="star-badge"> ⭐</span>}
+        {props.is_star && (<span className="star-badge" title="This employer has hired a CYFer before">⭐</span>)}
       </p>
 
       <p><strong>Location:</strong> {props.location}</p>
       <p><strong>Type:</strong> {props.employment_type}</p>
       <p><strong>Work Place:</strong> {props.location_type}</p>
-      <p><strong>Exprience:</strong> {props.exp_level}</p>
+      <p><strong>Salary range:</strong>{" "}{salaryText ?? "Not provided"}</p>
+      <p><strong>Experience:</strong> {props.exp_level}</p>
       <p><strong>Source:</strong> {props.partner_name}</p>
       <p><strong>Job Age:</strong> {diffDaysText}</p>
 
@@ -125,11 +135,12 @@ export function JobCard(props){
             onChange={(e) => props.onStatusChange(e.target.value)}
           >
             <option value="Interested">Interested</option>
-            <option value="Application Started">Application Started</option>
             <option value="Application Submitted">Application Submitted</option>
-            <option value="Invited to Interview">Invited to Interview</option>
-            <option value="Application Declined">Application Declined</option>
+            <option value="Initial Screening">Initial Screening</option>
+            <option value="1st Round Interview">1st Round Interview</option>
+            <option value="2nd Round Interview">2nd Round Interview</option>
             <option value="Offer Received">Offer Received</option>
+            <option value="Application Declined">Application Declined</option>
           </select>
         </div>
       )}

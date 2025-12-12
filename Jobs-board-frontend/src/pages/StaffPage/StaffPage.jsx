@@ -51,7 +51,7 @@ export default function StaffPage() {
       <Header />
 
       <div className="staff-layout">
-        <Sidebar onSelectPage={setActivePage} />
+        <Sidebar activePage={activePage} onSelectPage={setActivePage} />
 
         <main className="staff-content">
           {activePage === "dashboard" && <StaffDashboard />}

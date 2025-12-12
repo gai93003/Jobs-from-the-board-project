@@ -1,4 +1,4 @@
-.job-card {
+ .job-card {
   background: var(--cyf-white);
   border: 1px solid var(--border-color);
   padding: 20px;
@@ -13,12 +13,12 @@
   flex-direction: column;
 }
 
-/* Green border when job is marked as interested */
+
 .job-card.interested {
   border: 2px solid #28a745;
 }
 
-/* Green heart badge in top-right corner */
+
 .interested-badge {
   position: absolute;
   top: 10px;
@@ -55,7 +55,7 @@
   color: var(--cyf-font);
 }
 
-/* Container for action buttons */
+
 .job-card-actions {
   display: flex;
   gap: 15px;
@@ -87,7 +87,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Interested button default state */
 .interested-btn {
   background: #f0f0f0;
   color: #333;
@@ -102,7 +101,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Interested button active state (when job is marked as interested) */
 .interested-btn.interested-active {
   background: #28a745;
   color: white;
@@ -124,8 +122,33 @@
   border-radius: var(--radius);
 }
 
+/* Status dropdown (My Applications) */
 .status-row {
-  width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.status-row label {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.status-row select {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 12px;
+  background: #ffffff;
+  outline: none;
+}
+
+.status-row select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
 }
 
 /* Comments Section */
@@ -304,3 +327,9 @@
 button:hover {
   background: green;
 }
+=======
+/*
+.status-row {
+  width: 200px;
+} */
+

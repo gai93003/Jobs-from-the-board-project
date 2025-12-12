@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { JobCard } from "../JobCard/JobCard";
 import { markJobInterested, fetchUserApplications, updateApplicationStatus } from "../../utils/applications.js";
+import { applyStarFilter, sortJobs } from "../../utils/jobListHelper.js";
 import "../Dashboard/Dashboard.css"
 const PAGE_SIZE = 6;
 
@@ -10,6 +11,7 @@ export default function JobListView({
   fetchJobsSlack,  // Slack jobs API
   mode = "dashboard",
 }) {
+  console.log("JobListView RENDERED"); 
   const [apiJobs, setApiJobs] = useState([]);
   const [slackJobs, setSlackJobs] = useState([]);
   const [page, setPage] = useState(1);
@@ -19,6 +21,10 @@ export default function JobListView({
   const [expLevel, setExpLevel] = useState("");
   const [techStack, setTechStack] = useState("");
   const [locationType, setLocationType] = useState("");
+  const [sortBy, setSortBy] = useState("date");      // "date" | "salary"
+  const [sortDirection, setSortDirection] = useState("desc"); // "asc" | "desc"
+  const [starCompaniesOnly, setStarCompaniesOnly] = useState(false);
+
 
   useEffect(() => {
     async function load() {
@@ -31,6 +37,7 @@ export default function JobListView({
         if (locationType) params.set("location_type", locationType);
         if (expLevel) params.set("exp_level", expLevel);
         if (techStack) params.set("tech_stack", techStack);
+        if (starCompaniesOnly) params.set("star_companies", "true");
         const queryString = params.toString() ? `?${params.toString()}` : "";
 
         // fetch normal jobs, slack jobs, and existing applications in parallel
@@ -61,7 +68,15 @@ export default function JobListView({
     }
 
     load();
-  }, [ mode, fetchJobs,fetchJobsSlack, location, locationType, expLevel, techStack,]);
+  }, [ mode, fetchJobs,fetchJobsSlack, location, locationType, expLevel, techStack, starCompaniesOnly, sortBy, sortDirection]);
+
+ 
+  // Filter + sort pipeline
+  const filteredSlackJobs = applyStarFilter(slackJobs, starCompaniesOnly);
+  const filteredApiJobs = applyStarFilter(apiJobs, starCompaniesOnly);
+
+  const sortedSlackJobs = sortJobs(filteredSlackJobs, sortBy, sortDirection);
+  const sortedApiJobs = sortJobs(filteredApiJobs, sortBy, sortDirection);
 
   // pagination
   const slackStart = (page - 1) * PAGE_SIZE;
@@ -69,14 +84,15 @@ export default function JobListView({
   const apiStart = (page - 1) * PAGE_SIZE;
   const apiEnd = apiStart + PAGE_SIZE;
 
-  const pagedSlackJobs = slackJobs.slice(slackStart, slackEnd);
-  const pagedApiJobs = apiJobs.slice(apiStart, apiEnd);
+  const pagedSlackJobs = sortedSlackJobs.slice(slackStart, slackEnd);
+  const pagedApiJobs = sortedApiJobs.slice(apiStart, apiEnd);
 
   const totalPages = Math.max(
-    Math.ceil(slackJobs.length / PAGE_SIZE),
-    Math.ceil(apiJobs.length / PAGE_SIZE),
+    Math.ceil(sortedSlackJobs.length / PAGE_SIZE),
+    Math.ceil(sortedApiJobs.length / PAGE_SIZE),
     1
   );
+console.log("pagedApiJobs:", pagedApiJobs); 
 
   // mark job as interested (for BOTH Slack + platform)
   async function handleInterested(job) {
@@ -143,6 +159,37 @@ export default function JobListView({
             value={techStack}
             onChange={e => setTechStack(e.target.value)}
           />
+         
+          <select // New: sort by daate
+            value={`date-${sortDirection}`}
+            onChange={e => {
+              const dir = e.target.value.split("-")[1];
+              setSortBy("date");
+              setSortDirection(dir);
+            }}
+          >
+            <option value="date-desc">Date posted: Newest first</option>
+            <option value="date-asc">Date posted: Oldest first</option>
+            </select>
+            <select
+            value={`salary-${sortDirection}`}
+            onChange={e=>{
+              const dir =e.target.value.split("-")[1];
+              setSortBy("salary");
+              setSortDirection(dir);
+            }}
+            >
+            <option value="salary-asc">Base salary: Low to high</option>
+            <option value="salary-desc">Base salary: High to low</option>
+            </select>
+
+           <input // star filter is here
+          type="checkbox"
+          checked={starCompaniesOnly}
+          onChange={e => setStarCompaniesOnly(e.target.checked)}
+          />
+          Star employers only
+         
         </div>
       )}
 
@@ -194,6 +241,7 @@ export default function JobListView({
                       : `app-${job.application_id}-${i}`
                   }
                   {...job}
+                  is_star={job.is_star} // star employer 
                   {...(mode === "dashboard"
                     ? {
                         onInterested: handleInterested,

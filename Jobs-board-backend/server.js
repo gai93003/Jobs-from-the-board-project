@@ -8,6 +8,7 @@ import staffRoutes from "./routes/staff.js";
 import "./services/slackCron.js";
 import { fetchAndStoreSlackJobs } from "./services/slackJobService.js";
 import commentsRouter from "./routes/comments.js";
+import { deleteOldJobs } from "./services/deleteOldJobs.js";
 
 
 import { runSetup } from "./DB/migrations.js";
@@ -66,6 +67,11 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 await runSetup();
+// In development, clean out old jobs once on startup
+if (process.env.NODE_ENV === "development") { // it should be switched to production so that if condtion is false and deleteOldJobs() was skipped, then only cron job does cleanup.
+  await deleteOldJobs();
+  console.log("[STARTUP] Ran deleteOldJobs once in development");
+}
 
 app.use('/api/jobs', jobsRouter);
 app.use("/api", userRouter);

@@ -50,20 +50,31 @@ CREATE TABLE IF NOT EXISTS jobs (
 -- NEW
 ALTER TABLE jobs
   ADD COLUMN IF NOT EXISTS location_type VARCHAR(50),
-  ADD COLUMN IF NOT EXISTS api_source TEXT DEFAULT 'DevitJobs';
+  ADD COLUMN IF NOT EXISTS api_source TEXT DEFAULT 'DevitJobs',
+  ADD COLUMN IF NOT EXISTS salary_min INT,
+  ADD COLUMN IF NOT EXISTS salary_max INT,
+  ADD COLUMN IF NOT EXISTS is_star_employer BOOLEAN DEFAULT FALSE;
 
 -- application_status enum + applications table
 DO $$ BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'application_status_enum') THEN
-        CREATE TYPE application_status_enum AS ENUM (
-            'Interested',
-            'Application Started',
-            'Application Submitted',
-            'Invited to Interview',
-            'Application Declined',
-            'Offer Received'
-        );
-    END IF;
+
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Interested';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Submitted';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Initial Screening';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS '1st Round Interview';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS '2nd Round Interview';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Offer Received';
+    ALTER TYPE application_status_enum ADD VALUE IF NOT EXISTS 'Application Declined';
+    -- IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'application_status_enum') THEN
+    --     CREATE TYPE application_status_enum AS ENUM (
+    --         'Interested',
+    --         'Application Started',
+    --         'Application Submitted',
+    --         'Invited to Interview',
+    --         'Application Declined',
+    --         'Offer Received'
+    --     );
+    -- END IF;
 END $$;
 
 CREATE TABLE IF NOT EXISTS applications (

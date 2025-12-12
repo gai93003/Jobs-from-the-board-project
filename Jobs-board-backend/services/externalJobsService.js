@@ -90,7 +90,9 @@ export async function importJobsFromExternal(apiUrl = EXTERNAL_API_URL, baseJobU
       exp_level: normalizedExpLevel, // using the normalized value
       partner_name: externalJob.partnerName,
       active_from : externalJob.activeFrom,
-      location_type: mapLocationType(externalJob.workplace, externalJob.cityCategory)
+      location_type: mapLocationType(externalJob.workplace, externalJob.cityCategory),
+      salary_min: externalJob.annualSalaryFrom ?? null,
+      salary_max: externalJob.annualSalaryTo ?? null
     });
   }
 }
