@@ -42,5 +42,6 @@
 }
 
 .sidebar-item:hover {
-  background: #d6d3d4;
+  background: lch(93.86% 3.72 3.46);
+  color: white;
 }
