@@ -1,22 +1,36 @@
 import { useState, useEffect } from "react";
 import { JobCard } from "../JobCard/JobCard";
-import { markJobInterested, fetchUserApplications, updateApplicationStatus } from "../../utils/applications.js";
-import { applyStarFilter, sortJobs } from "../../utils/jobListHelper.js";
-import "../Dashboard/Dashboard.css"
-const PAGE_SIZE = 6;
+import {
+  markJobInterested,
+  fetchUserApplications,
+  updateApplicationStatus,
+  deleteApplication
+} from "../../utils/applications.js";
+
+import {
+  applyStarFilter,
+  sortJobs,
+  applyApiSourceFilter
+} from "../../utils/jobListHelper.js";
+
+import { dedupeByJobId } from "../../utils/jobDedupe.js";
+
+import "../Dashboard/Dashboard.css";
+
+const PAGE_SIZE = 10;
 
 export default function JobListView({
   subtitle,
-  fetchJobs,       // normal jobs API
-  fetchJobsSlack,  // Slack jobs API
-  mode = "dashboard",
+  fetchJobs,
+  mode = "dashboard"
 }) {
-  console.log("JobListView RENDERED"); 
-  const [apiJobs, setApiJobs] = useState([]);
-  const [slackJobs, setSlackJobs] = useState([]);
+  const [jobs, setJobs] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+
   const [interestedJobs, setInterestedJobs] = useState(new Set());
+
+  // filters
   const [location, setLocation] = useState("");
   const [expLevel, setExpLevel] = useState("");
   const [techStack, setTechStack] = useState("");
@@ -25,13 +39,14 @@ export default function JobListView({
   const [sortDirection, setSortDirection] = useState("desc"); // "asc" | "desc"
   const [starCompaniesOnly, setStarCompaniesOnly] = useState(false);
 
+  // NEW: api_source filter
+  const [apiSource, setApiSource] = useState(""); // "" | "CYFslack" | "DevitJobs"
 
   useEffect(() => {
     async function load() {
       setLoading(true);
+
       if (mode === "dashboard") {
-       // fetchJobs() returns an ARRAY, not an object
-//         const jobsList = await fetchJobs();
         const params = new URLSearchParams();
         if (location) params.set("location", location);
         if (locationType) params.set("location_type", locationType);
@@ -40,15 +55,12 @@ export default function JobListView({
         if (starCompaniesOnly) params.set("star_companies", "true");
         const queryString = params.toString() ? `?${params.toString()}` : "";
 
-        // fetch normal jobs, slack jobs, and existing applications in parallel
-        const [apiData, slackData, apps] = await Promise.all([
+        const [jobsData, apps] = await Promise.all([
           fetchJobs(queryString),
-          fetchJobsSlack(queryString), 
           fetchUserApplications()
         ]);
 
-        setApiJobs(apiData || []);
-        setSlackJobs(slackData || []);
+        setJobs(jobsData || []);
 
         const interested = new Set(
           (apps?.data?.applications || []).map(app => app.job_id)
@@ -56,11 +68,13 @@ export default function JobListView({
         setInterestedJobs(interested);
 
         setPage(1);
-      } else if (mode === "applications") {
+      }
+
+      if (mode === "applications") {
         const apps = await fetchUserApplications();
-        setApiJobs(apps?.data?.applications || []);
-        setSlackJobs(apps?.data?.applications || []);              // no Slack section in My Applications
-        setInterestedJobs(new Set());  // not needed here
+        const applicationsList = apps?.data?.applications || [];
+        setJobs(applicationsList);
+        setInterestedJobs(new Set());
         setPage(1);
       }
 
@@ -68,58 +82,78 @@ export default function JobListView({
     }
 
     load();
-  }, [ mode, fetchJobs,fetchJobsSlack, location, locationType, expLevel, techStack, starCompaniesOnly, sortBy, sortDirection]);
+
+  // }, [ mode, fetchJobs,fetchJobsSlack, location, locationType, expLevel, techStack, starCompaniesOnly, sortBy, sortDirection]);
 
  
-  // Filter + sort pipeline
-  const filteredSlackJobs = applyStarFilter(slackJobs, starCompaniesOnly);
-  const filteredApiJobs = applyStarFilter(apiJobs, starCompaniesOnly);
+  // // Filter + sort pipeline
+  // const filteredSlackJobs = applyStarFilter(slackJobs, starCompaniesOnly);
+  // const filteredApiJobs = applyStarFilter(apiJobs, starCompaniesOnly, starCompaniesOnly, sortBy, sortDirection);
 
-  const sortedSlackJobs = sortJobs(filteredSlackJobs, sortBy, sortDirection);
-  const sortedApiJobs = sortJobs(filteredApiJobs, sortBy, sortDirection);
+  }, [mode, fetchJobs, location, locationType, expLevel, techStack, starCompaniesOnly, sortBy, sortDirection]);
+
+  // filter + sort pipeline (dashboard only)
+  let filtered = jobs;
+
+
+// dashboard only filters
+    if (mode === "dashboard") {
+      filtered = applyApiSourceFilter(filtered, apiSource);
+      filtered = applyStarFilter(filtered, starCompaniesOnly);
+       // NEW: remove duplicates by job_id
+      filtered = dedupeByJobId(filtered);
+      filtered = sortJobs(filtered, sortBy, sortDirection);
+     
+    }
 
   // pagination
-  const slackStart = (page - 1) * PAGE_SIZE;
-  const slackEnd = slackStart + PAGE_SIZE;
-  const apiStart = (page - 1) * PAGE_SIZE;
-  const apiEnd = apiStart + PAGE_SIZE;
+    const start = (page - 1) * PAGE_SIZE;
+    const pagedJobs = filtered.slice(start, start + PAGE_SIZE);
+    const totalPages = Math.max(Math.ceil(filtered.length / PAGE_SIZE), 1);
 
-  const pagedSlackJobs = sortedSlackJobs.slice(slackStart, slackEnd);
-  const pagedApiJobs = sortedApiJobs.slice(apiStart, apiEnd);
-
-  const totalPages = Math.max(
-    Math.ceil(sortedSlackJobs.length / PAGE_SIZE),
-    Math.ceil(sortedApiJobs.length / PAGE_SIZE),
-    1
-  );
-console.log("pagedApiJobs:", pagedApiJobs); 
-
-  // mark job as interested (for BOTH Slack + platform)
   async function handleInterested(job) {
     try {
       const result = await markJobInterested(job.job_id);
-
-      if (result && result.response && result.response.ok) {
+      if (result?.response?.ok) {
         setInterestedJobs(prev => new Set([...prev, job.job_id]));
-        console.log("Job marked as interested successfully!");
       }
     } catch (error) {
-      console.error("Error marking job as interested:", error);
       alert(`Failed to mark job as interested: ${error.message}`);
     }
   }
 
-  // update application status (My Applications view)
   async function handleStatusChange(application_id, newStatus) {
     await updateApplicationStatus(application_id, newStatus);
-
-    setApiJobs(prev =>
+    setJobs(prev =>
       prev.map(job =>
         job.application_id === application_id
           ? { ...job, status: newStatus }
           : job
       )
     );
+  }
+
+  async function handleDeleteApplication(applicationId) {
+    if (!window.confirm("Remove this application?")) return;
+
+    try {
+      await deleteApplication(applicationId);
+
+      const deletedJob = jobs.find(j => j.application_id === applicationId);
+      const deletedJobId = deletedJob?.job_id;
+
+      setJobs(prev => prev.filter(j => j.application_id !== applicationId));
+
+      if (deletedJobId) {
+        setInterestedJobs(prev => {
+          const next = new Set(prev);
+          next.delete(deletedJobId);
+          return next;
+        });
+      }
+    } catch (error) {
+      alert(`Failed to delete application: ${error.message}`);
+    }
   }
 
   return (
@@ -135,19 +169,15 @@ console.log("pagedApiJobs:", pagedApiJobs);
             value={location}
             onChange={e => setLocation(e.target.value)}
           />
-          <select
-            value={locationType}
-            onChange={e => setLocationType(e.target.value)}>
+
+          <select value={locationType} onChange={e => setLocationType(e.target.value)}>
             <option value="">Any location type</option>
             <option value="remote">Remote</option>
             <option value="hybrid">Hybrid</option>
             <option value="onsite">Onsite</option>
           </select>
 
-          <select
-            value={expLevel}
-            onChange={e => setExpLevel(e.target.value)}
-          >
+          <select value={expLevel} onChange={e => setExpLevel(e.target.value)}>
             <option value="">Any level</option>
             <option value="junior">Junior</option>
             <option value="regular">Regular</option>
@@ -159,8 +189,16 @@ console.log("pagedApiJobs:", pagedApiJobs);
             value={techStack}
             onChange={e => setTechStack(e.target.value)}
           />
-         
-          <select // New: sort by daate
+
+          {/* api_source filter */}
+          <select value={apiSource} onChange={e => setApiSource(e.target.value)}>
+            <option value="">All sources</option>
+            <option value="CYFslack">CYF Slack</option>
+            <option value="DevitJobs">Platform API</option>
+          </select>
+
+          {/* sorting */}
+          <select
             value={`date-${sortDirection}`}
             onChange={e => {
               const dir = e.target.value.split("-")[1];
@@ -168,20 +206,21 @@ console.log("pagedApiJobs:", pagedApiJobs);
               setSortDirection(dir);
             }}
           >
-            <option value="date-desc">Date posted: Newest first</option>
-            <option value="date-asc">Date posted: Oldest first</option>
-            </select>
-            <select
+            <option value="date-desc">Date posted: Newest</option>
+            <option value="date-asc">Date posted: Oldest</option>
+          </select>
+
+          <select
             value={`salary-${sortDirection}`}
-            onChange={e=>{
-              const dir =e.target.value.split("-")[1];
+            onChange={e => {
+              const dir = e.target.value.split("-")[1];
               setSortBy("salary");
               setSortDirection(dir);
             }}
-            >
-            <option value="salary-asc">Base salary: Low to high</option>
-            <option value="salary-desc">Base salary: High to low</option>
-            </select>
+          >
+            <option value="salary-asc">Salary: Low → High</option>
+            <option value="salary-desc">Salary: High → Low</option>
+          </select>
 
            <input // star filter is here
           type="checkbox"
@@ -197,85 +236,42 @@ console.log("pagedApiJobs:", pagedApiJobs);
 
       {loading && <p className="loading">Loading jobs...</p>}
 
-      {/* Slack jobs section (dashboard only) */}
-      {!loading && mode === "dashboard" && pagedSlackJobs.length > 0 && (
-        <>
-          <h2 className="section-title">CYF Slack Jobs</h2>
-
-          <ul className="jobs-grid">
-            {pagedSlackJobs.map((job, i) => (
-              <JobCard
-                key={`slack-${job.job_id}-${i}`}
-                {...job}
-                onInterested={handleInterested}
-                isInterested={interestedJobs.has(job.job_id)}
-              />
-            ))}
-          </ul>
-
-          <hr className="divider" />
-        </>
+      {!loading && pagedJobs.length === 0 && (
+        <p className="no-jobs">No jobs found.</p>
       )}
 
-      {/* 💼 Platform jobs / My applications */}
-      {!loading && (
-        <>
-          {mode === "dashboard" && (
-            <h2 className="section-title">Platform Jobs</h2>
-          )}
-          {mode === "applications" && (
-            <h2 className="section-title">My Applications</h2>
-          )}
-
-          {pagedApiJobs.length === 0 && (
-            <p className="no-jobs">No jobs found.</p>
-          )}
-
-          {pagedApiJobs.length > 0 && (
-            <ul className="jobs-grid">
-              {pagedApiJobs.map((job, i) => (
-                <JobCard
-                  key={
-                    mode === "dashboard"
-                      ? `api-${job.job_id}-${i}`
-                      : `app-${job.application_id}-${i}`
+      {!loading && pagedJobs.length > 0 && (
+        <ul className="jobs-grid">
+          {pagedJobs.map((job, i) => (
+            <JobCard
+              key={
+                mode === "dashboard"
+                  ? `job-${job.job_id}-${i}`
+                  : `app-${job.application_id}-${i}`
+              }
+              {...job}
+              {...(mode === "dashboard"
+                ? {
+                    onInterested: handleInterested,
+                    isInterested: interestedJobs.has(job.job_id)
                   }
-                  {...job}
-                  is_star={job.is_star} // star employer 
-                  {...(mode === "dashboard"
-                    ? {
-                        onInterested: handleInterested,
-                        isInterested: interestedJobs.has(job.job_id),
-                      }
-                    : {
-                        onStatusChange: newStatus =>
-                          handleStatusChange(job.application_id, newStatus),
-                      })}
-                />
-              ))}
-            </ul>
-          )}
-        </>
+                : {
+                    onStatusChange: newStatus =>
+                      handleStatusChange(job.application_id, newStatus),
+                    onDelete: () => handleDeleteApplication(job.application_id)
+                  })}
+            />
+          ))}
+        </ul>
       )}
 
-      {/* Pagination */}
       {!loading && totalPages > 1 && (
         <div className="pagination">
-          <button
-            disabled={page === 1}
-            onClick={() => setPage(p => p - 1)}
-          >
+          <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>
             ← Previous
           </button>
-
-          <span>
-            Page {page} of {totalPages}
-          </span>
-
-          <button
-            disabled={page === totalPages}
-            onClick={() => setPage(p => p + 1)}
-          >
+          <span>Page {page} of {totalPages}</span>
+          <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>
             Next →
           </button>
         </div>

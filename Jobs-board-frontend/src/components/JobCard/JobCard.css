@@ -13,6 +13,46 @@
   flex-direction: column;
 }
 
+.source-badge {
+ font-size: 20px;
+ margin-bottom: 15px;
+}
+
+.job-card-slack-badge img {
+  width: 30px;
+  height: 30px;
+}
+/* Source line pill badge */
+.source-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.source-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+/* Purple = CYF Slack */
+.source-pill--slack {
+  background: #f3e8ff;
+  color: #6b21a8;
+  border-color: #e9d5ff;
+}
+
+/* Yellow = Platform */
+.source-pill--platform {
+  background: #fef9c3;
+  color: #854d0e;
+  border-color: #fde68a;
+}
 
 .job-card.interested {
   border: 2px solid #28a745;
@@ -32,6 +72,7 @@
   top: 40px;
   right: 10px;
   font-size: 34px;
+  cursor: help; 
   animation: heartPulse 1.5s ease-in-out infinite;
 }
 
@@ -58,7 +99,8 @@
 
 .job-card-actions {
   display: flex;
-  gap: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 15px;
   align-items: center;
 }
@@ -66,19 +108,20 @@
 .job-card .apply-link,
 .job-card .interested-btn {
   display: inline-block;
-  padding: 10px 18px;
+  padding: 8px 16px;
   border-radius: var(--radius);
   font-weight: 500;
   text-decoration: none;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .job-card .apply-link {
   background: var(--cyf-primary-red);
   color: var(--cyf-white);
+  flex: 0 1 auto;
 }
 
 .job-card .apply-link:hover {
@@ -91,7 +134,7 @@
   background: #f0f0f0;
   color: #333;
   border: 2px solid #ddd;
-  min-width: 180px;
+  flex: 0 1 auto;
 }
 
 .interested-btn:hover:not(:disabled) {
@@ -115,33 +158,37 @@
 
 .job-card .status-row select {
   margin-top: 10px;
-  padding: 8px;
+  padding: 8px 12px;
   background-color: var(--cyf-primary-red);
   color: var(--cyf-white);
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
+  font-size: 13px;
 }
 
 /* Status dropdown (My Applications) */
 .status-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 8px;
-  font-size: 12px;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 13px;
+  flex-wrap: wrap;
 }
 
 .status-row label {
   color: #4b5563;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .status-row select {
   flex: 1;
-  padding: 6px 8px;
-  border-radius: 8px;
+  min-width: 150px;
+  padding: 8px 12px;
+  border-radius: 6px;
   border: 1px solid #d1d5db;
-  font-size: 12px;
+  font-size: 13px;
   background: #ffffff;
   outline: none;
 }
@@ -333,3 +380,33 @@ button:hover {
   width: 200px;
 } */
 
+.delete-app-btn {
+  background: var(--cyf-primary-red);
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  opacity: 0.9;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  min-width: 36px;
+  height: 36px;
+}
+
+.delete-app-btn:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  background: #dc2626;
+}
+
+/* Ensure the status row aligns items properly */
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}

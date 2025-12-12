@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
+
 import './Login.css';
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5501/api";
@@ -33,7 +34,6 @@ function Login() {
        },
        body: JSON.stringify({ email, password })
      });
-
      const data = await response.json();
 
      if (response.ok) {

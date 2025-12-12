@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./Profile.css";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5501/api";
+
 export function Profile() {
   const [profile, setProfile] = useState(null);
   const [mentors, setMentors] = useState([]);
@@ -24,7 +26,7 @@ export function Profile() {
       }
 
       const response = await fetch(
-        `http://localhost:5501/api/profile/${userData.user_id}`,
+        `${API_URL}/profile/${userData.user_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,7 +51,7 @@ export function Profile() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:5501/api/mentors", {
+      const response = await fetch(`${API_URL}/mentors`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -79,7 +81,7 @@ export function Profile() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:5501/api/assign-trainee",
+        `${API_URL}/assign-trainee`,
         {
           method: "POST",
           headers: {

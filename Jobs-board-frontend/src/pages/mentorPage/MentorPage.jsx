@@ -6,6 +6,7 @@ import { TraineeApplications } from "../../components/TraineeApplications/Traine
 import { fetchWithAuth } from "../../utils/api";
 import "./MentorPage.css";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5501/api";
 export function MentorPage() {
     const [trainees, setTrainees] = useState([]);
     const [selectedTrainee, setSelectedTrainee] = useState("");
@@ -14,6 +15,7 @@ export function MentorPage() {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [viewingApplications, setViewingApplications] = useState(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     // Get current user from localStorage
     useEffect(() => {
@@ -66,7 +68,7 @@ export function MentorPage() {
         if (!selectedTrainee || !currentUser) return;
 
         try {
-            const response = await fetch("http://localhost:5501/api/assign-trainee", {
+            const response = await fetch(`${API_URL}/assign-trainee`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -118,7 +120,7 @@ export function MentorPage() {
   if (viewingApplications) {
     return (
       <div className="mentor-page">
-        <Header />
+        <Header onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
         <div className="mentor-layout">
           <main className="trainee-content">
             <TraineeApplications 
@@ -134,7 +136,7 @@ export function MentorPage() {
 
   return (
     <div className="mentor-page">
-      <Header />
+      <Header onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
       <div className="mentor-layout">
         <main className="trainee-content">

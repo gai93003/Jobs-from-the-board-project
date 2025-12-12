@@ -49,3 +49,32 @@
   color: rgb(8, 7, 7);
   flex: flex;
 }
+
+.menu-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: none; /* Hidden by default on desktop */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Show hamburger menu only on mobile */
+@media (max-width: 768px) {
+  .menu-btn {
+    display: flex;
+  }
+  .welcome-text {
+    background-color: red;
+    display: none;
+  }
+}
+
+.hamburger {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+welcome-text

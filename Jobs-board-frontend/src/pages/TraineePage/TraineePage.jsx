@@ -11,14 +11,25 @@ import "./TraineePage.css";
 
 export function TraineePage() {
   const [activePage, setActivePage] = useState("dashboard"); 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // dashboard is default
+
+  const handleSelectPage = (page) => {
+    setActivePage(page);
+    setIsSidebarOpen(false); // Close sidebar after selecting a page on mobile
+  };
 
   return (
     <div className="trainee-page">
-      <Header />
+      <Header onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
       <div className="trainee-layout">
-        <Sidebar activePage={activePage} onSelectPage={setActivePage} />
+        <Sidebar 
+          activePage={activePage} 
+          onSelectPage={handleSelectPage}
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
 
         <main className="trainee-content">
           {activePage === "dashboard" && <Dashboard />}

@@ -14,6 +14,12 @@ export default function StaffPage() {
   const [activePage, setActivePage] = useState("dashboard");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleSelectPage = (page) => {
+    setActivePage(page);
+    setIsSidebarOpen(false); // Close sidebar after selecting a page on mobile
+  };
 
   useEffect(() => {
     if (activePage === "jobs") {
@@ -48,10 +54,15 @@ export default function StaffPage() {
 
   return (
     <div className="staff-page">
-      <Header />
+      <Header onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
       <div className="staff-layout">
-        <Sidebar activePage={activePage} onSelectPage={setActivePage} />
+        <Sidebar 
+          activePage={activePage} 
+          onSelectPage={handleSelectPage}
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
 
         <main className="staff-content">
           {activePage === "dashboard" && <StaffDashboard />}
@@ -75,8 +86,8 @@ export default function StaffPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {jobs.map((job) => (
-                      <tr key={job.job_id}>
+                    {jobs.map((job, i) => (
+                      <tr key={i}>
                         <td>{job.title}</td>
                         <td>
                           {job.company} {job.is_star && "⭐"}

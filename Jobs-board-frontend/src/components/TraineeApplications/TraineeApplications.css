@@ -1,5 +1,13 @@
 .trainee-applications {
   padding: 1rem;
+  width: 90%;
+  margin: 0 auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.trainee-applications::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .trainee-applications-header {
@@ -9,12 +17,12 @@
 .trainee-applications-header h2 {
   margin: 1rem 0 0.5rem 0;
   color: #333;
-  font-size: 1.75rem;
+  font-size: 1.2rem;
 }
 
 .trainee-applications-header .trainee-email {
   color: #666;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   margin: 0;
 }
 
@@ -37,7 +45,10 @@
 .applications-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+  /* display: flex; */
+  width: 100%;
+  display: block;
 }
 
 .no-applications {
