@@ -11,6 +11,7 @@ export default function JobListView({
   fetchJobsSlack,  // Slack jobs API
   mode = "dashboard",
 }) {
+  console.log("JobListView RENDERED"); 
   const [apiJobs, setApiJobs] = useState([]);
   const [slackJobs, setSlackJobs] = useState([]);
   const [page, setPage] = useState(1);
@@ -22,7 +23,7 @@ export default function JobListView({
   const [locationType, setLocationType] = useState("");
   const [sortBy, setSortBy] = useState("date");      // "date" | "salary"
   const [sortDirection, setSortDirection] = useState("desc"); // "asc" | "desc"
-  const [starOnly, setStarOnly] = useState(false);
+  const [starCompaniesOnly, setStarCompaniesOnly] = useState(false);
 
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export default function JobListView({
         if (locationType) params.set("location_type", locationType);
         if (expLevel) params.set("exp_level", expLevel);
         if (techStack) params.set("tech_stack", techStack);
+        if (starCompaniesOnly) params.set("star_companies", "true");
         const queryString = params.toString() ? `?${params.toString()}` : "";
 
         // fetch normal jobs, slack jobs, and existing applications in parallel
@@ -66,12 +68,12 @@ export default function JobListView({
     }
 
     load();
-  }, [ mode, fetchJobs,fetchJobsSlack, location, locationType, expLevel, techStack, starOnly, sortBy, sortDirection]);
+  }, [ mode, fetchJobs,fetchJobsSlack, location, locationType, expLevel, techStack, starCompaniesOnly, sortBy, sortDirection]);
 
  
   // Filter + sort pipeline
-  const filteredSlackJobs = applyStarFilter(slackJobs, starOnly);
-  const filteredApiJobs = applyStarFilter(apiJobs, starOnly);
+  const filteredSlackJobs = applyStarFilter(slackJobs, starCompaniesOnly);
+  const filteredApiJobs = applyStarFilter(apiJobs, starCompaniesOnly);
 
   const sortedSlackJobs = sortJobs(filteredSlackJobs, sortBy, sortDirection);
   const sortedApiJobs = sortJobs(filteredApiJobs, sortBy, sortDirection);
@@ -90,6 +92,7 @@ export default function JobListView({
     Math.ceil(sortedApiJobs.length / PAGE_SIZE),
     1
   );
+console.log("pagedApiJobs:", pagedApiJobs); 
 
   // mark job as interested (for BOTH Slack + platform)
   async function handleInterested(job) {
@@ -182,8 +185,8 @@ export default function JobListView({
 
            <input // star filter is here
           type="checkbox"
-          checked={starOnly}
-          onChange={e => setStarOnly(e.target.checked)}
+          checked={starCompaniesOnly}
+          onChange={e => setStarCompaniesOnly(e.target.checked)}
           />
           Star employers only
          
@@ -238,6 +241,7 @@ export default function JobListView({
                       : `app-${job.application_id}-${i}`
                   }
                   {...job}
+                  is_star={job.is_star} // star employer 
                   {...(mode === "dashboard"
                     ? {
                         onInterested: handleInterested,

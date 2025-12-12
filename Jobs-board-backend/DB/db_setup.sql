@@ -52,7 +52,8 @@ ALTER TABLE jobs
   ADD COLUMN IF NOT EXISTS location_type VARCHAR(50),
   ADD COLUMN IF NOT EXISTS api_source TEXT DEFAULT 'DevitJobs',
   ADD COLUMN IF NOT EXISTS salary_min INT,
-  ADD COLUMN IF NOT EXISTS salary_max INT;
+  ADD COLUMN IF NOT EXISTS salary_max INT,
+  ADD COLUMN IF NOT EXISTS is_star_employer BOOLEAN DEFAULT FALSE;
 
 -- application_status enum + applications table
 DO $$ BEGIN
@@ -96,11 +97,10 @@ CREATE TABLE IF NOT EXISTS star_companies (
   marked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Comments table for mentor-trainee communication
-CREATE TABLE IF NOT EXISTS comments (
+-- Job comments table for mentor-trainee communication on specific applications
+CREATE TABLE IF NOT EXISTS job_comments (
     comment_id SERIAL PRIMARY KEY,
-    trainee_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
-    mentor_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    application_id INT NOT NULL REFERENCES applications(application_id) ON DELETE CASCADE,
     author_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     comment_text TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -108,5 +108,5 @@ CREATE TABLE IF NOT EXISTS comments (
 );
 
 -- Add index for faster queries
-CREATE INDEX IF NOT EXISTS idx_comments_trainee_mentor ON comments(trainee_id, mentor_id);
-CREATE INDEX IF NOT EXISTS idx_comments_created_at ON comments(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_job_comments_application ON job_comments(application_id);
+CREATE INDEX IF NOT EXISTS idx_job_comments_created_at ON job_comments(created_at DESC);

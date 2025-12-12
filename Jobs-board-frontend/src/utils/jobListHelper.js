@@ -1,6 +1,6 @@
-export function applyStarFilter(jobs, starOnly) {
-  if (!starOnly) return jobs;
-  return jobs.filter(job => job.is_star);
+export function applyStarFilter(jobs, starCompaniesOnly) {
+  if (!starCompaniesOnly) return jobs;
+  return jobs.filter(job => job.is_star === true);
 }
 
 export function sortJobs(jobs, sortBy, sortDirection) {
@@ -46,7 +46,7 @@ export function formatCurrency(value, currency = "GBP") {
 export function formatSalaryRange(min, max, currency = "GBP") {
   const minText = formatCurrency(min, currency);
   const maxText = formatCurrency(max, currency);
-
+ 
   if (!minText && !maxText) return null;
   if (minText && maxText && min !== max) return `${minText} – ${maxText}`;
   if (minText && maxText && min === max) return `${minText}`;

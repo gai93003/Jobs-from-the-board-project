@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { JobCard } from "../JobCard/JobCard";
 import { updateApplicationStatus } from "../../utils/applications";
-import { CommentSection } from "../CommentSection/CommentSection";
+// import { CommentSection1 } from "../CommentSection/CommentSection";
 import "./TraineeApplications.css";
 
 export function TraineeApplications({ trainee, onBack }) {
@@ -27,6 +27,7 @@ export function TraineeApplications({ trainee, onBack }) {
         }
       );
       const data = await response.json();
+      
       if (response.ok) {
         setApplications(data.applications || []);
       } else {
@@ -92,7 +93,7 @@ export function TraineeApplications({ trainee, onBack }) {
       )}
 
       {mentorId && (
-        <CommentSection 
+        <CommentSection1 
           traineeId={trainee.user_id} 
           mentorId={mentorId} 
           mode="mentor"

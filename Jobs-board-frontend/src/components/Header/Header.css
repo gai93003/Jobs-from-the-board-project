@@ -40,7 +40,6 @@
 
 .header-link:hover {
   background: var(--cyf-light-bg);
-  color: var(--cyf-white);
 }
 .welcome-text {
   margin-top: 25px;
