@@ -223,12 +223,14 @@ export default function JobListView({
             <option value="salary-desc">Salary: High → Low</option>
           </select>
 
-           <input // star filter is here
+          <label>
+             <input // star filter is here
           type="checkbox"
           checked={starCompaniesOnly}
           onChange={e => setStarCompaniesOnly(e.target.checked)}
           />
-          Star employers only
+          Only Star Companies
+          </label>
          
         </div>
       )}

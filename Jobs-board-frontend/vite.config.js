@@ -7,9 +7,13 @@ export default defineConfig({
   preview: {
     host: '0.0.0.0',
     port: 3000,
-    allowedHosts: [
-      'https://careerflow.hosting.codeyourfuture.io/'
-    ]
-  }
+    allowedHosts: true
+     
+  },
+	server: {
+		allowedHosts: true
+	}
 })
 
+ // 'https://careerflow.hosting.codeyourfuture.io/'
+    // ]
